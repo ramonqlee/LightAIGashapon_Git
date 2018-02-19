@@ -1,0 +1,1934 @@
+
+[2017-10-29 20:53:33.155]: host trace CDFU_LoadSection: %d-%d
+
+[2017-10-29 20:53:33.157]: host trace ====================================
+[2017-10-29 20:53:33.160]: host trace INTR VER :Luat_V0014_8955_TTS_UI
+[2017-10-29 20:53:33.161]: host trace BASE VER :B4416
+[2017-10-29 20:53:33.164]: host trace SCRIPT ADDR :0x003a0000
+[2017-10-29 20:53:33.165]: host trace SCRIPT SIZE :0x00036000
+[2017-10-29 20:53:33.167]: host trace BASE   ADDR :0x00330000
+[2017-10-29 20:53:33.168]: host trace BASE   SIZE :0x00070000
+[2017-10-29 20:53:33.171]: host trace ====================================
+[2017-10-29 20:53:33.171]: host trace [cust_task_main]: Enter message loop
+[2017-10-29 20:53:33.174]: host trace INTEGRITY file not exist!
+[2017-10-29 20:53:33.174]: host trace FH:file=/ldata/sms.mp3,len=3456,offset=171210
+[2017-10-29 20:53:33.177]: host trace FH:file=/ldata/pwron.mp3,len=17032,offset=154153
+[2017-10-29 20:53:33.177]: host trace FH:file=/ldata/call.mp3,len=16139,offset=137987
+[2017-10-29 20:53:33.180]: host trace FH:file=/lua/main.lua,len=1262,offset=136699
+[2017-10-29 20:53:33.183]: host trace FH:file=/lua/wdt.lua,len=1610,offset=135063
+[2017-10-29 20:53:33.184]: host trace FH:file=/lua/utils.lua,len=5475,offset=129563
+[2017-10-29 20:53:33.187]: host trace FH:file=/lua/ui.lua,len=3714,offset=125822
+[2017-10-29 20:53:33.187]: host trace FH:file=/lua/sys.lua,len=13006,offset=112792
+[2017-10-29 20:53:33.190]: host trace FH:file=/lua/socket.lua,len=7292,offset=105475
+[2017-10-29 20:53:33.190]: host trace FH:file=/lua/sim.lua,len=4148,offset=101299
+[2017-10-29 20:53:33.193]: host trace FH:file=/lua/ril.lua,len=17801,offset=83473
+[2017-10-29 20:53:33.194]: host trace FH:file=/lua/pins.lua,len=2098,offset=81350
+[2017-10-29 20:53:33.196]: host trace FH:file=/lua/patch.lua,len=1589,offset=79735
+[2017-10-29 20:53:33.198]: host trace FH:file=/lua/ntp.lua,len=2114,offset=77594
+[2017-10-29 20:53:33.200]: host trace FH:file=/lua/net.lua,len=16121,offset=61448
+[2017-10-29 20:53:33.201]: host trace FH:file=/lua/misc.lua,len=5699,offset=55724
+[2017-10-29 20:53:33.203]: host trace FH:file=/lua/log.lua,len=3905,offset=51793
+[2017-10-29 20:53:33.204]: host trace FH:file=/lua/link.lua,len=3423,offset=48345
+[2017-10-29 20:53:33.206]: host trace FH:file=/lua/led.lua,len=5127,offset=43192
+[2017-10-29 20:53:33.207]: host trace FH:file=/lua/http.lua,len=4043,offset=39124
+[2017-10-29 20:53:33.207]: host trace FH:file=/lua/gps.lua,len=3698,offset=35400
+[2017-10-29 20:53:33.209]: host trace FH:file=/lua/errdump.lua,len=2484,offset=32891
+[2017-10-29 20:53:33.210]: host trace FH:file=/lua/console.lua,len=3892,offset=28970
+[2017-10-29 20:53:33.210]: host trace FH:file=/lua/common.lua,len=9507,offset=19434
+[2017-10-29 20:53:33.211]: host trace FH:file=/lua/clib.lua,len=871,offset=18535
+[2017-10-29 20:53:33.213]: host trace FH:file=/lua/audio.lua,len=2691,offset=15818
+[2017-10-29 20:53:33.213]: host trace FH:file=/lua/agps.lua,len=1144,offset=14647
+[2017-10-29 20:53:33.214]: host trace FH:file=/ldata/user_small.bmp,len=190,offset=14431
+[2017-10-29 20:53:33.217]: host trace FH:file=/ldata/user.bmp,len=574,offset=13825
+[2017-10-29 20:53:33.217]: host read data timeout
+Traceback (most recent call last):
+  File "host.pyo", line 150, in read_loop
+  File "host.pyo", line 109, in _read_unescape
+  File "host.pyo", line 98, in _read
+HostReadTimeoutError: host read data timeout
+[2017-10-29 20:53:33.217]: host trace FH:file=/ldata/up.bmp,len=126,offset=13673
+[2017-10-29 20:53:33.219]: host trace FH:file=/ldata/test_small.bmp,len=190,offset=13459
+[2017-10-29 20:53:33.220]: host trace FH:file=/ldata/test.bmp,len=574,offset=12853
+[2017-10-29 20:53:33.220]: host trace FH:file=/ldata/set_small.bmp,len=190,offset=12637
+[2017-10-29 20:53:33.220]: host read data timeout
+Traceback (most recent call last):
+  File "host.pyo", line 150, in read_loop
+  File "host.pyo", line 109, in _read_unescape
+  File "host.pyo", line 98, in _read
+HostReadTimeoutError: host read data timeout
+[2017-10-29 20:53:33.221]: host trace FH:file=/ldata/set.bmp,len=574,offset=12032
+[2017-10-29 20:53:33.223]: host trace FH:file=/ldata/message_small.bmp,len=190,offset=11817
+[2017-10-29 20:53:33.223]: host trace FH:file=/ldata/message.bmp,len=574,offset=11208
+[2017-10-29 20:53:33.223]: host trace FH:file=/ldata/menu_small.bmp,len=190,offset=10989
+[2017-10-29 20:53:33.224]: host trace FH:file=/ldata/menu_all.bmp,len=1086,offset=9871
+[2017-10-29 20:53:33.236]: host trace FH:file=/ldata/menu.bmp,len=574,offset=9267
+[2017-10-29 20:53:33.242]: host trace FH:file=/ldata/mange_small.bmp,len=190,offset=9051
+[2017-10-29 20:53:33.246]: host trace FH:file=/ldata/mange.bmp,len=574,offset=8444
+[2017-10-29 20:53:33.252]: host trace FH:file=/ldata/help_small.bmp,len=190,offset=8227
+[2017-10-29 20:53:33.256]: host trace FH:file=/ldata/help.bmp,len=574,offset=7621
+[2017-10-29 20:53:33.262]: host trace FH:file=/ldata/dw.bmp,len=126,offset=7469
+[2017-10-29 20:53:33.266]: host trace FH:file=/ldata/device_small.bmp,len=190,offset=7255
+[2017-10-29 20:53:33.273]: host trace FH:file=/ldata/device.bmp,len=574,offset=6647
+[2017-10-29 20:53:33.278]: host trace FH:file=/ldata/alarm_small.bmp,len=190,offset=6429
+[2017-10-29 20:53:33.282]: host trace FH:file=/ldata/alarm.bmp,len=574,offset=5822
+[2017-10-29 20:53:33.288]: host trace FH:file=/lua/mono_lcd_spi_sh1106.lua,len=3340,offset=2455
+[2017-10-29 20:53:33.292]: host trace FH:file=/lua/testLcd.lua,len=2362,offset=52
+[2017-10-29 20:53:33.296]: host trace parse_luadb_data:delupdpack=0,err=0,section=1,wrFile=0
+[2017-10-29 20:53:33.302]: host trace INTEGRITY file write begin!
+[2017-10-29 20:53:33.308]: host trace lualibc_fopen /integrity.bin
+[2017-10-29 20:53:33.312]: host trace INTEGRITY file write success!
+[2017-10-29 20:53:33.318]: host trace [fopen_ext]: /lua/main.lua 2!
+[2017-10-29 20:53:33.323]: host trace RUN main.lua
+[2017-10-29 20:53:33.328]: host trace [fopen_ext]: /lua/main.lua 2!
+[2017-10-29 20:53:33.334]: host trace [fopen_ext]: /lua/log.lua 2!
+[2017-10-29 20:53:33.339]: host trace [fopen_ext]: /lua/log.lua 2!
+[2017-10-29 20:53:33.344]: host trace [fopen_ext]: /lua/sys.lua 2!
+[2017-10-29 20:53:33.348]: host trace [fopen_ext]: /lua/sys.lua 2!
+[2017-10-29 20:53:33.354]: host trace [fopen_ext]: /lua/patch.lua 2!
+[2017-10-29 20:53:33.358]: host trace [fopen_ext]: /lua/patch.lua 2!
+[2017-10-29 20:53:33.364]: host trace [fopen_ext]: /lua/errdump.lua 2!
+[2017-10-29 20:53:33.368]: host trace [fopen_ext]: /lua/errdump.lua 2!
+[2017-10-29 20:53:33.375]: host trace [fopen_ext]: /lua/clib.lua 2!
+[2017-10-29 20:53:33.378]: host trace [fopen_ext]: /lua/clib.lua 2!
+[2017-10-29 20:53:33.384]: host trace [fopen_ext]: /lua/utils.lua 2!
+[2017-10-29 20:53:33.390]: host trace [fopen_ext]: /lua/utils.lua 2!
+[2017-10-29 20:53:33.394]: host trace [fopen_ext]: /lua/net.lua 2!
+[2017-10-29 20:53:33.400]: host trace [fopen_ext]: /lua/net.lua 2!
+[2017-10-29 20:53:33.404]: host trace [fopen_ext]: /lua/ril.lua 2!
+[2017-10-29 20:53:33.410]: host trace [fopen_ext]: /lua/ril.lua 2!
+[2017-10-29 20:53:33.414]: host trace [fopen_ext]: /lua/sim.lua 2!
+[2017-10-29 20:53:33.420]: host trace [fopen_ext]: /lua/sim.lua 2!
+[2017-10-29 20:53:33.424]: host trace [fopen_ext]: /lua/console.lua 2!
+[2017-10-29 20:53:33.430]: host trace [fopen_ext]: /lua/console.lua 2!
+[2017-10-29 20:53:33.434]: host trace [fopen_ext]: /lua/misc.lua 2!
+[2017-10-29 20:53:33.440]: host trace [fopen_ext]: /lua/misc.lua 2!
+[2017-10-29 20:53:33.446]: host trace [fopen_ext]: /lua/wdt.lua 2!
+[2017-10-29 20:53:33.450]: host trace [fopen_ext]: /lua/wdt.lua 2!
+[2017-10-29 20:53:33.456]: host trace [fopen_ext]: /lua/pins.lua 2!
+[2017-10-29 20:53:33.460]: host trace [fopen_ext]: /lua/pins.lua 2!
+[2017-10-29 20:53:33.464]: host trace [I]-[wdt.taskWdt]	AirM2M --> WATCHDOG : OK
+[2017-10-29 20:53:33.470]: host trace [fopen_ext]: /lua/led.lua 2!
+[2017-10-29 20:53:33.474]: host trace [fopen_ext]: /lua/agps.lua 2!
+[2017-10-29 20:53:33.480]: host trace [fopen_ext]: /lua/agps.lua 2!
+[2017-10-29 20:53:33.484]: host trace [fopen_ext]: /lua/http.lua 2!
+[2017-10-29 20:53:33.490]: host trace [fopen_ext]: /lua/http.lua 2!
+[2017-10-29 20:53:33.496]: host trace [fopen_ext]: /lua/socket.lua 2!
+[2017-10-29 20:53:33.500]: host trace [fopen_ext]: /lua/socket.lua 2!
+[2017-10-29 20:53:33.506]: host trace [fopen_ext]: /lua/link.lua 2!
+[2017-10-29 20:53:33.510]: host trace [fopen_ext]: /lua/gps.lua 2!
+[2017-10-29 20:53:33.515]: host trace [fopen_ext]: /lua/gps.lua 2!
+[2017-10-29 20:53:33.520]: host trace [fopen_ext]: /lua/ntp.lua 2!
+[2017-10-29 20:53:33.526]: host trace [fopen_ext]: /lua/ntp.lua 2!
+[2017-10-29 20:53:33.530]: host trace [fopen_ext]: /lua/audio.lua 2!
+[2017-10-29 20:53:33.536]: host trace [fopen_ext]: /lua/audio.lua 2!
+[2017-10-29 20:53:33.540]: host trace [fopen_ext]: /lua/common.lua 2!
+[2017-10-29 20:53:33.545]: host trace [fopen_ext]: /lua/common.lua 2!
+[2017-10-29 20:53:33.549]: host trace [fopen_ext]: /lua/ui.lua 2!
+[2017-10-29 20:53:33.555]: host trace [fopen_ext]: /lua/ui.lua 2!
+[2017-10-29 20:53:33.559]: host trace [fopen_ext]: /lua/mono_lcd_spi_sh1106.lua 2!
+[2017-10-29 20:53:33.565]: host trace [fopen_ext]: /lua/mono_lcd_spi_sh1106.lua 2!
+[2017-10-29 20:53:33.568]: host event 0xd1a1daaa
+[2017-10-29 20:53:33.569]: host event 0x001e8480
+[2017-10-29 20:53:33.608]: host trace [fopen_ext]: /lua/testLcd.lua 2!
+[2017-10-29 20:53:33.614]: host trace [fopen_ext]: /lua/testLcd.lua 2!
+[2017-10-29 20:53:33.651]: host trace [fopen_ext]: /ldata/user_small.bmp 2!
+[2017-10-29 20:53:33.657]: host trace [fopen_ext]: /ldata/menu.bmp 2!
+[2017-10-29 20:53:33.663]: host trace [fopen_ext]: /ldata/set_small.bmp 2!
+[2017-10-29 20:53:33.667]: host trace [I]-[poweron reason:]	0	DEMO_TASK	2.0.0	2.0.0	Luat_V0014_8955_TTS_UI
+[2017-10-29 20:53:33.673]: host trace [I]-[errdump.readTxt]	no open:	/lib_err.txt
+[2017-10-29 20:53:33.677]: host trace [I]-[errdump.initErr]	
+[2017-10-29 20:53:33.683]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:33.687]: host trace [I]-[ril.proatc]	RDY
+[2017-10-29 20:53:33.693]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:33.698]: host trace [I]-[ril.proatc]	+CFUN: 1
+[2017-10-29 20:53:33.703]: host trace [I]-[ril.defurc]	+CFUN: 1
+[2017-10-29 20:53:33.710]: host trace [I]-[ril.sendat]	ATE0
+[2017-10-29 20:53:33.713]: host trace [I]-[ril.proatc]	ATE0
+[2017-10-29 20:53:33.719]: host trace [I]-[ril.defurc]	ATE0
+[2017-10-29 20:53:33.724]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:33.730]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:53:33.734]: host trace [I]-[ril.defrsp]	ATE0	true	OK	nil
+[2017-10-29 20:53:33.740]: host trace [I]-[ril.sendat]	AT+CMEE=0
+[2017-10-29 20:53:33.744]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:33.750]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:53:33.755]: host trace [I]-[ril.defrsp]	AT+CMEE=0	true	OK	nil
+[2017-10-29 20:53:33.760]: host trace [I]-[ril.sendat]	AT+CREG=2
+[2017-10-29 20:53:33.765]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:33.769]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:53:33.776]: host trace [I]-[ril.defrsp]	AT+CREG=2	true	OK	nil
+[2017-10-29 20:53:33.782]: host trace [I]-[ril.sendat]	AT+CREG?
+[2017-10-29 20:53:33.786]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:33.792]: host trace [I]-[ril.proatc]	+CREG: 2,0
+[2017-10-29 20:53:33.796]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:33.802]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:53:33.808]: host trace [I]-[ril.defrsp]	AT+CREG?	true	OK	nil
+[2017-10-29 20:53:33.812]: host trace [I]-[ril.sendat]	AT+CENG=1,1
+[2017-10-29 20:53:33.816]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:33.822]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:53:33.826]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:53:33.832]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:33.836]: host trace [I]-[ril.proatc]	+CSQ: 99,99
+[2017-10-29 20:53:33.842]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:33.846]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:53:33.851]: host trace [I]-[ril.sendat]	AT+CENG?
+[2017-10-29 20:53:33.857]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:33.861]: host trace [I]-[ril.proatc]	+CENG:1,1
+[2017-10-29 20:53:33.865]: host trace [I]-[ril.proatc]	+CENG:0,"0000, 0, 0,000,00,00,0000,00,00,0000,00"
+[2017-10-29 20:53:33.871]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:33.877]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:53:33.881]: host trace [I]-[ril.sendat]	AT+ATWMFT=99
+[2017-10-29 20:53:33.887]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:33.892]: host trace [I]-[ril.proatc]	SUCC
+[2017-10-29 20:53:33.897]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:33.901]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:53:33.907]: host trace [I]-[misc.ATWMFT]	SUCC
+[2017-10-29 20:53:33.911]: host trace [I]-[ril.sendat]	AT+WISN?
+[2017-10-29 20:53:33.917]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:33.921]: host trace [I]-[ril.proatc]	0000000000
+[2017-10-29 20:53:33.927]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:33.933]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:53:33.937]: host trace [I]-[ril.sendat]	AT+CGSN
+[2017-10-29 20:53:33.944]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:33.948]: host trace [I]-[ril.proatc]	862991419830770
+[2017-10-29 20:53:33.954]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:33.960]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:53:33.966]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:53:33.970]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:33.976]: host trace [I]-[ril.proatc]	+CSQ: 99,99
+[2017-10-29 20:53:33.980]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:33.986]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:53:33.990]: host trace [I]-[ril.sendat]	AT+CENG?
+[2017-10-29 20:53:33.996]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:34.000]: host trace [I]-[ril.proatc]	+CENG:1,1
+[2017-10-29 20:53:34.006]: host trace [I]-[ril.proatc]	+CENG:0,"0000, 0, 0,000,00,00,0000,00,00,0000,00"
+[2017-10-29 20:53:34.012]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:34.016]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:53:34.338]: host event 0x8181e810
+[2017-10-29 20:53:34.578]: host trace [I]-[wdt.taskWdt]	AirM2M <-- WatchDog : OK
+[2017-10-29 20:53:36.101]: host trace [network] sim present 1
+[2017-10-29 20:53:36.335]: host trace [network] psStatus=0, pdpStatus=0
+[2017-10-29 20:53:36.338]: host trace [network] OPENAT_NetworkStatusChangeInd  state 0
+[2017-10-29 20:53:36.341]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:36.344]: host trace [I]-[ril.proatc]	+CREG: 3
+[2017-10-29 20:53:36.348]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:53:36.358]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:36.361]: host trace [I]-[ril.proatc]	+CSQ: 99,99
+[2017-10-29 20:53:36.365]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:36.368]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:53:36.740]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:36.743]: host trace [I]-[ril.proatc]	+CSIMTYPE: 1,0
+[2017-10-29 20:53:36.746]: host trace [I]-[ril.defurc]	+CSIMTYPE: 1,0
+[2017-10-29 20:53:38.944]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:38.948]: host trace [I]-[ril.proatc]	+ENCRET: 0
+[2017-10-29 20:53:38.953]: host trace [I]-[ril.defurc]	+ENCRET: 0
+[2017-10-29 20:53:38.956]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:38.959]: host trace [I]-[ril.proatc]	+CPIN: READY
+[2017-10-29 20:53:38.963]: host trace [I]-[ril.sendat]	AT+CCID
+[2017-10-29 20:53:38.966]: host trace [I]-[SIM.subscribe]	nil	RDY
+[2017-10-29 20:53:38.969]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:38.973]: host trace [I]-[ril.proatc]	898607B0101730047646
+[2017-10-29 20:53:38.976]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:38.979]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:53:38.982]: host trace [I]-[ril.sendat]	AT+CIMI
+[2017-10-29 20:53:38.986]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:38.989]: host trace [I]-[ril.proatc]	460041052603240
+[2017-10-29 20:53:38.992]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:38.994]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:53:39.157]: host event 0x2244420b
+[2017-10-29 20:53:39.247]: host event 0x22446804
+[2017-10-29 20:53:39.578]: host event 0x23000042
+[2017-10-29 20:53:39.697]: host event 0x23000068
+[2017-10-29 20:53:39.997]: host event 0x22445c90
+[2017-10-29 20:53:40.088]: host event 0x22445d3c
+[2017-10-29 20:53:40.194]: host event 0x23000061
+[2017-10-29 20:53:40.426]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:53:40.447]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:40.450]: host trace [I]-[ril.proatc]	+CSQ: 99,99
+[2017-10-29 20:53:40.453]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:40.457]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:53:40.637]: host event 0x2300005c
+[2017-10-29 20:53:40.763]: host event 0x2300005d
+[2017-10-29 20:53:40.888]: host event 0x2300003b
+[2017-10-29 20:53:40.993]: host event 0x23000063
+[2017-10-29 20:53:41.224]: host event 0x2300008e
+[2017-10-29 20:53:41.328]: host event 0x23000062
+[2017-10-29 20:53:41.351]: host trace [I]-[ril.sendat]	AT+CRSM=176,28539,0,0,12
+[2017-10-29 20:53:41.434]: host event 0x2300003f
+[2017-10-29 20:53:41.852]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:41.857]: host trace [I]-[ril.proatc]	+CRSM: 144,0,"64F01064F03064F002FFFF0F"
+[2017-10-29 20:53:41.875]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:41.878]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:53:41.881]: host trace [I]-[ril.defrsp]	AT+CRSM=176,28539,0,0,12	true	OK	nil
+[2017-10-29 20:53:48.440]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:53:48.444]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:48.447]: host trace [I]-[ril.proatc]	+CSQ: 22,99
+[2017-10-29 20:53:48.450]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:48.454]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:53:56.427]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:53:56.430]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:56.434]: host trace [I]-[ril.proatc]	+CSQ: 22,99
+[2017-10-29 20:53:56.450]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:53:56.453]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:04.438]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:54:04.438]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:04.448]: host trace [I]-[ril.proatc]	+CSQ: 21,99
+[2017-10-29 20:54:04.448]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:04.459]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:12.434]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:54:12.437]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:12.440]: host trace [I]-[ril.proatc]	+CSQ: 21,99
+[2017-10-29 20:54:12.444]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:12.447]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:13.486]: host trace 
+[2017-10-29 20:54:17.362]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:17.365]: host trace [I]-[ril.proatc]	CALL READY
+[2017-10-29 20:54:17.369]: host trace [I]-[ril.defurc]	CALL READY
+[2017-10-29 20:54:17.372]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:17.377]: host trace [I]-[ril.proatc]	+CREG: 1,"3701","C979"
+[2017-10-29 20:54:17.387]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:54:17.391]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:17.394]: host trace [I]-[ril.proatc]	+CSQ: 15,99
+[2017-10-29 20:54:17.398]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:17.401]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:17.404]: host trace [I]-[ril.sendat]	AT+CENG?
+[2017-10-29 20:54:17.408]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:17.411]: host trace [I]-[ril.proatc]	+CENG:1,1
+[2017-10-29 20:54:17.415]: host trace [I]-[ril.proatc]	+CENG:0,"0555,15,99,460,00,46,51577,12,00,14081,01"
+[2017-10-29 20:54:17.420]: host trace [I]-[ril.proatc]	+CENG:1,"542,8,460,0,12,51579,14081"
+[2017-10-29 20:54:17.423]: host trace [I]-[ril.proatc]	+CENG:2,"543,9,460,0,37,29217,14646"
+[2017-10-29 20:54:17.426]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:17.428]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:17.430]: host trace [I]-[ril.sendat]	AT+CIICRMODE=2
+[2017-10-29 20:54:17.434]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:17.437]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:17.440]: host trace [I]-[ril.defrsp]	AT+CIICRMODE=2	true	OK	nil
+[2017-10-29 20:54:17.444]: host trace [I]-[ril.sendat]	AT+CIPMUX=1
+[2017-10-29 20:54:17.447]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:17.450]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:17.453]: host trace [I]-[ril.defrsp]	AT+CIPMUX=1	true	OK	nil
+[2017-10-29 20:54:17.457]: host trace [I]-[ril.sendat]	AT+CIPHEAD=1
+[2017-10-29 20:54:17.459]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:17.461]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:17.464]: host trace [I]-[ril.defrsp]	AT+CIPHEAD=1	true	OK	nil
+[2017-10-29 20:54:17.467]: host trace [I]-[ril.sendat]	AT+CIPQSEND=0
+[2017-10-29 20:54:17.470]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:17.473]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:17.476]: host trace [I]-[ril.defrsp]	AT+CIPQSEND=0	true	OK	nil
+[2017-10-29 20:54:19.380]: host trace [I]-[ril.sendat]	AT+CGATT?
+[2017-10-29 20:54:19.384]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:19.388]: host trace [I]-[ril.proatc]	+CGATT: 0
+[2017-10-29 20:54:19.391]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:19.404]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:20.431]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:54:20.436]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:20.438]: host trace [I]-[ril.proatc]	+CSQ: 15,99
+[2017-10-29 20:54:20.454]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:20.459]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:21.398]: host trace [I]-[ril.sendat]	AT+CGATT?
+[2017-10-29 20:54:21.403]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:21.405]: host trace [I]-[ril.proatc]	+CGATT: 0
+[2017-10-29 20:54:21.408]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:21.411]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:23.414]: host trace [I]-[ril.sendat]	AT+CGATT?
+[2017-10-29 20:54:23.418]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:23.421]: host trace [I]-[ril.proatc]	+CGATT: 0
+[2017-10-29 20:54:23.424]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:23.428]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:25.433]: host trace [I]-[ril.sendat]	AT+CGATT?
+[2017-10-29 20:54:25.436]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:25.440]: host trace [I]-[ril.proatc]	+CGATT: 0
+[2017-10-29 20:54:25.441]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:25.444]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:27.443]: host trace [I]-[ril.sendat]	AT+CGATT?
+[2017-10-29 20:54:27.466]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:27.469]: host trace [I]-[ril.proatc]	+CGATT: 0
+[2017-10-29 20:54:27.471]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:27.474]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:28.436]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:54:28.440]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:28.443]: host trace [I]-[ril.proatc]	+CSQ: 15,99
+[2017-10-29 20:54:28.460]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:28.463]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:29.259]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:29.259]: host trace [I]-[ril.proatc]	SMS READY
+[2017-10-29 20:54:29.269]: host trace [I]-[ril.defurc]	SMS READY
+[2017-10-29 20:54:29.470]: host trace [I]-[ril.sendat]	AT+CGATT?
+[2017-10-29 20:54:29.480]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:29.480]: host trace [I]-[ril.proatc]	+CGATT: 0
+[2017-10-29 20:54:29.490]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:29.490]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:31.497]: host trace [I]-[ril.sendat]	AT+CGATT?
+[2017-10-29 20:54:31.502]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:31.505]: host trace [I]-[ril.proatc]	+CGATT: 0
+[2017-10-29 20:54:31.509]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:31.513]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:33.519]: host trace [I]-[ril.sendat]	AT+CGATT?
+[2017-10-29 20:54:33.523]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:33.526]: host trace [I]-[ril.proatc]	+CGATT: 0
+[2017-10-29 20:54:33.529]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:33.532]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:35.525]: host trace [I]-[ril.sendat]	AT+CGATT?
+[2017-10-29 20:54:35.546]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:35.551]: host trace [I]-[ril.proatc]	+CGATT: 0
+[2017-10-29 20:54:35.553]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:35.556]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:36.456]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:54:36.457]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:36.461]: host trace [I]-[ril.proatc]	+CSQ: 13,99
+[2017-10-29 20:54:36.464]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:36.467]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:37.565]: host trace [I]-[ril.sendat]	AT+CGATT?
+[2017-10-29 20:54:37.568]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:37.572]: host trace [I]-[ril.proatc]	+CGATT: 0
+[2017-10-29 20:54:37.575]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:37.578]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:39.578]: host trace [I]-[ril.sendat]	AT+CGATT?
+[2017-10-29 20:54:39.578]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:39.588]: host trace [I]-[ril.proatc]	+CGATT: 0
+[2017-10-29 20:54:39.588]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:39.598]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:41.602]: host trace [I]-[ril.sendat]	AT+CGATT?
+[2017-10-29 20:54:41.605]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:41.608]: host trace [I]-[ril.proatc]	+CGATT: 0
+[2017-10-29 20:54:41.612]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:41.615]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:43.625]: host trace [I]-[ril.sendat]	AT+CGATT?
+[2017-10-29 20:54:43.648]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:43.653]: host trace [I]-[ril.proatc]	+CGATT: 0
+[2017-10-29 20:54:43.655]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:43.658]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:44.438]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:54:44.469]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:44.479]: host trace [I]-[ril.proatc]	+CSQ: 13,99
+[2017-10-29 20:54:44.489]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:44.489]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:45.665]: host trace [I]-[ril.sendat]	AT+CGATT?
+[2017-10-29 20:54:45.671]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:45.674]: host trace [I]-[ril.proatc]	+CGATT: 0
+[2017-10-29 20:54:45.677]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:45.680]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:47.684]: host trace [I]-[ril.sendat]	AT+CGATT?
+[2017-10-29 20:54:47.687]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:47.690]: host trace [I]-[ril.proatc]	+CGATT: 0
+[2017-10-29 20:54:47.694]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:47.697]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:49.713]: host trace [I]-[ril.sendat]	AT+CGATT?
+[2017-10-29 20:54:49.713]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:49.713]: host trace [I]-[ril.proatc]	+CGATT: 0
+[2017-10-29 20:54:49.743]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:49.743]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:51.726]: host trace [I]-[ril.sendat]	AT+CGATT?
+[2017-10-29 20:54:51.729]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:51.732]: host trace [I]-[ril.proatc]	+CGATT: 0
+[2017-10-29 20:54:51.734]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:51.737]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:52.467]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:54:52.473]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:52.477]: host trace [I]-[ril.proatc]	+CSQ: 14,99
+[2017-10-29 20:54:52.483]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:52.489]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:53.747]: host trace [I]-[ril.sendat]	AT+CGATT?
+[2017-10-29 20:54:53.750]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:53.753]: host trace [I]-[ril.proatc]	+CGATT: 0
+[2017-10-29 20:54:53.756]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:53.759]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:55.773]: host trace [I]-[ril.sendat]	AT+CGATT?
+[2017-10-29 20:54:55.779]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:55.783]: host trace [I]-[ril.proatc]	+CGATT: 0
+[2017-10-29 20:54:55.789]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:55.793]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:57.788]: host trace [I]-[ril.sendat]	AT+CGATT?
+[2017-10-29 20:54:57.793]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:57.799]: host trace [I]-[ril.proatc]	+CGATT: 0
+[2017-10-29 20:54:57.812]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:57.816]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:54:59.825]: host trace [I]-[ril.sendat]	AT+CGATT?
+[2017-10-29 20:54:59.835]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:59.835]: host trace [I]-[ril.proatc]	+CGATT: 0
+[2017-10-29 20:54:59.845]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:54:59.845]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:55:00.457]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:55:00.463]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:55:00.469]: host trace [I]-[ril.proatc]	+CSQ: 14,99
+[2017-10-29 20:55:00.480]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:55:00.486]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:55:00.630]: host trace [network] psStatus=1, pdpStatus=0
+[2017-10-29 20:55:00.635]: host trace [network] OPENAT_NetworkStatusChangeInd  state 1
+[2017-10-29 20:55:01.828]: host trace [I]-[ril.sendat]	AT+CGATT?
+[2017-10-29 20:55:01.851]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:55:01.857]: host trace [I]-[ril.proatc]	+CGATT: 1
+[2017-10-29 20:55:01.861]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:55:01.868]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:55:01.874]: host trace [I]-[ril.sendat]	AT+CIPSTATUS
+[2017-10-29 20:55:01.881]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:55:01.885]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:55:01.890]: host trace [I]-[ril.defrsp]	AT+CIPSTATUS	true	OK	nil
+[2017-10-29 20:55:01.895]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:55:01.901]: host trace [I]-[ril.proatc]	STATE: IP INITIAL
+[2017-10-29 20:55:01.905]: host trace [I]-[link.ipState]	IP STATUS is:	IP INITIAL
+[2017-10-29 20:55:01.911]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:55:01.915]: host trace [I]-[ril.proatc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:55:01.921]: host trace [I]-[ril.defurc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:55:01.926]: host trace [I]-[ril.proatc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:55:01.930]: host trace [I]-[ril.defurc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:55:01.936]: host trace [I]-[ril.proatc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:55:01.940]: host trace [I]-[ril.defurc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:55:01.947]: host trace [I]-[ril.proatc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:55:01.950]: host trace [network] psStatus=1, pdpStatus=0
+[2017-10-29 20:55:01.956]: host trace [network] OPENAT_NetworkStatusChangeInd  state 1
+[2017-10-29 20:55:01.960]: host trace [network] psStatus=1, pdpStatus=0
+[2017-10-29 20:55:01.967]: host trace [network] OPENAT_NetworkStatusChangeInd  state 1
+[2017-10-29 20:55:01.971]: host trace [I]-[ril.defurc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:55:01.976]: host trace [I]-[ril.proatc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:55:01.980]: host trace [I]-[ril.defurc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:55:01.986]: host trace [I]-[ril.proatc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:55:01.990]: host trace [I]-[ril.defurc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:55:01.996]: host trace [I]-[ril.proatc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:55:02.000]: host trace [I]-[ril.defurc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:55:02.006]: host trace [I]-[ril.proatc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:55:02.010]: host trace [I]-[ril.defurc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:55:02.016]: host trace [I]-[ril.sendat]	AT+CSTT="CMNET","",""
+[2017-10-29 20:55:02.020]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:55:02.026]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:55:02.030]: host trace [I]-[ril.defrsp]	AT+CSTT="CMNET","",""	true	OK	nil
+[2017-10-29 20:55:02.036]: host trace [I]-[ril.sendat]	AT+CIICR
+[2017-10-29 20:55:02.039]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:55:02.045]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:55:02.051]: host trace [I]-[ril.defrsp]	AT+CIICR	true	OK	nil
+[2017-10-29 20:55:08.453]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:55:08.471]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:55:08.476]: host trace [I]-[ril.proatc]	+CSQ: 14,99
+[2017-10-29 20:55:08.482]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:55:08.486]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:55:16.464]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:55:16.469]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:55:16.471]: host trace [I]-[ril.proatc]	+CSQ: 13,99
+[2017-10-29 20:55:16.476]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:55:16.479]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:55:17.372]: host trace [I]-[ril.sendat]	AT+CENG?
+[2017-10-29 20:55:17.392]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:55:17.397]: host trace [I]-[ril.proatc]	+CENG:1,1
+[2017-10-29 20:55:17.400]: host trace [I]-[ril.proatc]	+CENG:0,"0555,13,99,460,00,46,51577,12,00,14081,02"
+[2017-10-29 20:55:17.404]: host trace [I]-[ril.proatc]	+CENG:1,"542,9,460,0,12,51579,14081"
+[2017-10-29 20:55:17.407]: host trace [I]-[ril.proatc]	+CENG:2,"543,9,460,0,37,29217,14646"
+[2017-10-29 20:55:17.417]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:55:17.420]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:55:24.459]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:55:24.459]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:55:24.469]: host trace [I]-[ril.proatc]	+CSQ: 15,99
+[2017-10-29 20:55:24.469]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:55:24.469]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:55:32.471]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:55:32.476]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:55:32.479]: host trace [I]-[ril.proatc]	+CSQ: 19,99
+[2017-10-29 20:55:32.483]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:55:32.486]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:55:34.559]: host trace [I]-[wdt.taskWdt]	AirM2M --> WATCHDOG : OK
+[2017-10-29 20:55:36.575]: host trace [I]-[wdt.taskWdt]	AirM2M <-- WatchDog : OK
+[2017-10-29 20:55:40.467]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:55:40.470]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:55:40.473]: host trace [I]-[ril.proatc]	+CSQ: 18,99
+[2017-10-29 20:55:40.490]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:55:40.493]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:55:45.612]: host trace [network] psStatus=1, pdpStatus=0
+[2017-10-29 20:55:45.615]: host trace [network] OPENAT_NetworkStatusChangeInd  state 1
+[2017-10-29 20:55:48.480]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:55:48.503]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:55:48.506]: host trace [I]-[ril.proatc]	+CSQ: 18,99
+[2017-10-29 20:55:48.509]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:55:48.513]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:55:56.493]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:55:56.515]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:55:56.517]: host trace [I]-[ril.proatc]	+CSQ: 18,99
+[2017-10-29 20:55:56.520]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:55:56.525]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:56:04.500]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:56:04.500]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:56:04.509]: host trace [I]-[ril.proatc]	+CSQ: 18,99
+[2017-10-29 20:56:04.509]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:56:04.509]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:56:12.483]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:56:12.505]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:56:12.507]: host trace [I]-[ril.proatc]	+CSQ: 14,99
+[2017-10-29 20:56:12.513]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:56:12.516]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:56:17.394]: host trace [I]-[ril.sendat]	AT+CENG?
+[2017-10-29 20:56:17.437]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:56:17.440]: host trace [I]-[ril.proatc]	+CENG:1,1
+[2017-10-29 20:56:17.444]: host trace [I]-[ril.proatc]	+CENG:0,"0555,13,99,460,00,46,51577,12,00,14081,02"
+[2017-10-29 20:56:17.461]: host trace [I]-[ril.proatc]	+CENG:1,"542,12,460,0,12,51579,14081"
+[2017-10-29 20:56:17.466]: host trace [I]-[ril.proatc]	+CENG:2,"73,19,460,0,20,39062,14646"
+[2017-10-29 20:56:17.469]: host trace [I]-[ril.proatc]	+CENG:3,"85,14,460,0,13,0,14646"
+[2017-10-29 20:56:17.471]: host trace [I]-[ril.proatc]	+CENG:4,"88,20,460,0,29,51571,14081"
+[2017-10-29 20:56:17.484]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:56:17.487]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:56:20.487]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:56:20.492]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:56:20.494]: host trace [I]-[ril.proatc]	+CSQ: 13,99
+[2017-10-29 20:56:20.510]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:56:20.513]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:56:28.487]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:56:28.512]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:56:28.515]: host trace [I]-[ril.proatc]	+CSQ: 12,99
+[2017-10-29 20:56:28.517]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:56:28.522]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:56:36.503]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:56:36.506]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:56:36.510]: host trace [I]-[ril.proatc]	+CSQ: 15,99
+[2017-10-29 20:56:36.513]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:56:36.516]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:56:44.519]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:56:44.519]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:56:44.529]: host trace [I]-[ril.proatc]	+CSQ: 17,99
+[2017-10-29 20:56:44.529]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:56:44.529]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:56:48.053]: host trace [network] psStatus=1, pdpStatus=0
+[2017-10-29 20:56:48.059]: host trace [network] OPENAT_NetworkStatusChangeInd  state 1
+[2017-10-29 20:56:52.506]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:56:52.529]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:56:52.532]: host trace [I]-[ril.proatc]	+CSQ: 15,99
+[2017-10-29 20:56:52.551]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:56:52.555]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:57:00.528]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:57:00.549]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:00.552]: host trace [I]-[ril.proatc]	+CSQ: 15,99
+[2017-10-29 20:57:00.556]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:00.559]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:57:08.536]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:57:08.539]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:08.542]: host trace [I]-[ril.proatc]	+CSQ: 19,99
+[2017-10-29 20:57:08.546]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:08.549]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:57:16.528]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:57:16.532]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:16.535]: host trace [I]-[ril.proatc]	+CSQ: 19,99
+[2017-10-29 20:57:16.551]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:16.555]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:57:17.391]: host trace [I]-[ril.sendat]	AT+CENG?
+[2017-10-29 20:57:17.394]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:17.398]: host trace [I]-[ril.proatc]	+CENG:1,1
+[2017-10-29 20:57:17.414]: host trace [I]-[ril.proatc]	+CENG:0,"0555,19,99,460,00,46,51577,12,00,14081,01"
+[2017-10-29 20:57:17.418]: host trace [I]-[ril.proatc]	+CENG:1,"542,13,460,0,12,51579,14081"
+[2017-10-29 20:57:17.421]: host trace [I]-[ril.proatc]	+CENG:2,"73,24,460,0,20,39062,14646"
+[2017-10-29 20:57:17.426]: host trace [I]-[ril.proatc]	+CENG:3,"88,18,460,0,29,51571,14081"
+[2017-10-29 20:57:17.438]: host trace [I]-[ril.proatc]	+CENG:4,"539,6,460,0,39,0,14081"
+[2017-10-29 20:57:17.443]: host trace [I]-[ril.proatc]	+CENG:5,"545,6,460,0,21,0,14081"
+[2017-10-29 20:57:17.446]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:17.450]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:57:24.519]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:57:24.549]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:24.549]: host trace [I]-[ril.proatc]	+CSQ: 19,99
+[2017-10-29 20:57:24.559]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:24.559]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:57:31.986]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:31.990]: host trace [I]-[ril.proatc]	+PDP: DEACT
+[2017-10-29 20:57:31.993]: host trace [I]-[ril.sendat]	AT+CIPSTATUS
+[2017-10-29 20:57:31.997]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:32.002]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:57:32.005]: host trace [I]-[ril.defrsp]	AT+CIPSTATUS	true	OK	nil
+[2017-10-29 20:57:32.009]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:32.013]: host trace [I]-[ril.proatc]	STATE: IP START
+[2017-10-29 20:57:32.016]: host trace [I]-[link.ipState]	IP STATUS is:	IP START
+[2017-10-29 20:57:32.019]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:32.023]: host trace [I]-[ril.proatc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:57:32.028]: host trace [I]-[ril.defurc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:57:32.032]: host trace [I]-[ril.proatc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:57:32.035]: host trace [I]-[ril.defurc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:57:32.038]: host trace [I]-[ril.proatc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:57:32.039]: host trace [I]-[ril.defurc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:57:32.043]: host trace [I]-[ril.proatc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:57:32.046]: host trace [I]-[ril.defurc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:57:32.049]: host trace [I]-[ril.proatc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:57:32.052]: host trace [I]-[ril.defurc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:57:32.055]: host trace [I]-[ril.proatc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:57:32.058]: host trace [I]-[ril.defurc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:57:32.061]: host trace [I]-[ril.proatc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:57:32.063]: host trace [I]-[ril.defurc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:57:32.068]: host trace [I]-[ril.proatc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:57:32.069]: host trace [I]-[ril.defurc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:57:32.526]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:57:32.549]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:32.552]: host trace [I]-[ril.proatc]	+CSQ: 19,99
+[2017-10-29 20:57:32.555]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:32.559]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:57:34.002]: host trace [I]-[ril.sendat]	AT+CIPSTATUS
+[2017-10-29 20:57:34.006]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:34.009]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:57:34.013]: host trace [I]-[ril.defrsp]	AT+CIPSTATUS	true	OK	nil
+[2017-10-29 20:57:34.016]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:34.020]: host trace [I]-[ril.proatc]	STATE: IP START
+[2017-10-29 20:57:34.028]: host trace [I]-[link.ipState]	IP STATUS is:	IP START
+[2017-10-29 20:57:34.028]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:34.028]: host trace [I]-[ril.proatc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:57:34.038]: host trace [I]-[ril.defurc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:57:34.038]: host trace [I]-[ril.proatc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:57:34.038]: host trace [I]-[ril.defurc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:57:34.048]: host trace [I]-[ril.proatc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:57:34.048]: host trace [I]-[ril.defurc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:57:34.048]: host trace [I]-[ril.proatc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:57:34.058]: host trace [I]-[ril.defurc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:57:34.058]: host trace [I]-[ril.proatc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:57:34.068]: host trace [I]-[ril.defurc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:57:34.068]: host trace [I]-[ril.proatc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:57:34.068]: host trace [I]-[ril.defurc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:57:34.078]: host trace [I]-[ril.proatc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:57:34.078]: host trace [I]-[ril.defurc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:57:34.078]: host trace [I]-[ril.proatc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:57:34.078]: host trace [I]-[ril.defurc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:57:36.017]: host trace [I]-[ril.sendat]	AT+CIPSTATUS
+[2017-10-29 20:57:36.039]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:36.042]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:57:36.046]: host trace [I]-[ril.defrsp]	AT+CIPSTATUS	true	OK	nil
+[2017-10-29 20:57:36.049]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:36.053]: host trace [I]-[ril.proatc]	STATE: IP START
+[2017-10-29 20:57:36.056]: host trace [I]-[link.ipState]	IP STATUS is:	IP START
+[2017-10-29 20:57:36.059]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:36.063]: host trace [I]-[ril.proatc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:57:36.066]: host trace [I]-[ril.defurc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:57:36.071]: host trace [I]-[ril.proatc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:57:36.073]: host trace [I]-[ril.defurc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:57:36.076]: host trace [I]-[ril.proatc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:57:36.079]: host trace [I]-[ril.defurc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:57:36.082]: host trace [I]-[ril.proatc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:57:36.085]: host trace [I]-[ril.defurc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:57:36.088]: host trace [I]-[ril.proatc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:57:36.092]: host trace [I]-[ril.defurc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:57:36.095]: host trace [I]-[ril.proatc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:57:36.098]: host trace [I]-[ril.defurc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:57:36.101]: host trace [I]-[ril.proatc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:57:36.104]: host trace [I]-[ril.defurc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:57:36.108]: host trace [I]-[ril.proatc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:57:36.109]: host trace [I]-[ril.defurc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:57:36.573]: host trace [I]-[wdt.taskWdt]	AirM2M --> WATCHDOG : OK
+[2017-10-29 20:57:38.046]: host trace [I]-[ril.sendat]	AT+CIPSTATUS
+[2017-10-29 20:57:38.088]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:38.091]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:57:38.095]: host trace [I]-[ril.defrsp]	AT+CIPSTATUS	true	OK	nil
+[2017-10-29 20:57:38.098]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:38.112]: host trace [I]-[ril.proatc]	STATE: IP START
+[2017-10-29 20:57:38.134]: host trace [I]-[link.ipState]	IP STATUS is:	IP START
+[2017-10-29 20:57:38.138]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:38.141]: host trace [I]-[ril.proatc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:57:38.144]: host trace [I]-[ril.defurc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:57:38.148]: host trace [I]-[ril.proatc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:57:38.153]: host trace [I]-[ril.defurc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:57:38.155]: host trace [I]-[ril.proatc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:57:38.158]: host trace [I]-[ril.defurc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:57:38.163]: host trace [I]-[ril.proatc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:57:38.165]: host trace [I]-[ril.defurc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:57:38.170]: host trace [I]-[ril.proatc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:57:38.173]: host trace [I]-[ril.defurc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:57:38.176]: host trace [I]-[ril.proatc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:57:38.178]: host trace [I]-[ril.defurc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:57:38.181]: host trace [I]-[ril.proatc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:57:38.184]: host trace [I]-[ril.defurc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:57:38.188]: host trace [I]-[ril.proatc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:57:38.191]: host trace [I]-[ril.defurc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:57:38.584]: host trace [I]-[wdt.taskWdt]	AirM2M <-- WatchDog : OK
+[2017-10-29 20:57:40.125]: host trace [I]-[ril.sendat]	AT+CIPSTATUS
+[2017-10-29 20:57:40.125]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:40.134]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:57:40.134]: host trace [I]-[ril.defrsp]	AT+CIPSTATUS	true	OK	nil
+[2017-10-29 20:57:40.134]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:40.144]: host trace [I]-[ril.proatc]	STATE: IP START
+[2017-10-29 20:57:40.154]: host trace [I]-[link.ipState]	IP STATUS is:	IP START
+[2017-10-29 20:57:40.154]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:40.164]: host trace [I]-[ril.proatc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:57:40.164]: host trace [I]-[ril.defurc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:57:40.164]: host trace [I]-[ril.proatc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:57:40.174]: host trace [I]-[ril.defurc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:57:40.174]: host trace [I]-[ril.proatc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:57:40.184]: host trace [I]-[ril.defurc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:57:40.184]: host trace [I]-[ril.proatc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:57:40.184]: host trace [I]-[ril.defurc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:57:40.184]: host trace [I]-[ril.proatc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:57:40.194]: host trace [I]-[ril.defurc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:57:40.194]: host trace [I]-[ril.proatc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:57:40.194]: host trace [I]-[ril.defurc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:57:40.204]: host trace [I]-[ril.proatc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:57:40.204]: host trace [I]-[ril.defurc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:57:40.214]: host trace [I]-[ril.proatc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:57:40.214]: host trace [I]-[ril.defurc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:57:40.528]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:57:40.549]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:40.552]: host trace [I]-[ril.proatc]	+CSQ: 19,99
+[2017-10-29 20:57:40.555]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:40.558]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:57:42.147]: host trace [I]-[ril.sendat]	AT+CIPSTATUS
+[2017-10-29 20:57:42.151]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:42.167]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:57:42.173]: host trace [I]-[ril.defrsp]	AT+CIPSTATUS	true	OK	nil
+[2017-10-29 20:57:42.177]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:42.180]: host trace [I]-[ril.proatc]	STATE: IP START
+[2017-10-29 20:57:42.184]: host trace [I]-[link.ipState]	IP STATUS is:	IP START
+[2017-10-29 20:57:42.187]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:42.191]: host trace [I]-[ril.proatc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:57:42.194]: host trace [I]-[ril.defurc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:57:42.198]: host trace [I]-[ril.proatc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:57:42.201]: host trace [I]-[ril.defurc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:57:42.204]: host trace [I]-[ril.proatc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:57:42.207]: host trace [I]-[ril.defurc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:57:42.210]: host trace [I]-[ril.proatc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:57:42.213]: host trace [I]-[ril.defurc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:57:42.216]: host trace [I]-[ril.proatc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:57:42.219]: host trace [I]-[ril.defurc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:57:42.221]: host trace [I]-[ril.proatc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:57:42.224]: host trace [I]-[ril.defurc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:57:42.227]: host trace [I]-[ril.proatc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:57:42.230]: host trace [I]-[ril.defurc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:57:42.233]: host trace [I]-[ril.proatc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:57:42.236]: host trace [I]-[ril.defurc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:57:44.168]: host trace [I]-[ril.sendat]	AT+CIPSTATUS
+[2017-10-29 20:57:44.168]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:44.178]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:57:44.178]: host trace [I]-[ril.defrsp]	AT+CIPSTATUS	true	OK	nil
+[2017-10-29 20:57:44.178]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:44.188]: host trace [I]-[ril.proatc]	STATE: IP START
+[2017-10-29 20:57:44.188]: host trace [I]-[link.ipState]	IP STATUS is:	IP START
+[2017-10-29 20:57:44.188]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:44.198]: host trace [I]-[ril.proatc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:57:44.198]: host trace [I]-[ril.defurc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:57:44.209]: host trace [I]-[ril.proatc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:57:44.209]: host trace [I]-[ril.defurc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:57:44.209]: host trace [I]-[ril.proatc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:57:44.219]: host trace [I]-[ril.defurc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:57:44.219]: host trace [I]-[ril.proatc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:57:44.219]: host trace [I]-[ril.defurc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:57:44.219]: host trace [I]-[ril.proatc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:57:44.229]: host trace [I]-[ril.defurc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:57:44.229]: host trace [I]-[ril.proatc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:57:44.229]: host trace [I]-[ril.defurc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:57:44.239]: host trace [I]-[ril.proatc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:57:44.239]: host trace [I]-[ril.defurc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:57:44.239]: host trace [I]-[ril.proatc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:57:44.249]: host trace [I]-[ril.defurc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:57:46.191]: host trace [I]-[ril.sendat]	AT+CIPSTATUS
+[2017-10-29 20:57:46.194]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:46.198]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:57:46.203]: host trace [I]-[ril.defrsp]	AT+CIPSTATUS	true	OK	nil
+[2017-10-29 20:57:46.206]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:46.214]: host trace [I]-[ril.proatc]	STATE: IP START
+[2017-10-29 20:57:46.220]: host trace [I]-[link.ipState]	IP STATUS is:	IP START
+[2017-10-29 20:57:46.223]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:46.226]: host trace [I]-[ril.proatc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:57:46.229]: host trace [I]-[ril.defurc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:57:46.232]: host trace [I]-[ril.proatc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:57:46.234]: host trace [I]-[ril.defurc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:57:46.237]: host trace [I]-[ril.proatc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:57:46.240]: host trace [I]-[ril.defurc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:57:46.243]: host trace [I]-[ril.proatc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:57:46.246]: host trace [I]-[ril.defurc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:57:46.250]: host trace [I]-[ril.proatc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:57:46.253]: host trace [I]-[ril.defurc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:57:46.256]: host trace [I]-[ril.proatc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:57:46.259]: host trace [I]-[ril.defurc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:57:46.263]: host trace [I]-[ril.proatc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:57:46.266]: host trace [I]-[ril.defurc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:57:46.269]: host trace [I]-[ril.proatc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:57:46.272]: host trace [I]-[ril.defurc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:57:48.220]: host trace [I]-[ril.sendat]	AT+CIPSTATUS
+[2017-10-29 20:57:48.240]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:48.246]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:57:48.250]: host trace [I]-[ril.defrsp]	AT+CIPSTATUS	true	OK	nil
+[2017-10-29 20:57:48.253]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:48.256]: host trace [I]-[ril.proatc]	STATE: IP START
+[2017-10-29 20:57:48.260]: host trace [I]-[link.ipState]	IP STATUS is:	IP START
+[2017-10-29 20:57:48.263]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:48.267]: host trace [I]-[ril.proatc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:57:48.272]: host trace [I]-[ril.defurc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:57:48.275]: host trace [I]-[ril.proatc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:57:48.278]: host trace [I]-[ril.defurc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:57:48.282]: host trace [I]-[ril.proatc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:57:48.285]: host trace [I]-[ril.defurc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:57:48.288]: host trace [I]-[ril.proatc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:57:48.290]: host trace [I]-[ril.defurc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:57:48.293]: host trace [I]-[ril.proatc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:57:48.296]: host trace [I]-[ril.defurc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:57:48.301]: host trace [I]-[ril.proatc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:57:48.302]: host trace [I]-[ril.defurc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:57:48.305]: host trace [I]-[ril.proatc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:57:48.309]: host trace [I]-[ril.defurc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:57:48.312]: host trace [I]-[ril.proatc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:57:48.315]: host trace [I]-[ril.defurc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:57:48.551]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:57:48.555]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:48.558]: host trace [I]-[ril.proatc]	+CSQ: 19,99
+[2017-10-29 20:57:48.561]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:48.565]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:57:50.239]: host trace [I]-[ril.sendat]	AT+CIPSTATUS
+[2017-10-29 20:57:50.269]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:50.269]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:57:50.279]: host trace [I]-[ril.defrsp]	AT+CIPSTATUS	true	OK	nil
+[2017-10-29 20:57:50.279]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:50.289]: host trace [I]-[ril.proatc]	STATE: IP START
+[2017-10-29 20:57:50.289]: host trace [I]-[link.ipState]	IP STATUS is:	IP START
+[2017-10-29 20:57:50.296]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:50.299]: host trace [I]-[ril.proatc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:57:50.302]: host trace [I]-[ril.defurc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:57:50.305]: host trace [I]-[ril.proatc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:57:50.309]: host trace [I]-[ril.defurc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:57:50.312]: host trace [I]-[ril.proatc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:57:50.315]: host trace [I]-[ril.defurc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:57:50.318]: host trace [I]-[ril.proatc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:57:50.321]: host trace [I]-[ril.defurc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:57:50.323]: host trace [I]-[ril.proatc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:57:50.328]: host trace [I]-[ril.defurc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:57:50.331]: host trace [I]-[ril.proatc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:57:50.332]: host trace [I]-[ril.defurc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:57:50.335]: host trace [I]-[ril.proatc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:57:50.338]: host trace [I]-[ril.defurc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:57:50.342]: host trace [I]-[ril.proatc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:57:50.345]: host trace [I]-[ril.defurc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:57:52.273]: host trace [I]-[ril.sendat]	AT+CIPSTATUS
+[2017-10-29 20:57:52.279]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:52.282]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:57:52.286]: host trace [I]-[ril.defrsp]	AT+CIPSTATUS	true	OK	nil
+[2017-10-29 20:57:52.289]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:52.293]: host trace [I]-[ril.proatc]	STATE: IP START
+[2017-10-29 20:57:52.296]: host trace [I]-[link.ipState]	IP STATUS is:	IP START
+[2017-10-29 20:57:52.301]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:52.305]: host trace [I]-[ril.proatc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:57:52.309]: host trace [I]-[ril.defurc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:57:52.312]: host trace [I]-[ril.proatc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:57:52.315]: host trace [I]-[ril.defurc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:57:52.318]: host trace [I]-[ril.proatc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:57:52.321]: host trace [I]-[ril.defurc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:57:52.325]: host trace [I]-[ril.proatc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:57:52.326]: host trace [I]-[ril.defurc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:57:52.329]: host trace [I]-[ril.proatc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:57:52.332]: host trace [I]-[ril.defurc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:57:52.335]: host trace [I]-[ril.proatc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:57:52.338]: host trace [I]-[ril.defurc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:57:52.342]: host trace [I]-[ril.proatc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:57:52.345]: host trace [I]-[ril.defurc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:57:52.348]: host trace [I]-[ril.proatc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:57:52.349]: host trace [I]-[ril.defurc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:57:54.303]: host trace [I]-[ril.sendat]	AT+CIPSTATUS
+[2017-10-29 20:57:54.303]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:54.313]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:57:54.313]: host trace [I]-[ril.defrsp]	AT+CIPSTATUS	true	OK	nil
+[2017-10-29 20:57:54.323]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:54.323]: host trace [I]-[ril.proatc]	STATE: IP START
+[2017-10-29 20:57:54.323]: host trace [I]-[link.ipState]	IP STATUS is:	IP START
+[2017-10-29 20:57:54.334]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:54.334]: host trace [I]-[ril.proatc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:57:54.334]: host trace [I]-[ril.defurc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:57:54.334]: host trace [I]-[ril.proatc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:57:54.344]: host trace [I]-[ril.defurc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:57:54.344]: host trace [I]-[ril.proatc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:57:54.354]: host trace [I]-[ril.defurc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:57:54.354]: host trace [I]-[ril.proatc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:57:54.354]: host trace [I]-[ril.defurc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:57:54.354]: host trace [I]-[ril.proatc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:57:54.364]: host trace [I]-[ril.defurc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:57:54.364]: host trace [I]-[ril.proatc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:57:54.364]: host trace [I]-[ril.defurc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:57:54.374]: host trace [I]-[ril.proatc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:57:54.374]: host trace [I]-[ril.defurc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:57:54.374]: host trace [I]-[ril.proatc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:57:54.374]: host trace [I]-[ril.defurc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:57:56.309]: host trace [I]-[ril.sendat]	AT+CIPSTATUS
+[2017-10-29 20:57:56.332]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:56.335]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:57:56.341]: host trace [I]-[ril.defrsp]	AT+CIPSTATUS	true	OK	nil
+[2017-10-29 20:57:56.345]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:56.348]: host trace [I]-[ril.proatc]	STATE: IP START
+[2017-10-29 20:57:56.351]: host trace [I]-[link.ipState]	IP STATUS is:	IP START
+[2017-10-29 20:57:56.354]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:56.358]: host trace [I]-[ril.proatc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:57:56.359]: host trace [I]-[ril.defurc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:57:56.362]: host trace [I]-[ril.proatc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:57:56.367]: host trace [I]-[ril.defurc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:57:56.369]: host trace [I]-[ril.proatc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:57:56.372]: host trace [I]-[ril.defurc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:57:56.375]: host trace [I]-[ril.proatc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:57:56.378]: host trace [I]-[ril.defurc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:57:56.381]: host trace [I]-[ril.proatc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:57:56.384]: host trace [I]-[ril.defurc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:57:56.387]: host trace [I]-[ril.proatc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:57:56.390]: host trace [I]-[ril.defurc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:57:56.392]: host trace [I]-[ril.proatc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:57:56.394]: host trace [I]-[ril.defurc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:57:56.398]: host trace [I]-[ril.proatc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:57:56.401]: host trace [I]-[ril.defurc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:57:56.536]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:57:56.558]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:56.562]: host trace [I]-[ril.proatc]	+CSQ: 19,99
+[2017-10-29 20:57:56.565]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:56.569]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:57:58.346]: host trace [I]-[ril.sendat]	AT+CIPSTATUS
+[2017-10-29 20:57:58.349]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:58.355]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:57:58.358]: host trace [I]-[ril.defrsp]	AT+CIPSTATUS	true	OK	nil
+[2017-10-29 20:57:58.361]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:58.364]: host trace [I]-[ril.proatc]	STATE: IP START
+[2017-10-29 20:57:58.368]: host trace [I]-[link.ipState]	IP STATUS is:	IP START
+[2017-10-29 20:57:58.371]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:57:58.374]: host trace [I]-[ril.proatc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:57:58.377]: host trace [I]-[ril.defurc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:57:58.378]: host trace [I]-[ril.proatc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:57:58.381]: host trace [I]-[ril.defurc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:57:58.385]: host trace [I]-[ril.proatc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:57:58.388]: host trace [I]-[ril.defurc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:57:58.391]: host trace [I]-[ril.proatc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:57:58.395]: host trace [I]-[ril.defurc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:57:58.398]: host trace [I]-[ril.proatc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:57:58.401]: host trace [I]-[ril.defurc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:57:58.404]: host trace [I]-[ril.proatc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:57:58.405]: host trace [I]-[ril.defurc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:57:58.408]: host trace [I]-[ril.proatc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:57:58.413]: host trace [I]-[ril.defurc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:57:58.415]: host trace [I]-[ril.proatc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:57:58.418]: host trace [I]-[ril.defurc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:58:00.348]: host trace [I]-[ril.sendat]	AT+CIPSTATUS
+[2017-10-29 20:58:00.371]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:00.375]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:00.380]: host trace [I]-[ril.defrsp]	AT+CIPSTATUS	true	OK	nil
+[2017-10-29 20:58:00.384]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:00.388]: host trace [I]-[ril.proatc]	STATE: IP START
+[2017-10-29 20:58:00.392]: host trace [I]-[link.ipState]	IP STATUS is:	IP START
+[2017-10-29 20:58:00.395]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:00.398]: host trace [I]-[ril.proatc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:58:00.404]: host trace [I]-[ril.defurc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:58:00.407]: host trace [I]-[ril.proatc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:58:00.410]: host trace [I]-[ril.defurc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:58:00.413]: host trace [I]-[ril.proatc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:58:00.415]: host trace [I]-[ril.defurc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:58:00.418]: host trace [I]-[ril.proatc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:58:00.423]: host trace [I]-[ril.defurc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:58:00.424]: host trace [I]-[ril.proatc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:58:00.427]: host trace [I]-[ril.defurc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:58:00.430]: host trace [I]-[ril.proatc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:58:00.433]: host trace [I]-[ril.defurc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:58:00.437]: host trace [I]-[ril.proatc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:58:00.440]: host trace [I]-[ril.defurc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:58:00.443]: host trace [I]-[ril.proatc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:58:00.444]: host trace [I]-[ril.defurc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:58:02.385]: host trace [I]-[ril.sendat]	AT+CIPSTATUS
+[2017-10-29 20:58:02.390]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:02.392]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:02.397]: host trace [I]-[ril.defrsp]	AT+CIPSTATUS	true	OK	nil
+[2017-10-29 20:58:02.400]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:02.404]: host trace [I]-[ril.proatc]	STATE: IP START
+[2017-10-29 20:58:02.407]: host trace [I]-[link.ipState]	IP STATUS is:	IP START
+[2017-10-29 20:58:02.410]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:02.414]: host trace [I]-[ril.proatc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:58:02.417]: host trace [I]-[ril.defurc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:58:02.421]: host trace [I]-[ril.proatc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:58:02.424]: host trace [I]-[ril.defurc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:58:02.427]: host trace [I]-[ril.proatc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:58:02.430]: host trace [I]-[ril.defurc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:58:02.434]: host trace [I]-[ril.proatc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:58:02.437]: host trace [I]-[ril.defurc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:58:02.440]: host trace [I]-[ril.proatc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:58:02.441]: host trace [I]-[ril.defurc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:58:02.444]: host trace [I]-[ril.proatc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:58:02.447]: host trace [I]-[ril.defurc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:58:02.450]: host trace [I]-[ril.proatc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:58:02.454]: host trace [I]-[ril.defurc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:58:02.457]: host trace [I]-[ril.proatc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:58:02.460]: host trace [I]-[ril.defurc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:58:04.401]: host trace [I]-[ril.sendat]	AT+CIPSTATUS
+[2017-10-29 20:58:04.401]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:04.411]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:04.411]: host trace [I]-[ril.defrsp]	AT+CIPSTATUS	true	OK	nil
+[2017-10-29 20:58:04.411]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:04.421]: host trace [I]-[ril.proatc]	STATE: IP START
+[2017-10-29 20:58:04.421]: host trace [I]-[link.ipState]	IP STATUS is:	IP START
+[2017-10-29 20:58:04.421]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:04.430]: host trace [I]-[ril.proatc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:58:04.430]: host trace [I]-[ril.defurc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:58:04.430]: host trace [I]-[ril.proatc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:58:04.440]: host trace [I]-[ril.defurc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:58:04.440]: host trace [I]-[ril.proatc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:58:04.440]: host trace [I]-[ril.defurc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:58:04.450]: host trace [I]-[ril.proatc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:58:04.450]: host trace [I]-[ril.defurc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:58:04.450]: host trace [I]-[ril.proatc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:58:04.450]: host trace [I]-[ril.defurc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:58:04.460]: host trace [I]-[ril.proatc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:58:04.460]: host trace [I]-[ril.defurc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:58:04.460]: host trace [I]-[ril.proatc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:58:04.470]: host trace [I]-[ril.defurc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:58:04.470]: host trace [I]-[ril.proatc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:58:04.470]: host trace [I]-[ril.defurc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:58:04.551]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:58:04.551]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:04.561]: host trace [I]-[ril.proatc]	+CSQ: 19,99
+[2017-10-29 20:58:04.561]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:04.561]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:06.424]: host trace [I]-[ril.sendat]	AT+CIPSTATUS
+[2017-10-29 20:58:06.428]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:06.431]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:06.434]: host trace [I]-[ril.defrsp]	AT+CIPSTATUS	true	OK	nil
+[2017-10-29 20:58:06.437]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:06.441]: host trace [I]-[ril.proatc]	STATE: IP START
+[2017-10-29 20:58:06.448]: host trace [I]-[link.ipState]	IP STATUS is:	IP START
+[2017-10-29 20:58:06.453]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:06.457]: host trace [I]-[ril.proatc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:58:06.460]: host trace [I]-[ril.defurc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:58:06.463]: host trace [I]-[ril.proatc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:58:06.466]: host trace [I]-[ril.defurc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:58:06.470]: host trace [I]-[ril.proatc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:58:06.473]: host trace [I]-[ril.defurc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:58:06.476]: host trace [I]-[ril.proatc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:58:06.479]: host trace [I]-[ril.defurc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:58:06.482]: host trace [I]-[ril.proatc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:58:06.484]: host trace [I]-[ril.defurc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:58:06.487]: host trace [I]-[ril.proatc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:58:06.490]: host trace [I]-[ril.defurc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:58:06.494]: host trace [I]-[ril.proatc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:58:06.496]: host trace [I]-[ril.defurc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:58:06.500]: host trace [I]-[ril.proatc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:58:06.503]: host trace [I]-[ril.defurc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:58:08.453]: host trace [I]-[ril.sendat]	AT+CIPSTATUS
+[2017-10-29 20:58:08.457]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:08.463]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:08.466]: host trace [I]-[ril.defrsp]	AT+CIPSTATUS	true	OK	nil
+[2017-10-29 20:58:08.469]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:08.473]: host trace [I]-[ril.proatc]	STATE: IP START
+[2017-10-29 20:58:08.476]: host trace [I]-[link.ipState]	IP STATUS is:	IP START
+[2017-10-29 20:58:08.480]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:08.483]: host trace [I]-[ril.proatc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:58:08.486]: host trace [I]-[ril.defurc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:58:08.489]: host trace [I]-[ril.proatc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:58:08.492]: host trace [I]-[ril.defurc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:58:08.494]: host trace [I]-[ril.proatc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:58:08.497]: host trace [I]-[ril.defurc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:58:08.500]: host trace [I]-[ril.proatc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:58:08.503]: host trace [I]-[ril.defurc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:58:08.506]: host trace [I]-[ril.proatc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:58:08.509]: host trace [I]-[ril.defurc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:58:08.513]: host trace [I]-[ril.proatc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:58:08.516]: host trace [I]-[ril.defurc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:58:08.517]: host trace [I]-[ril.proatc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:58:08.522]: host trace [I]-[ril.defurc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:58:08.525]: host trace [I]-[ril.proatc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:58:08.526]: host trace [I]-[ril.defurc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:58:10.463]: host trace [I]-[ril.sendat]	AT+CIPSTATUS
+[2017-10-29 20:58:10.484]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:10.490]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:10.493]: host trace [I]-[ril.defrsp]	AT+CIPSTATUS	true	OK	nil
+[2017-10-29 20:58:10.497]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:10.503]: host trace [I]-[ril.proatc]	STATE: IP START
+[2017-10-29 20:58:10.506]: host trace [I]-[link.ipState]	IP STATUS is:	IP START
+[2017-10-29 20:58:10.509]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:10.513]: host trace [I]-[ril.proatc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:58:10.516]: host trace [I]-[ril.defurc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:58:10.519]: host trace [I]-[ril.proatc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:58:10.523]: host trace [I]-[ril.defurc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:58:10.526]: host trace [I]-[ril.proatc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:58:10.532]: host trace [I]-[ril.defurc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:58:10.536]: host trace [I]-[ril.proatc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:58:10.539]: host trace [I]-[ril.defurc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:58:10.542]: host trace [I]-[ril.proatc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:58:10.546]: host trace [I]-[ril.defurc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:58:10.549]: host trace [I]-[ril.proatc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:58:10.553]: host trace [I]-[ril.defurc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:58:10.555]: host trace [I]-[ril.proatc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:58:10.559]: host trace [I]-[ril.defurc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:58:10.562]: host trace [I]-[ril.proatc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:58:10.565]: host trace [I]-[ril.defurc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:58:12.489]: host trace [I]-[ril.sendat]	AT+CIPSTATUS
+[2017-10-29 20:58:12.493]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:12.496]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:12.513]: host trace [I]-[ril.defrsp]	AT+CIPSTATUS	true	OK	nil
+[2017-10-29 20:58:12.516]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:12.522]: host trace [I]-[ril.proatc]	STATE: IP START
+[2017-10-29 20:58:12.525]: host trace [I]-[link.ipState]	IP STATUS is:	IP START
+[2017-10-29 20:58:12.529]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:12.532]: host trace [I]-[ril.proatc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:58:12.535]: host trace [I]-[ril.defurc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:58:12.538]: host trace [I]-[ril.proatc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:58:12.542]: host trace [I]-[ril.defurc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:58:12.546]: host trace [I]-[ril.proatc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:58:12.549]: host trace [I]-[ril.defurc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:58:12.552]: host trace [I]-[ril.proatc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:58:12.556]: host trace [I]-[ril.defurc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:58:12.561]: host trace [I]-[ril.proatc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:58:12.563]: host trace [I]-[ril.defurc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:58:12.566]: host trace [I]-[ril.proatc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:58:12.571]: host trace [I]-[ril.defurc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:58:12.573]: host trace [I]-[ril.proatc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:58:12.576]: host trace [I]-[ril.defurc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:58:12.581]: host trace [I]-[ril.proatc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:58:12.584]: host trace [I]-[ril.defurc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:58:12.586]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:58:12.589]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:12.592]: host trace [I]-[ril.proatc]	+CSQ: 19,99
+[2017-10-29 20:58:12.595]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:12.598]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:14.042]: host trace [network] psStatus=1, pdpStatus=0
+[2017-10-29 20:58:14.046]: host trace [network] OPENAT_NetworkStatusChangeInd  state 1
+[2017-10-29 20:58:14.526]: host trace [I]-[ril.sendat]	AT+CIPSTATUS
+[2017-10-29 20:58:14.546]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:14.551]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:14.569]: host trace [I]-[ril.defrsp]	AT+CIPSTATUS	true	OK	nil
+[2017-10-29 20:58:14.575]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:14.578]: host trace [I]-[ril.proatc]	STATE: IP START
+[2017-10-29 20:58:14.581]: host trace [I]-[link.ipState]	IP STATUS is:	IP START
+[2017-10-29 20:58:14.594]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:14.596]: host trace [I]-[ril.proatc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:58:14.601]: host trace [I]-[ril.defurc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:58:14.604]: host trace [I]-[ril.proatc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:58:14.607]: host trace [I]-[ril.defurc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:58:14.611]: host trace [I]-[ril.proatc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:58:14.621]: host trace [I]-[ril.defurc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:58:14.624]: host trace [I]-[ril.proatc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:58:14.628]: host trace [I]-[ril.defurc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:58:14.631]: host trace [I]-[ril.proatc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:58:14.644]: host trace [I]-[ril.defurc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:58:14.648]: host trace [I]-[ril.proatc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:58:14.651]: host trace [I]-[ril.defurc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:58:14.654]: host trace [I]-[ril.proatc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:58:14.657]: host trace [I]-[ril.defurc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:58:14.668]: host trace [I]-[ril.proatc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:58:14.671]: host trace [I]-[ril.defurc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:58:16.582]: host trace [I]-[ril.sendat]	AT+CIPSTATUS
+[2017-10-29 20:58:16.605]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:16.608]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:16.611]: host trace [I]-[ril.defrsp]	AT+CIPSTATUS	true	OK	nil
+[2017-10-29 20:58:16.615]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:16.618]: host trace [I]-[ril.proatc]	STATE: IP START
+[2017-10-29 20:58:16.630]: host trace [I]-[link.ipState]	IP STATUS is:	IP START
+[2017-10-29 20:58:16.634]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:16.638]: host trace [I]-[ril.proatc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:58:16.641]: host trace [I]-[ril.defurc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:58:16.644]: host trace [I]-[ril.proatc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:58:16.648]: host trace [I]-[ril.defurc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:58:16.653]: host trace [I]-[ril.proatc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:58:16.657]: host trace [I]-[ril.defurc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:58:16.660]: host trace [I]-[ril.proatc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:58:16.661]: host trace [I]-[ril.defurc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:58:16.664]: host trace [I]-[ril.proatc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:58:16.667]: host trace [I]-[ril.defurc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:58:16.671]: host trace [I]-[ril.proatc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:58:16.674]: host trace [I]-[ril.defurc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:58:16.677]: host trace [I]-[ril.proatc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:58:16.680]: host trace [I]-[ril.defurc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:58:16.684]: host trace [I]-[ril.proatc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:58:16.687]: host trace [I]-[ril.defurc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:58:17.394]: host trace [I]-[ril.sendat]	AT+CENG?
+[2017-10-29 20:58:17.414]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:17.418]: host trace [I]-[ril.proatc]	+CENG:1,1
+[2017-10-29 20:58:17.423]: host trace [I]-[ril.proatc]	+CENG:0,"0555,18,99,460,00,46,51577,12,00,14081,02"
+[2017-10-29 20:58:17.437]: host trace [I]-[ril.proatc]	+CENG:1,"542,14,460,0,12,51579,14081"
+[2017-10-29 20:58:17.441]: host trace [I]-[ril.proatc]	+CENG:2,"73,24,460,0,20,39062,14646"
+[2017-10-29 20:58:17.460]: host trace [I]-[ril.proatc]	+CENG:3,"88,17,460,0,29,51571,14081"
+[2017-10-29 20:58:17.463]: host trace [I]-[ril.proatc]	+CENG:4,"539,7,460,0,39,0,14081"
+[2017-10-29 20:58:17.467]: host trace [I]-[ril.proatc]	+CENG:5,"545,7,460,0,21,0,14081"
+[2017-10-29 20:58:17.483]: host trace [I]-[ril.proatc]	+CENG:6,"85,15,460,0,13,39061,14646"
+[2017-10-29 20:58:17.486]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:17.490]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:18.615]: host trace [I]-[ril.sendat]	AT+CIPSTATUS
+[2017-10-29 20:58:18.637]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:18.640]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:18.658]: host trace [I]-[ril.defrsp]	AT+CIPSTATUS	true	OK	nil
+[2017-10-29 20:58:18.663]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:18.667]: host trace [I]-[ril.proatc]	STATE: IP START
+[2017-10-29 20:58:18.670]: host trace [I]-[link.ipState]	IP STATUS is:	IP START
+[2017-10-29 20:58:18.673]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:18.677]: host trace [I]-[ril.proatc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:58:18.683]: host trace [I]-[ril.defurc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:58:18.687]: host trace [I]-[ril.proatc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:58:18.690]: host trace [I]-[ril.defurc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:58:18.694]: host trace [I]-[ril.proatc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:58:18.697]: host trace [I]-[ril.defurc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:58:18.700]: host trace [I]-[ril.proatc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:58:18.704]: host trace [I]-[ril.defurc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:58:18.707]: host trace [I]-[ril.proatc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:58:18.710]: host trace [I]-[ril.defurc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:58:18.713]: host trace [I]-[ril.proatc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:58:18.716]: host trace [I]-[ril.defurc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:58:18.720]: host trace [I]-[ril.proatc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:58:18.721]: host trace [I]-[ril.defurc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:58:18.724]: host trace [I]-[ril.proatc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:58:18.727]: host trace [I]-[ril.defurc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:58:20.559]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:58:20.582]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:20.585]: host trace [I]-[ril.proatc]	+CSQ: 18,99
+[2017-10-29 20:58:20.589]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:20.605]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:20.668]: host trace [I]-[ril.sendat]	AT+CIPSTATUS
+[2017-10-29 20:58:20.690]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:20.694]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:20.697]: host trace [I]-[ril.defrsp]	AT+CIPSTATUS	true	OK	nil
+[2017-10-29 20:58:20.700]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:20.704]: host trace [I]-[ril.proatc]	STATE: IP START
+[2017-10-29 20:58:20.713]: host trace [I]-[link.ipState]	IP STATUS is:	IP START
+[2017-10-29 20:58:20.717]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:20.721]: host trace [I]-[ril.proatc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:58:20.724]: host trace [I]-[ril.defurc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:58:20.729]: host trace [I]-[ril.proatc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:58:20.733]: host trace [I]-[ril.defurc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:58:20.736]: host trace [I]-[ril.proatc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:58:20.739]: host trace [I]-[ril.defurc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:58:20.743]: host trace [I]-[ril.proatc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:58:20.746]: host trace [I]-[ril.defurc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:58:20.750]: host trace [I]-[ril.proatc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:58:20.753]: host trace [I]-[ril.defurc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:58:20.756]: host trace [I]-[ril.proatc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:58:20.759]: host trace [I]-[ril.defurc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:58:20.763]: host trace [I]-[ril.proatc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:58:20.766]: host trace [I]-[ril.defurc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:58:20.767]: host trace [I]-[ril.proatc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:58:20.770]: host trace [I]-[ril.defurc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:58:21.711]: host event 0xffffffff
+[2017-10-29 20:58:21.716]: host event 0x07778888
+[2017-10-29 20:58:21.719]: host event 0x07778889
+[2017-10-29 20:58:21.721]: host event 0x077788a0
+[2017-10-29 20:58:21.723]: host event 0x077788b0
+[2017-10-29 20:58:21.726]: host event 0x077788b1
+[2017-10-29 20:58:21.727]: host event 0x09999092
+[2017-10-29 20:58:21.730]: host event 0x09999093
+[2017-10-29 20:58:21.733]: host event 0x09999098
+[2017-10-29 20:58:21.736]: host event 0x09999099
+[2017-10-29 20:58:21.739]: host event 0x0999909a
+[2017-10-29 20:58:21.740]: host event 0x00000004
+[2017-10-29 20:58:21.742]: host event 0x66660021
+[2017-10-29 20:58:21.743]: host event 0x0000000f
+[2017-10-29 20:58:21.744]: host event 0x00000000
+[2017-10-29 20:58:21.759]: host event 0x55555666
+[2017-10-29 20:58:21.762]: host event 0x000000c8
+[2017-10-29 20:58:21.763]: host event 0x00000060
+[2017-10-29 20:58:21.765]: host event 0x00000016
+[2017-10-29 20:58:21.766]: host event 0x55555667
+[2017-10-29 20:58:21.767]: host event 0x00000a00
+[2017-10-29 20:58:21.769]: host event 0x00000100
+[2017-10-29 20:58:21.770]: host event 0x8888889f
+[2017-10-29 20:58:21.772]: host event 0x077788b2
+[2017-10-29 20:58:21.773]: host event 0x077788c0
+[2017-10-29 20:58:21.775]: host event 0x077788d0
+[2017-10-29 20:58:21.829]: host event 0x00000057
+[2017-10-29 20:58:21.831]: host event 0x0eeeeee0
+[2017-10-29 20:58:21.832]: host event 0x0eeeeee1
+[2017-10-29 20:58:21.834]: host event 0xca1bc2c0
+[2017-10-29 20:58:21.835]: host event 0x0eeeeee2
+[2017-10-29 20:58:21.836]: host event 0x0eeeeee3
+[2017-10-29 20:58:21.838]: host event 0x0eeeeee4
+[2017-10-29 20:58:21.839]: host event 0x0eeeeee5
+[2017-10-29 20:58:21.841]: host event 0x9999a244
+[2017-10-29 20:58:21.842]: host event 0x77770006
+[2017-10-29 20:58:21.848]: host event 0x0eeeeee7
+[2017-10-29 20:58:21.851]: host event 0x0eeeeee8
+[2017-10-29 20:58:21.854]: host event 0x0eeeeee9
+[2017-10-29 20:58:21.855]: host event 0x0eeeeeea
+[2017-10-29 20:58:21.857]: host event 0x0eeeeeeb
+[2017-10-29 20:58:21.858]: host event 0x0eeeeeee
+[2017-10-29 20:58:21.859]: host event 0x0eeeeeef
+[2017-10-29 20:58:21.861]: host event 0x0eeeeef1
+[2017-10-29 20:58:21.862]: host event 0x0eeeeef2
+[2017-10-29 20:58:21.864]: host event 0x0eeeeef3
+[2017-10-29 20:58:21.865]: host event 0x0eeeeef4
+[2017-10-29 20:58:21.867]: host event 0x0eeeeef6
+[2017-10-29 20:58:21.868]: host event 0x0eeeeef7
+[2017-10-29 20:58:21.869]: host event 0x0eeeeef8
+[2017-10-29 20:58:21.871]: host event 0x0eeeeef9
+[2017-10-29 20:58:21.871]: host event 0x00000059
+[2017-10-29 20:58:22.105]: host event 0xba1ba111
+[2017-10-29 20:58:22.342]: host event 0xba1ba112
+[2017-10-29 20:58:22.345]: host event 0xba1ba113
+[2017-10-29 20:58:22.348]: host event 0xba1ba113
+[2017-10-29 20:58:22.351]: host event 0xaaaa001e
+[2017-10-29 20:58:22.354]: host event 0x00000064
+[2017-10-29 20:58:22.357]: host event 0xaaaa001e
+[2017-10-29 20:58:22.359]: host event 0x00000032
+[2017-10-29 20:58:22.365]: host event 0xba1ba114
+[2017-10-29 20:58:22.367]: host event 0xba1ba115
+[2017-10-29 20:58:22.368]: host event 0xba1ba116
+[2017-10-29 20:58:22.371]: host event 0xba1ba117
+[2017-10-29 20:58:22.374]: host event 0xba1ba118
+[2017-10-29 20:58:22.430]: host event 0xba1ba119
+[2017-10-29 20:58:22.434]: host event 0xba1ba120
+[2017-10-29 20:58:22.437]: host event 0xba1ba121
+[2017-10-29 20:58:22.440]: host event 0xba1ba122
+[2017-10-29 20:58:22.443]: host event 0xba1ba123
+[2017-10-29 20:58:22.446]: host event 0xba1ba124
+[2017-10-29 20:58:22.448]: host event 0xba1ba125
+[2017-10-29 20:58:22.451]: host event 0xba1ba126
+[2017-10-29 20:58:22.454]: host event 0xba1ba127
+[2017-10-29 20:58:22.457]: host event 0xba1ba128
+[2017-10-29 20:58:22.460]: host event 0xba1ba129
+[2017-10-29 20:58:22.461]: host event 0xba1ba130
+[2017-10-29 20:58:22.463]: host event 0xba1ba131
+[2017-10-29 20:58:22.464]: host event 0xba1ba132
+[2017-10-29 20:58:22.466]: host event 0xba1ba133
+[2017-10-29 20:58:22.467]: host event 0xba1ba134
+[2017-10-29 20:58:22.469]: host event 0xba1ba135
+[2017-10-29 20:58:22.470]: host event 0xffffff00
+[2017-10-29 20:58:22.471]: host event 0xffffaa00
+[2017-10-29 20:58:22.473]: host event 0xba1ba136
+[2017-10-29 20:58:23.071]: host event 0xa2a2a401
+[2017-10-29 20:58:23.073]: host event 0x00000000
+[2017-10-29 20:58:23.075]: host event 0x713effff
+[2017-10-29 20:58:23.078]: host event 0x00000000
+[2017-10-29 20:58:23.769]: host trace CDFU_LoadSection: %d-%d
+
+[2017-10-29 20:58:23.773]: host trace CDFU_LoadSection: %d-%d
+
+[2017-10-29 20:58:23.779]: host trace ====================================
+[2017-10-29 20:58:23.782]: host trace INTR VER :Luat_V0014_8955_TTS_UI
+[2017-10-29 20:58:23.786]: host trace BASE VER :B4416
+[2017-10-29 20:58:23.790]: host trace SCRIPT ADDR :0x003a0000
+[2017-10-29 20:58:23.795]: host trace SCRIPT SIZE :0x00036000
+[2017-10-29 20:58:23.799]: host trace BASE   ADDR :0x00330000
+[2017-10-29 20:58:23.802]: host trace BASE   SIZE :0x00070000
+[2017-10-29 20:58:23.806]: host trace ====================================
+[2017-10-29 20:58:23.809]: host trace [cust_task_main]: Enter message loop
+[2017-10-29 20:58:23.812]: host trace lualibc_fopen /integrity.bin
+[2017-10-29 20:58:23.815]: host trace lualibc_fopen /integrity.bin
+[2017-10-29 20:58:23.819]: host trace INTEGRITY file correct!
+[2017-10-29 20:58:23.822]: host trace FH:file=/ldata/sms.mp3,len=3456,offset=171210
+[2017-10-29 20:58:23.825]: host trace FH:file=/ldata/pwron.mp3,len=17032,offset=154153
+[2017-10-29 20:58:23.826]: host trace FH:file=/ldata/call.mp3,len=16139,offset=137987
+[2017-10-29 20:58:23.829]: host trace FH:file=/lua/main.lua,len=1262,offset=136699
+[2017-10-29 20:58:23.834]: host trace FH:file=/lua/wdt.lua,len=1610,offset=135063
+[2017-10-29 20:58:23.836]: host trace FH:file=/lua/utils.lua,len=5475,offset=129563
+[2017-10-29 20:58:23.838]: host trace FH:file=/lua/ui.lua,len=3714,offset=125822
+[2017-10-29 20:58:23.842]: host trace FH:file=/lua/sys.lua,len=13006,offset=112792
+[2017-10-29 20:58:23.845]: host trace FH:file=/lua/socket.lua,len=7292,offset=105475
+[2017-10-29 20:58:23.848]: host trace FH:file=/lua/sim.lua,len=4148,offset=101299
+[2017-10-29 20:58:23.851]: host trace FH:file=/lua/ril.lua,len=17801,offset=83473
+[2017-10-29 20:58:23.854]: host trace FH:file=/lua/pins.lua,len=2098,offset=81350
+[2017-10-29 20:58:23.857]: host trace FH:file=/lua/patch.lua,len=1589,offset=79735
+[2017-10-29 20:58:23.859]: host trace FH:file=/lua/ntp.lua,len=2114,offset=77594
+[2017-10-29 20:58:23.861]: host trace FH:file=/lua/net.lua,len=16121,offset=61448
+[2017-10-29 20:58:23.865]: host trace FH:file=/lua/misc.lua,len=5699,offset=55724
+[2017-10-29 20:58:23.868]: host trace FH:file=/lua/log.lua,len=3905,offset=51793
+[2017-10-29 20:58:23.871]: host trace FH:file=/lua/link.lua,len=3423,offset=48345
+[2017-10-29 20:58:23.874]: host trace FH:file=/lua/led.lua,len=5127,offset=43192
+[2017-10-29 20:58:23.877]: host trace FH:file=/lua/http.lua,len=4043,offset=39124
+[2017-10-29 20:58:23.880]: host trace FH:file=/lua/gps.lua,len=3698,offset=35400
+[2017-10-29 20:58:23.884]: host trace FH:file=/lua/errdump.lua,len=2484,offset=32891
+[2017-10-29 20:58:23.885]: host trace FH:file=/lua/console.lua,len=3892,offset=28970
+[2017-10-29 20:58:23.888]: host trace FH:file=/lua/common.lua,len=9507,offset=19434
+[2017-10-29 20:58:23.891]: host trace FH:file=/lua/clib.lua,len=871,offset=18535
+[2017-10-29 20:58:23.894]: host trace FH:file=/lua/audio.lua,len=2691,offset=15818
+[2017-10-29 20:58:23.897]: host trace FH:file=/lua/agps.lua,len=1144,offset=14647
+[2017-10-29 20:58:23.901]: host trace FH:file=/ldata/user_small.bmp,len=190,offset=14431
+[2017-10-29 20:58:23.904]: host trace FH:file=/ldata/user.bmp,len=574,offset=13825
+[2017-10-29 20:58:23.907]: host trace FH:file=/ldata/up.bmp,len=126,offset=13673
+[2017-10-29 20:58:23.908]: host trace FH:file=/ldata/test_small.bmp,len=190,offset=13459
+[2017-10-29 20:58:23.911]: host trace FH:file=/ldata/test.bmp,len=574,offset=12853
+[2017-10-29 20:58:23.914]: host trace FH:file=/ldata/set_small.bmp,len=190,offset=12637
+[2017-10-29 20:58:23.918]: host trace FH:file=/ldata/set.bmp,len=574,offset=12032
+[2017-10-29 20:58:23.921]: host trace FH:file=/ldata/message_small.bmp,len=190,offset=11817
+[2017-10-29 20:58:23.924]: host trace FH:file=/ldata/message.bmp,len=574,offset=11208
+[2017-10-29 20:58:23.927]: host trace FH:file=/ldata/menu_small.bmp,len=190,offset=10989
+[2017-10-29 20:58:23.930]: host trace FH:file=/ldata/menu_all.bmp,len=1086,offset=9871
+[2017-10-29 20:58:23.933]: host trace FH:file=/ldata/menu.bmp,len=574,offset=9267
+[2017-10-29 20:58:23.946]: host trace FH:file=/ldata/mange_small.bmp,len=190,offset=9051
+[2017-10-29 20:58:23.948]: host trace FH:file=/ldata/mange.bmp,len=574,offset=8444
+[2017-10-29 20:58:23.951]: host trace FH:file=/ldata/help_small.bmp,len=190,offset=8227
+[2017-10-29 20:58:23.954]: host trace FH:file=/ldata/help.bmp,len=574,offset=7621
+[2017-10-29 20:58:23.957]: host trace FH:file=/ldata/dw.bmp,len=126,offset=7469
+[2017-10-29 20:58:23.960]: host trace FH:file=/ldata/device_small.bmp,len=190,offset=7255
+[2017-10-29 20:58:23.963]: host trace FH:file=/ldata/device.bmp,len=574,offset=6647
+[2017-10-29 20:58:23.966]: host trace FH:file=/ldata/alarm_small.bmp,len=190,offset=6429
+[2017-10-29 20:58:23.969]: host trace FH:file=/ldata/alarm.bmp,len=574,offset=5822
+[2017-10-29 20:58:23.971]: host trace FH:file=/lua/mono_lcd_spi_sh1106.lua,len=3340,offset=2455
+[2017-10-29 20:58:23.973]: host trace FH:file=/lua/testLcd.lua,len=2362,offset=52
+[2017-10-29 20:58:23.976]: host trace parse_luadb_data:delupdpack=0,err=0,section=1,wrFile=0
+[2017-10-29 20:58:23.980]: host trace [fopen_ext]: /lua/main.lua 2!
+[2017-10-29 20:58:23.983]: host trace RUN main.lua
+[2017-10-29 20:58:23.986]: host trace [fopen_ext]: /lua/main.lua 2!
+[2017-10-29 20:58:23.989]: host trace [fopen_ext]: /lua/log.lua 2!
+[2017-10-29 20:58:23.992]: host trace [fopen_ext]: /lua/log.lua 2!
+[2017-10-29 20:58:23.993]: host trace [fopen_ext]: /lua/sys.lua 2!
+[2017-10-29 20:58:23.996]: host trace [fopen_ext]: /lua/sys.lua 2!
+[2017-10-29 20:58:24.000]: host trace [fopen_ext]: /lua/patch.lua 2!
+[2017-10-29 20:58:24.003]: host trace [fopen_ext]: /lua/patch.lua 2!
+[2017-10-29 20:58:24.006]: host trace [fopen_ext]: /lua/errdump.lua 2!
+[2017-10-29 20:58:24.009]: host trace [fopen_ext]: /lua/errdump.lua 2!
+[2017-10-29 20:58:24.010]: host trace [fopen_ext]: /lua/clib.lua 2!
+[2017-10-29 20:58:24.013]: host trace [fopen_ext]: /lua/clib.lua 2!
+[2017-10-29 20:58:24.017]: host trace [fopen_ext]: /lua/utils.lua 2!
+[2017-10-29 20:58:24.019]: host trace [fopen_ext]: /lua/utils.lua 2!
+[2017-10-29 20:58:24.023]: host trace [fopen_ext]: /lua/net.lua 2!
+[2017-10-29 20:58:24.025]: host trace [fopen_ext]: /lua/net.lua 2!
+[2017-10-29 20:58:24.028]: host trace [fopen_ext]: /lua/ril.lua 2!
+[2017-10-29 20:58:24.029]: host trace [fopen_ext]: /lua/ril.lua 2!
+[2017-10-29 20:58:24.029]: host trace [fopen_ext]: /lua/sim.lua 2!
+[2017-10-29 20:58:24.029]: host trace [fopen_ext]: /lua/sim.lua 2!
+[2017-10-29 20:58:24.039]: host trace [fopen_ext]: /lua/console.lua 2!
+[2017-10-29 20:58:24.039]: host trace [fopen_ext]: /lua/console.lua 2!
+[2017-10-29 20:58:24.039]: host trace [fopen_ext]: /lua/misc.lua 2!
+[2017-10-29 20:58:24.039]: host trace [fopen_ext]: /lua/misc.lua 2!
+[2017-10-29 20:58:24.049]: host trace [fopen_ext]: /lua/wdt.lua 2!
+[2017-10-29 20:58:24.049]: host trace [fopen_ext]: /lua/wdt.lua 2!
+[2017-10-29 20:58:24.049]: host trace [fopen_ext]: /lua/pins.lua 2!
+[2017-10-29 20:58:24.049]: host trace [fopen_ext]: /lua/pins.lua 2!
+[2017-10-29 20:58:24.059]: host trace [I]-[wdt.taskWdt]	AirM2M --> WATCHDOG : OK
+[2017-10-29 20:58:24.059]: host trace [fopen_ext]: /lua/led.lua 2!
+[2017-10-29 20:58:24.059]: host trace [fopen_ext]: /lua/led.lua 2!
+[2017-10-29 20:58:24.059]: host trace [fopen_ext]: /lua/agps.lua 2!
+[2017-10-29 20:58:24.069]: host trace [fopen_ext]: /lua/agps.lua 2!
+[2017-10-29 20:58:24.069]: host trace [fopen_ext]: /lua/http.lua 2!
+[2017-10-29 20:58:24.069]: host trace [fopen_ext]: /lua/http.lua 2!
+[2017-10-29 20:58:24.069]: host trace [fopen_ext]: /lua/socket.lua 2!
+[2017-10-29 20:58:24.079]: host trace [fopen_ext]: /lua/socket.lua 2!
+[2017-10-29 20:58:24.079]: host trace [fopen_ext]: /lua/link.lua 2!
+[2017-10-29 20:58:24.079]: host trace [fopen_ext]: /lua/link.lua 2!
+[2017-10-29 20:58:24.089]: host trace [fopen_ext]: /lua/gps.lua 2!
+[2017-10-29 20:58:24.089]: host trace [fopen_ext]: /lua/gps.lua 2!
+[2017-10-29 20:58:24.089]: host trace [fopen_ext]: /lua/ntp.lua 2!
+[2017-10-29 20:58:24.089]: host trace [fopen_ext]: /lua/ntp.lua 2!
+[2017-10-29 20:58:24.099]: host trace [fopen_ext]: /lua/audio.lua 2!
+[2017-10-29 20:58:24.099]: host trace [fopen_ext]: /lua/audio.lua 2!
+[2017-10-29 20:58:24.099]: host trace [fopen_ext]: /lua/common.lua 2!
+[2017-10-29 20:58:24.109]: host trace [fopen_ext]: /lua/common.lua 2!
+[2017-10-29 20:58:24.109]: host trace [fopen_ext]: /lua/ui.lua 2!
+[2017-10-29 20:58:24.109]: host trace [fopen_ext]: /lua/ui.lua 2!
+[2017-10-29 20:58:24.160]: host trace [fopen_ext]: /lua/mono_lcd_spi_sh1106.lua 2!
+[2017-10-29 20:58:24.160]: host trace [fopen_ext]: /lua/mono_lcd_spi_sh1106.lua 2!
+[2017-10-29 20:58:24.190]: host event 0xd1a1daaa
+[2017-10-29 20:58:24.190]: host event 0x001e8480
+[2017-10-29 20:58:24.220]: host trace [fopen_ext]: /lua/testLcd.lua 2!
+[2017-10-29 20:58:24.220]: host trace [fopen_ext]: /lua/testLcd.lua 2!
+[2017-10-29 20:58:24.250]: host trace [fopen_ext]: /ldata/user_small.bmp 2!
+[2017-10-29 20:58:24.250]: host trace [fopen_ext]: /ldata/menu.bmp 2!
+[2017-10-29 20:58:24.250]: host trace [fopen_ext]: /ldata/set_small.bmp 2!
+[2017-10-29 20:58:24.279]: host trace [I]-[poweron reason:]	0	DEMO_TASK	2.0.0	2.0.0	Luat_V0014_8955_TTS_UI
+[2017-10-29 20:58:24.279]: host trace [I]-[errdump.readTxt]	no open:	/lib_err.txt
+[2017-10-29 20:58:24.289]: host trace [I]-[errdump.initErr]	
+[2017-10-29 20:58:24.289]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:24.299]: host trace [I]-[ril.proatc]	RDY
+[2017-10-29 20:58:24.299]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:24.299]: host trace [I]-[ril.proatc]	+CFUN: 1
+[2017-10-29 20:58:24.309]: host trace [I]-[ril.defurc]	+CFUN: 1
+[2017-10-29 20:58:24.309]: host trace [I]-[ril.sendat]	ATE0
+[2017-10-29 20:58:24.309]: host trace [I]-[ril.proatc]	ATE0
+[2017-10-29 20:58:24.319]: host trace [I]-[ril.defurc]	ATE0
+[2017-10-29 20:58:24.319]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:24.319]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:24.329]: host trace [I]-[ril.defrsp]	ATE0	true	OK	nil
+[2017-10-29 20:58:24.329]: host trace [I]-[ril.sendat]	AT+CMEE=0
+[2017-10-29 20:58:24.329]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:24.339]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:24.339]: host trace [I]-[ril.defrsp]	AT+CMEE=0	true	OK	nil
+[2017-10-29 20:58:24.339]: host trace [I]-[ril.sendat]	AT+CREG=2
+[2017-10-29 20:58:24.349]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:24.349]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:24.349]: host trace [I]-[ril.defrsp]	AT+CREG=2	true	OK	nil
+[2017-10-29 20:58:24.349]: host trace [I]-[ril.sendat]	AT+CREG?
+[2017-10-29 20:58:24.359]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:24.359]: host trace [I]-[ril.proatc]	+CREG: 2,0
+[2017-10-29 20:58:24.359]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:24.369]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:24.369]: host trace [I]-[ril.defrsp]	AT+CREG?	true	OK	nil
+[2017-10-29 20:58:24.369]: host trace [I]-[ril.sendat]	AT+CENG=1,1
+[2017-10-29 20:58:24.369]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:24.380]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:24.380]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:58:24.380]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:24.390]: host trace [I]-[ril.proatc]	+CSQ: 99,99
+[2017-10-29 20:58:24.390]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:24.390]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:24.400]: host trace [I]-[ril.sendat]	AT+CENG?
+[2017-10-29 20:58:24.400]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:24.400]: host trace [I]-[ril.proatc]	+CENG:1,1
+[2017-10-29 20:58:24.400]: host trace [I]-[ril.proatc]	+CENG:0,"0000, 0, 0,000,00,00,0000,00,00,0000,00"
+[2017-10-29 20:58:24.410]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:24.410]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:24.410]: host trace [I]-[ril.sendat]	AT+ATWMFT=99
+[2017-10-29 20:58:24.420]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:24.420]: host trace [I]-[ril.proatc]	SUCC
+[2017-10-29 20:58:24.420]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:24.430]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:24.430]: host trace [I]-[misc.ATWMFT]	SUCC
+[2017-10-29 20:58:24.430]: host trace [I]-[ril.sendat]	AT+WISN?
+[2017-10-29 20:58:24.430]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:24.440]: host trace [I]-[ril.proatc]	0000000000
+[2017-10-29 20:58:24.440]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:24.440]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:24.440]: host trace [I]-[ril.sendat]	AT+CGSN
+[2017-10-29 20:58:24.450]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:24.450]: host trace [I]-[ril.proatc]	862991419830770
+[2017-10-29 20:58:24.450]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:24.460]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:24.460]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:58:24.460]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:24.460]: host trace [I]-[ril.proatc]	+CSQ: 99,99
+[2017-10-29 20:58:24.470]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:24.470]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:24.470]: host trace [I]-[ril.sendat]	AT+CENG?
+[2017-10-29 20:58:24.480]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:24.480]: host trace [I]-[ril.proatc]	+CENG:1,1
+[2017-10-29 20:58:24.480]: host trace [I]-[ril.proatc]	+CENG:0,"0000, 0, 0,000,00,00,0000,00,00,0000,00"
+[2017-10-29 20:58:24.480]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:24.490]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:24.930]: host event 0x8181e810
+[2017-10-29 20:58:25.170]: host trace [I]-[wdt.taskWdt]	AirM2M <-- WatchDog : OK
+[2017-10-29 20:58:26.721]: host trace [network] sim present 1
+[2017-10-29 20:58:27.328]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:27.332]: host trace [I]-[ril.proatc]	+CSIMTYPE: 1,0
+[2017-10-29 20:58:27.335]: host trace [I]-[ril.defurc]	+CSIMTYPE: 1,0
+[2017-10-29 20:58:27.497]: host trace [network] psStatus=0, pdpStatus=0
+[2017-10-29 20:58:27.502]: host trace [network] OPENAT_NetworkStatusChangeInd  state 0
+[2017-10-29 20:58:27.520]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:27.525]: host trace [I]-[ril.proatc]	+CREG: 3
+[2017-10-29 20:58:27.529]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:58:27.532]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:27.535]: host trace [I]-[ril.proatc]	+CSQ: 99,99
+[2017-10-29 20:58:27.539]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:27.542]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:29.543]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:29.543]: host trace [I]-[ril.proatc]	+ENCRET: 0
+[2017-10-29 20:58:29.553]: host trace [I]-[ril.defurc]	+ENCRET: 0
+[2017-10-29 20:58:29.553]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:29.553]: host trace [I]-[ril.proatc]	+CPIN: READY
+[2017-10-29 20:58:29.563]: host trace [I]-[ril.sendat]	AT+CCID
+[2017-10-29 20:58:29.563]: host trace [I]-[SIM.subscribe]	nil	RDY
+[2017-10-29 20:58:29.573]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:29.573]: host trace [I]-[ril.proatc]	898607B0101730047646
+[2017-10-29 20:58:29.573]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:29.573]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:29.584]: host trace [I]-[ril.sendat]	AT+CIMI
+[2017-10-29 20:58:29.584]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:29.584]: host trace [I]-[ril.proatc]	460041052603240
+[2017-10-29 20:58:29.594]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:29.594]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:29.763]: host event 0x2244420b
+[2017-10-29 20:58:29.854]: host event 0x22446804
+[2017-10-29 20:58:30.154]: host event 0x23000042
+[2017-10-29 20:58:30.273]: host event 0x23000068
+[2017-10-29 20:58:30.578]: host event 0x22445c90
+[2017-10-29 20:58:30.663]: host event 0x22445d3c
+[2017-10-29 20:58:30.789]: host event 0x23000061
+[2017-10-29 20:58:31.042]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:58:31.046]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:31.049]: host trace [I]-[ril.proatc]	+CSQ: 99,99
+[2017-10-29 20:58:31.052]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:31.056]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:31.234]: host event 0x2300005c
+[2017-10-29 20:58:31.362]: host event 0x2300005d
+[2017-10-29 20:58:31.467]: host event 0x2300003b
+[2017-10-29 20:58:31.594]: host event 0x23000063
+[2017-10-29 20:58:31.805]: host event 0x2300008e
+[2017-10-29 20:58:31.931]: host event 0x23000062
+[2017-10-29 20:58:32.036]: host event 0x2300003f
+[2017-10-29 20:58:32.519]: host trace [I]-[ril.sendat]	AT+CRSM=176,28539,0,0,12
+[2017-10-29 20:58:33.003]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:33.006]: host trace [I]-[ril.proatc]	+CRSM: 144,0,"64F01064F03064F002FFFF0F"
+[2017-10-29 20:58:33.009]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:33.013]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:33.016]: host trace [I]-[ril.defrsp]	AT+CRSM=176,28539,0,0,12	true	OK	nil
+[2017-10-29 20:58:36.236]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:36.240]: host trace [I]-[ril.proatc]	CALL READY
+[2017-10-29 20:58:36.243]: host trace [I]-[ril.defurc]	CALL READY
+[2017-10-29 20:58:36.247]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:36.250]: host trace [I]-[ril.proatc]	+CREG: 1,"3936","9896"
+[2017-10-29 20:58:36.253]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:58:36.257]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:36.262]: host trace [I]-[ril.proatc]	+CSQ: 24,99
+[2017-10-29 20:58:36.266]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:36.270]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:36.273]: host trace [I]-[ril.sendat]	AT+CENG?
+[2017-10-29 20:58:36.278]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:36.279]: host trace [I]-[ril.proatc]	+CENG:1,1
+[2017-10-29 20:58:36.283]: host trace [I]-[ril.proatc]	+CENG:0,"0073,24,99,460,00,20,39062,14,05,14646,02"
+[2017-10-29 20:58:36.286]: host trace [I]-[ril.proatc]	+CENG:1,"88,18,460,0,29,0,14081"
+[2017-10-29 20:58:36.289]: host trace [I]-[ril.proatc]	+CENG:2,"85,14,460,0,13,39061,14646"
+[2017-10-29 20:58:36.293]: host trace [I]-[ril.proatc]	+CENG:3,"76,14,460,0,15,23622,14646"
+[2017-10-29 20:58:36.296]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:36.299]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:36.302]: host trace [I]-[ril.sendat]	AT+CIICRMODE=2
+[2017-10-29 20:58:36.305]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:36.308]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:36.311]: host trace [I]-[ril.defrsp]	AT+CIICRMODE=2	true	OK	nil
+[2017-10-29 20:58:36.313]: host trace [I]-[ril.sendat]	AT+CIPMUX=1
+[2017-10-29 20:58:36.316]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:36.319]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:36.322]: host trace [I]-[ril.defrsp]	AT+CIPMUX=1	true	OK	nil
+[2017-10-29 20:58:36.325]: host trace [I]-[ril.sendat]	AT+CIPHEAD=1
+[2017-10-29 20:58:36.328]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:36.331]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:36.334]: host trace [I]-[ril.defrsp]	AT+CIPHEAD=1	true	OK	nil
+[2017-10-29 20:58:36.336]: host trace [I]-[ril.sendat]	AT+CIPQSEND=0
+[2017-10-29 20:58:36.339]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:36.344]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:36.345]: host trace [I]-[ril.defrsp]	AT+CIPQSEND=0	true	OK	nil
+[2017-10-29 20:58:38.250]: host trace [I]-[ril.sendat]	AT+CGATT?
+[2017-10-29 20:58:38.253]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:38.257]: host trace [I]-[ril.proatc]	+CGATT: 0
+[2017-10-29 20:58:38.260]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:38.263]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:39.032]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:58:39.032]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:39.032]: host trace [I]-[ril.proatc]	+CSQ: 24,99
+[2017-10-29 20:58:39.042]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:39.042]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:39.391]: host trace [network] psStatus=1, pdpStatus=0
+[2017-10-29 20:58:39.391]: host trace [network] OPENAT_NetworkStatusChangeInd  state 1
+[2017-10-29 20:58:40.262]: host trace [I]-[ril.sendat]	AT+CGATT?
+[2017-10-29 20:58:40.262]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:40.272]: host trace [I]-[ril.proatc]	+CGATT: 1
+[2017-10-29 20:58:40.272]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:40.272]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:40.282]: host trace [I]-[ril.sendat]	AT+CIPSTATUS
+[2017-10-29 20:58:40.292]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:40.302]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:40.302]: host trace [I]-[ril.defrsp]	AT+CIPSTATUS	true	OK	nil
+[2017-10-29 20:58:40.312]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:40.312]: host trace [I]-[ril.proatc]	STATE: IP INITIAL
+[2017-10-29 20:58:40.312]: host trace [I]-[link.ipState]	IP STATUS is:	IP INITIAL
+[2017-10-29 20:58:40.325]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:40.328]: host trace [I]-[ril.proatc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:58:40.334]: host trace [I]-[ril.defurc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:58:40.336]: host trace [I]-[ril.proatc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:58:40.339]: host trace [I]-[ril.defurc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:58:40.342]: host trace [I]-[ril.proatc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:58:40.345]: host trace [I]-[ril.defurc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:58:40.348]: host trace [I]-[ril.proatc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:58:40.352]: host trace [I]-[ril.defurc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:58:40.355]: host trace [I]-[ril.proatc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:58:40.358]: host trace [I]-[ril.defurc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:58:40.361]: host trace [I]-[ril.proatc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:58:40.364]: host trace [I]-[ril.defurc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:58:40.367]: host trace [I]-[ril.proatc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:58:40.369]: host trace [I]-[ril.defurc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:58:40.372]: host trace [I]-[ril.proatc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:58:40.375]: host trace [I]-[ril.defurc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:58:40.378]: host trace [I]-[ril.sendat]	AT+CSTT="CMNET","",""
+[2017-10-29 20:58:40.381]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:40.385]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:40.388]: host trace [I]-[ril.defrsp]	AT+CSTT="CMNET","",""	true	OK	nil
+[2017-10-29 20:58:40.391]: host trace [I]-[ril.sendat]	AT+CIICR
+[2017-10-29 20:58:40.394]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:40.397]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:40.401]: host trace [I]-[ril.defrsp]	AT+CIICR	true	OK	nil
+[2017-10-29 20:58:41.973]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:41.977]: host trace [I]-[ril.proatc]	STATE: IP GPRSACT
+[2017-10-29 20:58:41.980]: host trace [I]-[link.ipState]	IP STATUS is:	IP GPRSACT
+[2017-10-29 20:58:41.984]: host trace [I]-[ril.sendat]	AT+CIFSR
+[2017-10-29 20:58:41.999]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:42.003]: host trace [I]-[ril.proatc]	010.253.200.222
+[2017-10-29 20:58:42.006]: host trace [I]-[ril.defrsp]	AT+CIFSR	true	nil	010.253.200.222
+[2017-10-29 20:58:42.009]: host trace [I]-[ril.sendat]	AT+CIPSTATUS
+[2017-10-29 20:58:42.013]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:42.016]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:42.019]: host trace [I]-[ril.defrsp]	AT+CIPSTATUS	true	OK	nil
+[2017-10-29 20:58:42.022]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:42.025]: host trace [I]-[ril.proatc]	STATE: IP STATUS
+[2017-10-29 20:58:42.029]: host trace [I]-[link.ipState]	IP STATUS is:	IP STATUS
+[2017-10-29 20:58:42.030]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:42.033]: host trace [I]-[ril.proatc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:58:42.036]: host trace [I]-[ril.defurc]	C: 0,,"","","","INITIAL"
+[2017-10-29 20:58:42.039]: host trace [I]-[ril.proatc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:58:42.042]: host trace [I]-[ril.defurc]	C: 1,,"","","","INITIAL"
+[2017-10-29 20:58:42.046]: host trace [I]-[ril.proatc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:58:42.049]: host trace [I]-[ril.defurc]	C: 2,,"","","","INITIAL"
+[2017-10-29 20:58:42.052]: host trace [I]-[ril.proatc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:58:42.053]: host trace [I]-[ril.defurc]	C: 3,,"","","","INITIAL"
+[2017-10-29 20:58:42.056]: host trace [I]-[ril.proatc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:58:42.059]: host trace [I]-[ril.defurc]	C: 4,,"","","","INITIAL"
+[2017-10-29 20:58:42.063]: host trace [I]-[ril.proatc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:58:42.065]: host trace [I]-[ril.defurc]	C: 5,,"","","","INITIAL"
+[2017-10-29 20:58:42.069]: host trace [I]-[ril.proatc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:58:42.072]: host trace [I]-[ril.defurc]	C: 6,,"","","","INITIAL"
+[2017-10-29 20:58:42.075]: host trace [I]-[ril.proatc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:58:42.078]: host trace [I]-[ril.defurc]	C: 7,,"","","","INITIAL"
+[2017-10-29 20:58:42.496]: host trace [I]-[ril.sendat]	AT+CIPSTART=7,"TCP","download.openluat.com",80
+[2017-10-29 20:58:43.293]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:43.298]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:43.483]: host trace [I]-[ril.sendat]	AT+CIPSTART=6,"UDP","ntp1.aliyun.com",123
+[2017-10-29 20:58:44.322]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:44.322]: host trace [I]-[ril.proatc]	7,CONNECT OK
+[2017-10-29 20:58:44.441]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:44.441]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:44.451]: host trace [I]-[ril.sendat]	AT+CIPSEND=7,222
+[2017-10-29 20:58:44.471]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:44.471]: host trace [I]-[ril.proatc]	> 
+[2017-10-29 20:58:44.482]: host trace [I]-[ril.procatc.send]	GET /9501-xingli/brdcGPD.dat_rda HTTP/1.0
+[2017-10-29 20:58:44.482]: host trace Host: download.openluat.com
+[2017-10-29 20:58:44.482]: host trace Connection: close
+[2017-10-29 20:58:44.492]: host trace Content-Type: application/x-www-form-urlencoded
+[2017-10-29 20:58:44.492]: host trace Accept: */*
+[2017-10-29 20:58:44.492]: host trace User-Agent: Mozilla/4.0
+[2017-10-29 20:58:44.502]: host trace Accept-Language: zh-CN,zh,cn
+[2017-10-29 20:58:44.502]: host trace Content-Length: 0
+[2017-10-29 20:58:44.502]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:44.512]: host trace [I]-[ril.proatc]	6,CONNECT OK
+[2017-10-29 20:58:45.588]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:45.592]: host trace [I]-[ril.proatc]	7,SEND OK
+[2017-10-29 20:58:45.595]: host trace [I]-[ril.sendat]	AT+CIPSEND=6,48
+[2017-10-29 20:58:45.611]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:45.615]: host trace [I]-[ril.proatc]	> 
+[2017-10-29 20:58:45.618]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:45.621]: host trace [I]-[ril.proatc]	6,SEND OK
+[2017-10-29 20:58:45.782]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:45.803]: host trace [I]-[ril.proatc]	+RECEIVE,7,249:
+[2017-10-29 20:58:45.809]: host trace [I]-[ril.proatc]	HTTP/1.1 200 OK
+[2017-10-29 20:58:45.812]: host trace [I]-[ril.proatc]	Server: nginx/1.13.0
+[2017-10-29 20:58:45.815]: host trace [I]-[ril.proatc]	Date: Sun, 29 Oct 2017 12:58:45 GMT
+[2017-10-29 20:58:45.819]: host trace [I]-[ril.proatc]	Content-Type: application/octet-stream
+[2017-10-29 20:58:45.822]: host trace [I]-[ril.proatc]	Content-Length: 3334
+[2017-10-29 20:58:45.825]: host trace [I]-[ril.proatc]	Last-Modified: Sun, 29 Oct 2017 12:00:02 GMT
+[2017-10-29 20:58:45.828]: host trace [I]-[ril.proatc]	Connection: close
+[2017-10-29 20:58:45.832]: host trace [I]-[ril.proatc]	ETag: "59f5c2c2-d06"
+[2017-10-29 20:58:45.835]: host trace [I]-[ril.proatc]	Accept-Ranges: bytes
+[2017-10-29 20:58:45.838]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:45.841]: host trace [I]-[http.response code and message:	]	200	OK
+[2017-10-29 20:58:46.253]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.256]: host trace [I]-[ril.proatc]	+RECEIVE,7,1360:
+[2017-10-29 20:58:46.259]: host trace [I]-[ril.proatc]	<
+[2017-10-29 20:58:46.263]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.266]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.269]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.273]: host trace [I]-[ril.proatc]	2
+[2017-10-29 20:58:46.276]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.283]: host trace [I]-[ril.proatc]	I
+[2017-10-29 20:58:46.286]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.289]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.292]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.497]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.502]: host trace [I]-[ril.proatc]	+RECEIVE,7,1360:
+[2017-10-29 20:58:46.507]: host trace [I]-[ril.proatc]	6
+[2017-10-29 20:58:46.512]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.516]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.519]: host trace [I]-[ril.proatc]	<
+[2017-10-29 20:58:46.523]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.526]: host trace [I]-[ril.proatc]	4
+[2017-10-29 20:58:46.532]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.536]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.540]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.543]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.546]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.549]: host trace [I]-[ril.proatc]	tN
+[2017-10-29 20:58:46.552]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.556]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.559]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.562]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.601]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.604]: host trace [I]-[ril.proatc]	+RECEIVE,7,614:
+[2017-10-29 20:58:46.624]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.625]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.628]: host trace [I]-[ril.proatc]	c
+[2017-10-29 20:58:46.631]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.634]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.638]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.644]: host trace [I]-[ril.proatc]	ïG
+[2017-10-29 20:58:46.648]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.651]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.654]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.657]: host trace [I]-[ril.proatc]	7,CLOSED
+[2017-10-29 20:58:46.661]: host trace [I]-[ril.sendat]	AT+CIPCLOSE=7
+[2017-10-29 20:58:46.664]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:46.665]: host trace [I]-[ril.proatc]	ERROR
+[2017-10-29 20:58:47.598]: host trace platform_rtos_sys32k_clk_out enable 1
+[2017-10-29 20:58:47.601]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:58:47.621]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:47.625]: host trace [I]-[ril.proatc]	+CSQ: 24,99
+[2017-10-29 20:58:47.628]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:47.631]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:47.634]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:47.638]: host trace [I]-[ril.proatc]	+RECEIVE,6,48:
+[2017-10-29 20:58:47.641]: host trace [I]-[ril.sendat]	AT+CCLK="17/10/29,20:58:47+32"
+[2017-10-29 20:58:47.648]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:47.651]: host trace [I]-[ril.proatc]	OK
+[2017-10-29 20:58:47.654]: host trace [I]-[ril.sendat]	AT+CIPCLOSE=6
+[2017-10-29 20:58:47.657]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:47.661]: host trace [I]-[ril.proatc]	6,CLOSE OK
+[2017-10-29 20:58:48.657]: host trace [I]-[ntp.timeSync is date:	]	2017/10/29,20:58:48
+[2017-10-29 20:58:49.605]: host trace [I]-[gps.writecmd]	$PGKC149,1,115200*15
+[2017-10-29 20:58:50.026]: host trace [D]-[gps.update sendata:]	AAF00B0266020000E0EC308520470101FFFF408520470052ED000000000000000000000000000B0000008C0A3C00EBFF00004
+[2017-10-29 20:58:50.026]: host trace C13FF0094F83C0041023300E0DD1000039EF900B8F2A000A1300B00AB6A0D00008C0A0029CEFF006C423700272F0000930E780019462300E9A4D200D3A5FF00
+[2017-10-29 20:58:50.036]: host trace 88FA003CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+[2017-10-29 20:58:50.036]: host trace FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0301FFFF408520470052ED0000000000000000
+[2017-10-29 20:58:50.046]: host trace 0000000000050000008C0A0E002D0000004C80F900F7FA0E001675310054ACBB0000A6FB00F03B8D00A1A81400010C0D00008C0A00530E00008708B60027050
+[2017-10-29 20:58:50.046]: host trace 000F8921E00167617006FD3B10010A9FF00B0FC000E0401FFFF40852047FC52ED00000000000000000000000000F50000008C0A320054000000F4A307005505
+[2017-10-29 20:58:50.046]: host trace 3200A44A3300B5F5410006270400BC7A5F00A1420D0092570D00008C0A00FA220000439B7A00277BFF000CE7030012092000E6783C006CA6FF0094130032FFF
+[2017-10-29 20:58:50.046]: host trace FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+[2017-10-29 20:58:50.055]: host trace FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4F0D0A	6668
+[2017-10-29 20:58:50.176]: host trace [D]-[gps.update is ack:]	AAF00C0003000000010E0D0A	12
+[2017-10-29 20:58:50.325]: host trace [D]-[gps.update sendata:]	AAF00B0266020001FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+[2017-10-29 20:58:50.325]: host trace FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+[2017-10-29 20:58:50.338]: host trace FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+[2017-10-29 20:58:50.345]: host trace FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0801FFFF408520470052ED
+[2017-10-29 20:58:50.348]: host trace 000000000000000000000000000B0000008C0A4900F4FF0000F4AEF500AC044900B0BF31006FC21100012D04005F526B00A1F20C0049AB0D00008C0A00FDBDF
+[2017-10-29 20:58:50.351]: host trace F003D62E20027E6FF0024C77200E6632100411D2D0099A6FF00080E0049FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+[2017-10-29 20:58:50.355]: host trace FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+[2017-10-29 20:58:50.359]: host trace FFFFFFFFFFFFF0A01FFFF408520470052ED00000000000000000000000000030000008C0A96004800000070090D00AEFA9600F094300099164F0001FEFA0073
+[2017-10-29 20:58:50.362]: host trace 577B00A1E41600BE610D00008C0A00532200007079900027222B0D0A	6668
+[2017-10-29 20:58:50.375]: host trace [D]-[gps.update is ack:]	AAF00C0003000001010F0D0A	12
+[2017-10-29 20:58:50.500]: host read data timeout
+Traceback (most recent call last):
+  File "host.pyo", line 150, in read_loop
+  File "host.pyo", line 109, in _read_unescape
+  File "host.pyo", line 98, in _read
+HostReadTimeoutError: host read data timeout
+[2017-10-29 20:58:50.500]: host trace [D]-[gps.update sendata:]	AAF00B02660200020000DAF41F008A2D1500D4CF840012A9FF0060FB00960B01FFFF408520470052ED0000000000000000000
+[2017-10-29 20:58:50.505]: host trace 0000000E70000008C0A8600EFFF0000A421A1002CFD860027784500935FA20008F2FC00EF8BB300A1F70700CBDC0D00008C0A00189AFF00AA1064002474FF00
+[2017-10-29 20:58:50.506]: host trace 1FE4C70045C4220071A4CF009C9AFF0004040086FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+[2017-10-29 20:58:50.529]: host trace FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+[2017-10-29 20:58:50.532]: host trace FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0E01FFFF408520470052ED00000000000000000000000000EC00
+[2017-10-29 20:58:50.536]: host trace 00008C0A3600F8FF0000CC8CF400960536008E2F310045D50A00040F050098B6C000A1B90F003BA40D00008C0A0081270000A56B760027DAFF0037F03100B05
+[2017-10-29 20:58:50.539]: host trace 61D00CDC9930024AAFF0080090036FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+[2017-10-29 20:58:50.542]: host trace FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFCE0D0A	6668
+[2017-10-29 20:58:50.573]: host trace [D]-[gps.update is ack:]	AAF00C0003000002010C0D0A	12
+[2017-10-29 20:58:50.723]: host trace [D]-[gps.update sendata:]	AAF00B0266020003FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1001FFFF408520470052ED000
+[2017-10-29 20:58:50.726]: host trace 00000000000000000000000E90000008C0A3C00FEFF0000A8CF040007033C00BD3F2800831CE800042402002A34CA00A15F1400FE510E00008C0A00D6220000
+[2017-10-29 20:58:50.730]: host trace 90F2EA0028B1FF00613F4800123E19000CADA000ADACFF00AC03003C1101FFFF408520470052ED00000000000000000000000000E80000008C0A34001400000
+[2017-10-29 20:58:50.734]: host trace 0889AEC00B80234009A6F2D000A579400067702008F202A00A19A0B0046AA0D00008C0A0000690000E95C5000272B000073A3FD00B50E2300582C260070AAFF
+[2017-10-29 20:58:50.737]: host trace 007C0F00341201FFFF408520470052ED00000000000000000000000000E80000008C0A070004000000C0D6520084FB0700D7EF3A00E878A900094AFC005B674
+[2017-10-29 20:58:50.740]: host trace B00A1F61500781B0D00008C0A005189FF00D7F49E0025C30000A885B900B7381400C8EAA40061A1FF00F4FB0007FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+[2017-10-29 20:58:50.743]: host trace FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+[2017-10-29 20:58:50.747]: host trace FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+[2017-10-29 20:58:50.750]: host trace FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF9A0D0A	6668
+[2017-10-29 20:58:50.769]: host trace [D]-[gps.update is ack:]	AAF00C0003000003010D0D0A	12
+[2017-10-29 20:58:50.917]: host read data timeout
+Traceback (most recent call last):
+  File "host.pyo", line 150, in read_loop
+  File "host.pyo", line 109, in _read_unescape
+  File "host.pyo", line 98, in _read
+HostReadTimeoutError: host read data timeout
+[2017-10-29 20:58:50.920]: host trace [D]-[gps.update sendata:]	AAF00B0266020004FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1501FFFF4
+[2017-10-29 20:58:50.924]: host trace 08520470052ED00000000000000000000000000EC0000008C0A07001E00000074CBC200F6F80700FC213B00D44C98000C10FA000A744E00A1BB0B005E9D0C00
+[2017-10-29 20:58:50.930]: host trace 008C0A00274DFF0001A43E00262C0000CFD45800BD22210024E19200C79CFF0054FC00071601FFFF408520470052ED00000000000000000000000000DA00000
+[2017-10-29 20:58:50.936]: host trace 00ED7F340025A6FF0058FD0003FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+[2017-10-29 20:58:50.940]: host trace FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1801FFFF408520470052
+[2017-10-29 20:58:50.943]: host trace ED00000000000000000000000000060000008C0AA200FCFF0000B48EFA006001A2004D11370027DE8300031A01007FFA2700A1C80C00475B0D00008C0A00A7C
+[2017-10-29 20:58:50.946]: host trace 6FF00AF18850026280000BF047300138B1F004FA1280022A4FF004CF500A2FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+[2017-10-29 20:58:50.950]: host trace FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF190D0A	6668
+[2017-10-29 20:58:50.982]: host trace [D]-[gps.update is ack:]	AAF00C0003000004010A	10
+[2017-10-29 20:58:51.109]: host trace [D]-[gps.update sendata:]	AAF00B0266020005FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+[2017-10-29 20:58:51.114]: host trace FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+[2017-10-29 20:58:51.117]: host trace FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1B01FFFF308520470052ED00000000000000000
+[2017-10-29 20:58:51.121]: host trace 000000000030000008B0A020023000000C8DE2C00E60402009C2E2F00AC916D0002F20300D3868F00A1D90C0067630D00008B0A00FEE0FF00C74E290027ADFF
+[2017-10-29 20:58:51.124]: host trace 00EDCEC7000FD3210074737900F8A7FF00D80E00021C01FFFF408520470054ED00000000000000000000000000E80000008C0A63001C0000007840560042036
+[2017-10-29 20:58:51.128]: host trace 300BFC928007180D2000ACC03007EE53700A1871200F1540D00008C0A00D7220000B61519002810010073093C00C0F71B0012488E0027ACFF005CFF0063FFFF
+[2017-10-29 20:58:51.131]: host trace FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+[2017-10-29 20:58:51.134]: host trace FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+[2017-10-29 20:58:51.138]: host trace FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF700D0A	6668
+[2017-10-29 20:58:51.141]: host trace [D]-[gps.update is ack:]	0D0A	2
+[2017-10-29 20:58:51.259]: host read data timeout
+Traceback (most recent call last):
+  File "host.pyo", line 150, in read_loop
+  File "host.pyo", line 109, in _read_unescape
+  File "host.pyo", line 98, in _read
+HostReadTimeoutError: host read data timeout
+[2017-10-29 20:58:51.260]: host trace [D]-[gps.update sendata:]	AAF00B0266020006FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+[2017-10-29 20:58:51.263]: host trace FFFFFFFFFFFFFFFFFFFFFFF1F01FFFF408520470052ED00000000000000000000000000E40000008C0A1200E9FF0000E0B61500050012001D833100CEE29400
+[2017-10-29 20:58:51.266]: host trace 042200008F887400A1C50C0065530C00008C0A00AA790000A4EF4700270A0000CC855400F6A22000855C83008CA6FF00A0F400122001FFFF408520470052ED0
+[2017-10-29 20:58:51.288]: host trace 0061AB090027D3FF00182A0800966E1C0028380F0061A8FF006008008E000000000000000000000000000000000000000000000000000000000000000000000
+[2017-10-29 20:58:51.290]: host trace 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+[2017-10-29 20:58:51.293]: host trace 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+[2017-10-29 20:58:51.296]: host trace 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+[2017-10-29 20:58:51.299]: host trace 00000000000000000000000000000000000000000000000000EC0D0A	6668
+[2017-10-29 20:58:51.302]: host trace [D]-[gps.update is ack:]	AAF00C0003000005010B0D0A	12
+[2017-10-29 20:58:51.331]: host trace [E]-[coroutine.resume]	/lua/gps.lua:110: attempt to call global 'writeDataData' (a nil value)
+[2017-10-29 20:58:51.334]: host trace [E]-[coroutine.resume]	cannot resume dead coroutine
+[2017-10-29 20:58:51.336]: host trace [E]-[coroutine.resume]	cannot resume dead coroutine
+[2017-10-29 20:58:51.352]: host trace [E]-[coroutine.resume]	cannot resume dead coroutine
+[2017-10-29 20:58:51.690]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:51.694]: host trace [I]-[ril.proatc]	SMS READY
+[2017-10-29 20:58:51.697]: host trace [I]-[ril.defurc]	SMS READY
+[2017-10-29 20:58:53.858]: host trace [network] psStatus=1, pdpStatus=0
+[2017-10-29 20:58:53.859]: host trace [network] OPENAT_NetworkStatusChangeInd  state 1
+[2017-10-29 20:58:53.864]: host trace [network] psStatus=1, pdpStatus=0
+[2017-10-29 20:58:53.868]: host trace [network] OPENAT_NetworkStatusChangeInd  state 1
+[2017-10-29 20:58:55.617]: host trace [I]-[ril.sendat]	AT+CSQ
+[2017-10-29 20:58:55.638]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:55.641]: host trace [I]-[ril.proatc]	+CSQ: 24,99
+[2017-10-29 20:58:55.645]: host trace [I]-[ril.proatc]	
+[2017-10-29 20:58:55.661]: host trace [I]-[ril.proatc]	OK
