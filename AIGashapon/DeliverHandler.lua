@@ -17,6 +17,7 @@ require "ReplyDeliverHandler"
 require "UploadSaleLogHandler"
 require "CloudReplyBaseHandler"
 require "UARTControlIndClose"
+require "UploadDetection"
 
 local TAG = "DeliverHandler"
 gBusyMap={}--是否在占用的记录
@@ -45,7 +46,7 @@ local UPLOAD_TIMER_TIMEOUT= "TimerTimeout"--定时器检测到超时
 local UPLOAD_DELIVER_AFTER_TIMEOUT= "DeliverAfterTimeout"--超时后出货
 
 --发送出货指令后，锁的状态
-local LOCK_OPEN_STATE="openLock"
+local LOCK_OPEN_STATE="s1state"
 local LOCK_STATE_OPEN = "1"
 local LOCK_STATE_CLOSED = "0"
 
@@ -252,7 +253,7 @@ function  openLockCallback(addr,flagsTable)
                 loc = tonumber(loc)
                 ok = UARTStatusReport.isDeliverOK(loc)
 
-                -- 锁曾经开过了
+                -- 锁曾经开过，则将其增加到订单状态中，下次不再更新
                 lockOpen = UARTStatusReport.isLockOpen(loc)
                 if lockOpen then
                     saleTable[LOCK_OPEN_STATE] = LOCK_STATE_OPEN
@@ -264,6 +265,16 @@ function  openLockCallback(addr,flagsTable)
                     saleTable[CloudConsts.CTS]=os.time()
                     saleTable[UPLOAD_POSITION]=UPLOAD_NORMAL
 
+                    -- 上报出货检测
+                    saleTable[CloudConsts.AMOUNT]=1
+                    detectionHandler = UploadDetection:new()
+                    detectionHandler:setMap(saleTable)
+                    detectionHandler:send()
+
+                    saleTable[CloudConsts.AMOUNT]=nil--删除这个字段
+
+
+                    -- 上报出货日志
                     saleLogHandler = UploadSaleLogHandler:new()
                     saleLogHandler:setMap(saleTable)
 
@@ -273,6 +284,7 @@ function  openLockCallback(addr,flagsTable)
                         saleTable[UPLOAD_POSITION]=UPLOAD_DELIVER_AFTER_TIMEOUT
                     end
                     saleLogHandler:send(s)
+
 
                     table.remove(gBusyMap,key)
                     break
