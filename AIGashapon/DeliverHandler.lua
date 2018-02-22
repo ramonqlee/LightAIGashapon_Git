@@ -264,8 +264,6 @@ function  openLockCallback(addr,flagsTable)
 
                 if ok then
                     LogUtil.d(TAG,TAG.."openLockCallback delivered OK")
-                    saleTable[CloudConsts.CTS]=os.time()
-                    saleTable[UPLOAD_POSITION]=UPLOAD_NORMAL
 
                     -- 上报出货检测
                     local detectTable = {}
@@ -277,18 +275,20 @@ function  openLockCallback(addr,flagsTable)
                     detectionHandler:setMap(detectTable)
                     detectionHandler:send()
 
+                    -- 上报出货日志(如果已经上报过超时，就不再上报了)
+                    if not saleTable[UPLOAD_POSITION] then
+                        saleTable[CloudConsts.CTS]=os.time()
+                        saleTable[UPLOAD_POSITION]=UPLOAD_NORMAL
+                        local saleLogHandler = UploadSaleLogHandler:new()
+                        saleLogHandler:setMap(saleTable)
 
-                    -- 上报出货日志
-                    local saleLogHandler = UploadSaleLogHandler:new()
-                    saleLogHandler:setMap(saleTable)
-
-                    s = CloudReplyBaseHandler.SUCCESS
-                    if saleTable[self.ORDER_TIMEOUT_TIME_IN_SEC]>os.time() then
-                        s = CloudReplyBaseHandler.DELIVER_AFTER_TIMEOUT--超时出货
-                        saleTable[UPLOAD_POSITION]=UPLOAD_DELIVER_AFTER_TIMEOUT
+                        s = CloudReplyBaseHandler.SUCCESS
+                        if saleTable[self.ORDER_TIMEOUT_TIME_IN_SEC]>os.time() then
+                            s = CloudReplyBaseHandler.DELIVER_AFTER_TIMEOUT--超时出货
+                            saleTable[UPLOAD_POSITION]=UPLOAD_DELIVER_AFTER_TIMEOUT
+                        end
+                        saleLogHandler:send(s)
                     end
-                    saleLogHandler:send(s)
-
 
                     table.remove(gBusyMap,key)
                     break
@@ -324,7 +324,6 @@ function TimerFunc(id)
     -- 1. 订单对应的出货，超过了超时时间；
     --修改为下次同一弹仓出货时，移除这次的或者等待底层硬件上报出货成功后，移除
 
-    -- local toRemoves = {}
     for key,saleTable in ipairs(gBusyMap) do
         if saleTable then
            -- 是否超时了
@@ -336,9 +335,7 @@ function TimerFunc(id)
                if systemTime > orderTimeoutTime then
                 LogUtil.d(TAG,TAG.."in TimerFunc timeouted orderId ="..orderId)
                 
-
                 --上传超时
-                saleTable[DeliverHandler.ORDER_TIMEOUT_TIME_IN_SEC]=nil--remove this key
                 saleTable[UPLOAD_POSITION]=UPLOAD_TIMER_TIMEOUT
                 saleTable[CloudConsts.CTS]=systemTime
 
@@ -350,9 +347,4 @@ function TimerFunc(id)
     end
 end
 
-    -- 
-    -- for _,v in ipairs(toRemoves) do
-    --     LogUtil.d(TAG,TAG.."in TimerFunc remove from gBusyMap for orderId ="..orderId)
-    --     table.remove(gBusyMap,v)
-    -- end
 end     
