@@ -91,7 +91,9 @@ function DeliverHandler:handleContent( content )
     -- 出货
     -- 监听出货情况
     -- 超时未出货，上传超时错误
-    LogUtil.d(TAG,TAG.." handleContent content="..jsonex.encode(content))
+    if Consts.LOG_ENABLED then
+        LogUtil.d(TAG,TAG.." handleContent content="..jsonex.encode(content))
+    end
 
     local r = false
     if (not content) then
@@ -266,16 +268,18 @@ function  openLockCallback(addr,flagsTable)
                     saleTable[UPLOAD_POSITION]=UPLOAD_NORMAL
 
                     -- 上报出货检测
-                    saleTable[CloudConsts.AMOUNT]=1
-                    detectionHandler = UploadDetection:new()
-                    detectionHandler:setMap(saleTable)
-                    detectionHandler:send()
+                    local detectTable = {}
+                    detectTable[CloudConsts.AMOUNT]=1
+                    detectTable[CloudConsts.SN]=saleTable[CloudConsts.SN]
+                    detectTable[CloudConsts.ONLINE_ORDER_ID]=saleTable[CloudConsts.ONLINE_ORDER_ID]
 
-                    saleTable[CloudConsts.AMOUNT]=nil--删除这个字段
+                    detectionHandler = UploadDetection:new()
+                    detectionHandler:setMap(detectTable)
+                    detectionHandler:send()
 
 
                     -- 上报出货日志
-                    saleLogHandler = UploadSaleLogHandler:new()
+                    local saleLogHandler = UploadSaleLogHandler:new()
                     saleLogHandler:setMap(saleTable)
 
                     s = CloudReplyBaseHandler.SUCCESS
@@ -324,22 +328,24 @@ function TimerFunc(id)
     for key,saleTable in ipairs(gBusyMap) do
         if saleTable then
            -- 是否超时了
-           systemTime = os.time()
            orderTimeoutTime=saleTable[DeliverHandler.ORDER_TIMEOUT_TIME_IN_SEC]
-           orderId = saleTable[CloudConsts.ONLINE_ORDER_ID]
-           LogUtil.d(TAG,"parse mapTable orderId = "..orderId.." orderTimeoutTime="..orderTimeoutTime.." systemTime="..systemTime)
-           if systemTime > orderTimeoutTime then
-            -- toRemoves[#toRemoves+1]=key
+           if orderTimeoutTime then
+               systemTime = os.time()
+               orderId = saleTable[CloudConsts.ONLINE_ORDER_ID]
+               LogUtil.d(TAG,"parse mapTable orderId = "..orderId.." orderTimeoutTime="..orderTimeoutTime.." systemTime="..systemTime)
+               if systemTime > orderTimeoutTime then
+                LogUtil.d(TAG,TAG.."in TimerFunc timeouted orderId ="..orderId)
+                
 
-            LogUtil.d(TAG,TAG.."in TimerFunc timeouted orderId ="..orderId)
+                --上传超时
+                saleTable[DeliverHandler.ORDER_TIMEOUT_TIME_IN_SEC]=nil--remove this key
+                saleTable[UPLOAD_POSITION]=UPLOAD_TIMER_TIMEOUT
+                saleTable[CloudConsts.CTS]=systemTime
 
-            saleTable[DeliverHandler.ORDER_TIMEOUT_TIME_IN_SEC]=nil--remove this key
-            saleTable[UPLOAD_POSITION]=UPLOAD_TIMER_TIMEOUT
-            saleTable[CloudConsts.CTS]=systemTime
-
-            saleLogHandler = UploadSaleLogHandler:new()
-            saleLogHandler:setMap(saleTable)
-            saleLogHandler:send(CloudReplyBaseHandler.TIMEOUT)
+                local saleLogHandler = UploadSaleLogHandler:new()
+                saleLogHandler:setMap(saleTable)
+                saleLogHandler:send(CloudReplyBaseHandler.TIMEOUT)
+                end
           end
     end
 end
