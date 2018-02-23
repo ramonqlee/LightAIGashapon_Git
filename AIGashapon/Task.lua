@@ -33,8 +33,15 @@ function Task.getTask()
 		local timeInSec = os.time()
 	    local timestamp = ""..timeInSec
 		local nonce   = crypto.sha1(timestamp,#timestamp)
-		local tmp = nodeId..crypto.sha1(password,#password)..nonce..timestamp
+		local pwsha1 = crypto.sha1(password,#password)
+		nonce = string.lower(nonce)
+		pwsha1 = string.lower(pwsha1)
+
+		local tmp = nodeId..pwsha1..nonce..timestamp
+
+		LogUtil.d(TAG,"nodeId = "..nodeId.." tmp="..tmp)
 	    sign = crypto.sha1(tmp,#tmp)
+	    sign = string.lower(sign)
 
 		url = string.format(Consts.MQTT_TASK_URL_FORMATTER,nodeId, nonce, timestamp, sign)
 	    LogUtil.d(TAG,"url = "..url)
