@@ -128,6 +128,7 @@ function DeliverHandler:handleContent( content )
     saleLogMap[CloudConsts.PAID_AMOUNT]= 1
     saleLogMap[CloudConsts.VM_S2STATE]= "0"
     saleLogMap[self.ORDER_TIMEOUT_TIME_IN_SEC]= expired
+    saleLogMap[LOCK_OPEN_STATE] = LOCK_STATE_CLOSED--出货时设置锁的状态为关闭
 
     if expired<os.time() then
         LogUtil.d(TAG,TAG.." timeout orderId="..orderId.." expired ="..expired.." os.time()="..os.time())
@@ -204,7 +205,6 @@ function DeliverHandler:handleContent( content )
 
         UartMgr.publishMessage(r)
 
-        saleLogMap[LOCK_OPEN_STATE] = LOCK_STATE_CLOSED--出货时设置锁的状态为关闭
         LogUtil.d(TAG,TAG.." Deliver openLock,addr = "..string.tohex(addr))
 
         gBusyMap[#gBusyMap+1]=saleLogMap
