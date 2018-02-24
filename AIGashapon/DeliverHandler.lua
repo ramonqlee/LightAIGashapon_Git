@@ -283,7 +283,7 @@ function  openLockCallback(addr,flagsTable)
                         saleLogHandler:setMap(saleTable)
 
                         s = CloudReplyBaseHandler.SUCCESS
-                        if saleTable[DeliverHandler.ORDER_TIMEOUT_TIME_IN_SEC]>os.time() then
+                        if os.time() > saleTable[DeliverHandler.ORDER_TIMEOUT_TIME_IN_SEC] then
                             s = CloudReplyBaseHandler.DELIVER_AFTER_TIMEOUT--超时出货
                             saleTable[UPLOAD_POSITION]=UPLOAD_DELIVER_AFTER_TIMEOUT
                         end
