@@ -127,7 +127,7 @@ function DeliverHandler:handleContent( content )
     saleLogMap[CloudConsts.PAYER]= self.PAY_ONLINE
     saleLogMap[CloudConsts.PAID_AMOUNT]= 1
     saleLogMap[CloudConsts.VM_S2STATE]= "0"
-    saleLogMap[self.ORDER_TIMEOUT_TIME_IN_SEC]= expired
+    saleLogMap[DeliverHandler.ORDER_TIMEOUT_TIME_IN_SEC]= expired
     saleLogMap[LOCK_OPEN_STATE] = LOCK_STATE_CLOSED--出货时设置锁的状态为关闭
 
     if expired<os.time() then
@@ -161,7 +161,7 @@ function DeliverHandler:handleContent( content )
                 saleLogHandler = UploadSaleLogHandler:new()
 
                 --相同location，之前的订单还没到过期时间,那么当前的订单直接上报硬件繁忙
-                if os.time()<saleTable[self.ORDER_TIMEOUT_TIME_IN_SEC] then
+                if os.time()<saleTable[DeliverHandler.ORDER_TIMEOUT_TIME_IN_SEC] then
                     saleLogMap[CloudConsts.CTS]=os.time()
                     saleLogMap[UPLOAD_POSITION]=UPLOAD_BUSY_ARRIVAL
 
@@ -263,7 +263,7 @@ function  openLockCallback(addr,flagsTable)
                 LogUtil.d(TAG,TAG.." openLockCallback handled orderId ="..orderId.." seq = "..seq.." loc = "..loc)
 
                 if ok then
-                    LogUtil.d(TAG,TAG.."openLockCallback delivered OK")
+                    LogUtil.d(TAG,TAG.." openLockCallback delivered OK")
 
                     -- 上报出货检测
                     local detectTable = {}
@@ -283,7 +283,7 @@ function  openLockCallback(addr,flagsTable)
                         saleLogHandler:setMap(saleTable)
 
                         s = CloudReplyBaseHandler.SUCCESS
-                        if saleTable[self.ORDER_TIMEOUT_TIME_IN_SEC]>os.time() then
+                        if saleTable[DeliverHandler.ORDER_TIMEOUT_TIME_IN_SEC]>os.time() then
                             s = CloudReplyBaseHandler.DELIVER_AFTER_TIMEOUT--超时出货
                             saleTable[UPLOAD_POSITION]=UPLOAD_DELIVER_AFTER_TIMEOUT
                         end
@@ -297,7 +297,7 @@ function  openLockCallback(addr,flagsTable)
                     if LOCK_STATE_OPEN == saleTable[LOCK_OPEN_STATE] then
                         lockstate = "open"
                     end
-                    LogUtil.d(TAG,TAG.."openLockCallback deliver lockstate = "..lockstate)
+                    LogUtil.d(TAG,TAG.." openLockCallback deliver lockstate = "..lockstate)
                 end
             end
         end

@@ -79,7 +79,7 @@ function UARTStatusReport.getStates(group)
 	 	s2 = string.byte(status,6)
 	end
 
-	LogUtil.d(TAG,"UARTStatusReport.getStates group ="..group.." s1 = "..s1.." s2 = "..s2)
+	-- LogUtil.d(TAG,"UARTStatusReport.getStates group ="..group.." s1 = "..s1.." s2 = "..s2)
 	return s1,s2
 end
 
