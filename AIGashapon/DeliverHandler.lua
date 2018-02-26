@@ -335,13 +335,16 @@ function TimerFunc(id)
                if systemTime > orderTimeoutTime then
                 LogUtil.d(TAG,TAG.."in TimerFunc timeouted orderId ="..orderId)
                 
-                --上传超时
-                saleTable[UPLOAD_POSITION]=UPLOAD_TIMER_TIMEOUT
-                saleTable[CloudConsts.CTS]=systemTime
+                --上传超时，如果已经上传过，则不再上传
+                if not saleTable[UPLOAD_POSITION] then
+                    saleTable[UPLOAD_POSITION]=UPLOAD_TIMER_TIMEOUT
+                    saleTable[CloudConsts.CTS]=systemTime
 
-                local saleLogHandler = UploadSaleLogHandler:new()
-                saleLogHandler:setMap(saleTable)
-                saleLogHandler:send(CloudReplyBaseHandler.TIMEOUT)
+                    local saleLogHandler = UploadSaleLogHandler:new()
+                    saleLogHandler:setMap(saleTable)
+                    saleLogHandler:send(CloudReplyBaseHandler.TIMEOUT)
+                end
+
                 end
           end
     end
