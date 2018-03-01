@@ -31,7 +31,7 @@ local jsonex = require "jsonex"
 -- FIXME username and password to be retrieved from server
 local RETRY_TIME=10000
 local DISCONNECT_WAIT_TIME=5000
-local KEEPALIVE,CLEANSESSION=5,1
+local KEEPALIVE,CLEANSESSION=30,1
 local PROT,ADDR,PORT =Consts.PROTOCOL,Consts.MQTT_ADDR,Consts.MQTT_PORT
 local QOS,RETAIN=2,0
 -- local RETRY_COUNT = 3
