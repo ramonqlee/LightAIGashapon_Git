@@ -21,7 +21,7 @@ end
 
 --添加到msg缓存,如果不存在，则返回true；如果已经存在，则返回false
 function msgcache.addMsg2Cache(msg)
-    r = false
+    local r = false
     --解析msg中的sn
     if not msg then
         return r
@@ -36,7 +36,7 @@ function msgcache.addMsg2Cache(msg)
         return r
     end
 
-    payload = tableObj[CloudConsts.PAYLOAD]
+    local payload = tableObj[CloudConsts.PAYLOAD]
     if "string"==type(payload) then
       payload = jsonex.decode(payload)
   end
@@ -45,20 +45,22 @@ function msgcache.addMsg2Cache(msg)
     return r
   end
 
-    content = payload[CloudConsts.CONTENT]
+    local content = payload[CloudConsts.CONTENT]
     if not content or "table" ~= type(content) then
+        LogUtil.d(TAG,sn.."illegal content")
         return r
     end
 
-    sn = content[CloudConsts.SN]
-    if not sn then 
+    local sn = content[CloudConsts.SN]
+    if not sn or "string"~= type(sn) then 
+        LogUtil.d(TAG,sn.."illegal sn")
         return r
     end
 
 
     --从文件中提取历史消息，然后进行追加
     local mqttMsgSet = {}
-    allset = Config.getValue(SN_SET_PERSISTENCE_KEY)
+    local allset = Config.getValue(SN_SET_PERSISTENCE_KEY)
     if allset and "string"==type(allset) and #allset>0 then
         mqttMsgSet = jsonex.decode(allset)
     end 
@@ -66,8 +68,24 @@ function msgcache.addMsg2Cache(msg)
     if not mqttMsgSet then
         mqttMsgSet = {}
     end  
+    LogUtil.d(TAG,sn.." checking if new sn is in queue,queue size = "..#mqttMsgSet.." sn="..sn)
 
-    --缓存数量超了，删除最早加入的那个
+    for _,value in ipairs(mqttMsgSet) do
+        if value == sn then
+         LogUtil.d(TAG,sn.." duplicate sn in queue,sn="..sn)
+         r = false
+         break
+        end
+    end
+
+    local updated = false
+    --不存在的话，则记录下
+    if r then
+        mqttMsgSet[#mqttMsgSet+1]=sn
+        updated = true
+    end
+
+    --缓存数量超了，删除最早加入的那些
     if #mqttMsgSet >= MAX_MQTT_CACHE_COUNT then
         --从头部开始删除
         for i=1,DECR_MQTT_CACHE_COUNT do
@@ -75,24 +93,17 @@ function msgcache.addMsg2Cache(msg)
                 break
             end
             table.remove(mqttMsgSet,1)
-        end
-        
-        Config.saveValue(SN_SET_PERSISTENCE_KEY,jsonex.encode(mqttMsgSet))
+            updated = true
+        end    
     end
 
-    for _,value in ipairs(mqttMsgSet) do
-        if value == sn then
-         LogUtil.d(TAG,sn.." duplicate sn in queue,size="..#mqttMsgSet)
-         return false
-        end
+    --是否需要更新文件
+    if updated then
+         Config.saveValue(SN_SET_PERSISTENCE_KEY,jsonex.encode(mqttMsgSet))
+         LogUtil.d(TAG,sn.." update queue,size="..#mqttMsgSet)
     end
 
-    mqttMsgSet[#mqttMsgSet+1]=sn--不存在的话，则记录下
-    Config.saveValue(SN_SET_PERSISTENCE_KEY,jsonex.encode(mqttMsgSet))
-
-    LogUtil.d(TAG,sn.." added to queue,size="..#mqttMsgSet)
-
-    return true
+    return r
 end     
 
 
