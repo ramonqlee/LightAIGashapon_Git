@@ -68,20 +68,22 @@ function msgcache.addMsg2Cache(msg)
     if not mqttMsgSet then
         mqttMsgSet = {}
     end  
-    LogUtil.d(TAG,sn.." checking if new sn is in queue,queue size = "..#mqttMsgSet.." sn="..sn)
+    LogUtil.d(TAG,sn.." checking if new sn is in queue,queue size = "..#mqttMsgSet)
 
+    local existed = false
     for _,value in ipairs(mqttMsgSet) do
         if value == sn then
          LogUtil.d(TAG,sn.." duplicate sn in queue,sn="..sn)
-         r = false
+         existed = true
          break
         end
     end
 
     local updated = false
     --不存在的话，则记录下
-    if r then
+    if not existed then
         mqttMsgSet[#mqttMsgSet+1]=sn
+        r = true
         updated = true
     end
 

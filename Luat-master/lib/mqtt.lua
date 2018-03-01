@@ -198,6 +198,7 @@ function mqttc:read(timeout)
     local packet, nextpos = unpack(self.inbuf)
     if packet then
         self.inbuf = string.sub(self.inbuf, nextpos)
+        log.info("mqtt.client:read", "return from inbuf")
         return true, packet
     end
 
@@ -235,6 +236,7 @@ end
 function mqttc:waitfor(id, timeout)
     for index, packet in ipairs(self.cache) do
         if packet.id == id then
+            log.info("mqtt.client:waitfor", "return cache msg,id = "..id)
             return true, table.remove(self.cache, index)
         end
     end
