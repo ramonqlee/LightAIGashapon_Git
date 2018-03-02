@@ -141,6 +141,7 @@ end
 function UARTAllInfoReport.getAllBoardIds(returnCacheIfEmpty)
 	-- 查看内存，如果为空，则尝试返回本地的；否则直接返回内存中的
 	if mAllBoardIds and #mAllBoardIds>0 then
+		LogUtil.d(TAG,"getAllBoardIds size = "..#mAllBoardIds)
 		return mAllBoardIds
 	end
 
@@ -148,6 +149,7 @@ function UARTAllInfoReport.getAllBoardIds(returnCacheIfEmpty)
 		tmp = Config.getValue(ALL_INFO_CACHE_KEY)
 		if tmp and "string"==type(tmp) then
 			mAllBoardIds = jsonex.decode(tmp)
+			LogUtil.d(TAG,"cached getAllBoardIds size = "..#mAllBoardIds)
 		end
 	end
 
