@@ -136,7 +136,7 @@ function DeliverHandler:handleContent( content )
         saleLogMap[UPLOAD_POSITION]=UPLOAD_TIMEOUT_ARRIVAL
         saleLogHandler = UploadSaleLogHandler:new()
         saleLogHandler:setMap(saleLogMap)
-        saleLogHandler:send(CloudReplyBaseHandler.FAIL)--超时的话，直接上报失败状态
+        saleLogHandler:send(CloudReplyBaseHandler.TIMEOUT_WHEN_ARRIVE)--超时的话，直接上报失败状态
         return
     end
 
@@ -178,10 +178,10 @@ function DeliverHandler:handleContent( content )
                     saleTable[UPLOAD_POSITION]=UPLOAD_ARRIVAL_TRIGGER_TIMEOUT
 
                     saleLogHandler:setMap(saleTable)
-                    saleLogHandler:send(CloudReplyBaseHandler.TIMEOUT)
+                    saleLogHandler:send(CloudReplyBaseHandler.NOT_ROTATE)
 
                     table.remove(gBusyMap,key)
-                    LogUtil.d(TAG,TAG.."in deliver,timeout orderId ="..orderId)
+                    LogUtil.d(TAG,TAG.." in deliver, previous order timeout, orderId ="..tmpOrderId)
                     break
                 end
             end 
@@ -331,7 +331,9 @@ function TimerFunc(id)
            if orderTimeoutTime then
                systemTime = os.time()
                orderId = saleTable[CloudConsts.ONLINE_ORDER_ID]
-               LogUtil.d(TAG,"parse mapTable orderId = "..orderId.." orderTimeoutTime="..orderTimeoutTime.." systemTime="..systemTime)
+               seq = saleTable[CloudConsts.DEVICE_SEQ]
+               loc = saleTable[CloudConsts.LOCATION]
+               LogUtil.d(TAG,"TimeoutTable orderId = "..orderId.." timeoutTime at "..orderTimeoutTime.." seq = "..seq.." location="..loc)
                if systemTime > orderTimeoutTime then
                 LogUtil.d(TAG,TAG.."in TimerFunc timeouted orderId ="..orderId)
                 
@@ -342,7 +344,7 @@ function TimerFunc(id)
 
                     local saleLogHandler = UploadSaleLogHandler:new()
                     saleLogHandler:setMap(saleTable)
-                    saleLogHandler:send(CloudReplyBaseHandler.TIMEOUT)
+                    saleLogHandler:send(CloudReplyBaseHandler.NOT_ROTATE)
                 end
 
                 end

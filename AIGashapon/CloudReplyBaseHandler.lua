@@ -14,7 +14,7 @@ local jsonex = require "jsonex"
 CloudReplyBaseHandler = {
     --状态定义:“state”: 1, //1成功，2收到并处理指令时已超时，3硬件出货失败，4硬件繁忙，5币量不足，6币售空，13未旋转,99状态未知
     SUCCESS = 1,
-    TIMEOUT = 2,
+    TIMEOUT_WHEN_ARRIVE=2,
     FAIL = 3,
     BUSY = 4,
     INSUFFICIENT = 5,
