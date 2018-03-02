@@ -53,7 +53,7 @@ end
 function allInfoCallback( ids )
 	-- 获取第一个从板id，进行开锁操作
 	addr=""
-	for _,v in ipairs(UARTAllInfoReport.getAllBoardIds()) do
+	for _,v in ipairs(UARTAllInfoReport.getAllBoardIds(true)) do
 		--LogUtil.d(TAG,"parse UARTAllInfoReport allId val = "..v)
 		if v then
 			addr = v

@@ -138,15 +138,17 @@ function UARTAllInfoReport.handle(bins)
 	return chkPos+1,startPos
 end
 
-function UARTAllInfoReport.getAllBoardIds()
+function UARTAllInfoReport.getAllBoardIds(returnCacheIfEmpty)
 	-- 查看内存，如果为空，则尝试返回本地的；否则直接返回内存中的
 	if mAllBoardIds and #mAllBoardIds>0 then
 		return mAllBoardIds
 	end
 
-	tmp = Config.getValue(ALL_INFO_CACHE_KEY)
-	if tmp and "string"==type(tmp) then
-		mAllBoardIds = jsonex.decode(tmp)
+	if returnCacheIfEmpty then
+		tmp = Config.getValue(ALL_INFO_CACHE_KEY)
+		if tmp and "string"==type(tmp) then
+			mAllBoardIds = jsonex.decode(tmp)
+		end
 	end
 
 	return mAllBoardIds

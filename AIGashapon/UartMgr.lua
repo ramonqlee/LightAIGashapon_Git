@@ -201,7 +201,7 @@ end
 
 function UartMgr.initSlaves( callback )
 
-	ids = UARTAllInfoReport.getAllBoardIds()
+	ids = UARTAllInfoReport.getAllBoardIds(false)
 	if ids and #ids > 0 then
 		LogUtil.d(TAG,"UartMgr.initSlaves done,size = "..#ids)
 		return
@@ -214,7 +214,7 @@ function UartMgr.initSlaves( callback )
 	else
 		UARTAllInfoReport.setCallback(function( ids )
 			addr=""
-			ids = UARTAllInfoReport.getAllBoardIds()
+			ids = UARTAllInfoReport.getAllBoardIds(true)
 			for _,v in ipairs(ids) do
 				if v then
 					addr = addr.." "..string.fromhex(v)
