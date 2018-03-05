@@ -10,6 +10,7 @@ require "jsonex"
 local MAX_MQTT_CACHE_COUNT = 30--缓存的最大数量
 local DECR_MQTT_CACHE_COUNT = 15--超过条数后，每次删除的数量
 local SN_SET_PERSISTENCE_KEY="msg_sn_set"
+local TIMEOUT_CMD = 120--指令超时的时间
 
 local TAG = "MSGCACHE"
 
@@ -44,6 +45,20 @@ function msgcache.addMsg2Cache(msg)
   if not payload or "table" ~= type(payload) then
     return r
   end
+
+    --是否超时
+    local tms = payload[CloudConsts.TIMESTAMP]
+    if tms then
+        local st = os.time()
+        local offset = tms -  st
+        if tms < st then
+            offset = st - tms
+        end
+        if offset > TIMEOUT_CMD then
+            LogUtil.d(TAG,sn.." timeout cmd")
+            return r
+        end
+    end
 
     local content = payload[CloudConsts.CONTENT]
     if not content or "table" ~= type(content) then
