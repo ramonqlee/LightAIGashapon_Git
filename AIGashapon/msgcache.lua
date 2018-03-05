@@ -46,6 +46,19 @@ function msgcache.addMsg2Cache(msg)
     return r
   end
 
+
+    local content = payload[CloudConsts.CONTENT]
+    if not content or "table" ~= type(content) then
+        LogUtil.d(TAG,"illegal content")
+        return r
+    end
+
+    local sn = content[CloudConsts.SN]
+    if not sn or "string"~= type(sn) then 
+        LogUtil.d(TAG,"illegal sn")
+        return r
+    end
+
     --是否超时
     local tms = payload[CloudConsts.TIMESTAMP]
     if tms then
@@ -55,21 +68,9 @@ function msgcache.addMsg2Cache(msg)
             offset = st - tms
         end
         if offset > TIMEOUT_CMD then
-            LogUtil.d(TAG,sn.." timeout cmd")
+            LogUtil.d(TAG,"timeout cmd,sn = "..sn)
             return r
         end
-    end
-
-    local content = payload[CloudConsts.CONTENT]
-    if not content or "table" ~= type(content) then
-        LogUtil.d(TAG,sn.."illegal content")
-        return r
-    end
-
-    local sn = content[CloudConsts.SN]
-    if not sn or "string"~= type(sn) then 
-        LogUtil.d(TAG,sn.."illegal sn")
-        return r
     end
 
 
