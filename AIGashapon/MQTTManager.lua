@@ -235,7 +235,8 @@ function MQTTManager.publishMessageQueue()
         return
     end
 
-    for _,msg in pairs(toPublishMessages) do
+    local toRemove={}
+    for key,msg in pairs(toPublishMessages) do
         topic = msg.topic
         payload = msg.payload
 
@@ -245,12 +246,19 @@ function MQTTManager.publishMessageQueue()
             val = "false"
             if r then
                 val = "true"
+                toRemove[#toRemove+1]=key
             end
             -- LogUtil.d(TAG,"publish result = "..val)
         end 
     end
 
-    toPublishMessages={}
+    -- 清除已经成功的消息
+    for _,val in ipairs(toRemove) do
+        if val then
+            toPublishMessages[val]=nil
+        end
+    end
+
 end
 
 function MQTTManager.handleRequst()
