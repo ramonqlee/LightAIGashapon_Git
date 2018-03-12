@@ -107,8 +107,11 @@ ntp.timeSync()
 require "http"
 require "audio"
 
+-- FIXME 暂时注释掉，测试用
 require "entry"
 entry.run()
+
+-- require "testUart"
 
 -- 启动系统框架
 sys.init(0, 0)

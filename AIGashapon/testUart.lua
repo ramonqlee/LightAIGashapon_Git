@@ -86,46 +86,57 @@ uart.on (UART_ID, "sent", txdone)
 ]]
 
 -- 		-- 闪灯协议
-	msgArray = {}
-	v = {}
-	v["id"] = pack.pack("b3",0x00,0x00,0x6E)--3 bytes
-	v["group"] = pack.pack("b",1)--1byte
-	v["color"] = pack.pack("b",2)--1bye
-	v["time"] = pack.pack(">h",10)
-	msgArray[#msgArray+1]=v
+	-- msgArray = {}
+	-- v = {}
+	-- v["id"] = pack.pack("b3",0x00,0x00,0x6E)--3 bytes
+	-- v["group"] = pack.pack("b",1)--1byte
+	-- v["color"] = pack.pack("b",2)--1bye
+	-- v["time"] = pack.pack(">h",10)
+	-- msgArray[#msgArray+1]=v
 
-	r = UARTBroadcast.encode(msgArray)
+	-- r = UARTBroadcast.encode(msgArray)
 	-- UartMgr.publishMessage(r)
 
 -- r = UARTGetBoardInfo.encode() 
 -- r = UARTGetAllInfo.encode()--获取所有板子id
 -- UARTAllInfoReport.setCallback(allInfoCallback)
+
 -- 开锁
--- addr = pack.pack("b3",0x00,0x00,0x6E) 
+-- addr = pack.pack("b3",0x00,0x00,0x02) 
 -- loc = 1 
 -- timeoutInSec = 60
 -- callback = nil
 -- UARTStatusReport.setCallback = callback
 -- r = UARTControlInd.encode(addr,loc,timeoutInSec)
+-- UartMgr.publishMessage(r)
 
-UartMgr.publishMessage(r)
+-- --开另外一个锁
+-- addr = pack.pack("b3",0x00,0x00,0x03) 
+-- r = UARTControlInd.encode(addr,loc,timeoutInSec)
+-- UartMgr.publishMessage(r)
 
 -- FIXME 测试用
 -- sys.taskInit(MQTTManager.startmqtt)
 
+sys.taskInit(function()
+	while true do
+		UartMgr.init(Consts.UART_ID,Consts.baudRate)
+		local addr = pack.pack("b3",0x00,0x00,0x02) 
+		local loc = 1 
+		local timeoutInSec =120
+		callback = nil
+		UARTStatusReport.setCallback = callback
+	-- 发送开锁报文
+		r = UARTControlInd.encode(addr,loc,timeoutInSec)
+ 		UartMgr.publishMessage(r)
 
--- sys.taskInit(function()
--- 	while true do
--- 		UartMgr.init(Consts.UART_ID,Consts.baudRate)
--- 		addr = pack.pack("b3",0x00,0x00,0x99) 
--- 		loc = 1 
--- 		timeoutInSec =10
--- 		callback = nil
--- 		UARTStatusReport.setCallback = callback
--- -- -- -- TODO 发送开锁报文
--- 		r = UARTControlInd.encode(addr,loc,timeoutInSec)
---  		UartMgr.publishMessage(r)
--- 		sys.wait(30000)--两次写入消息之间停留一段时间
--- 	end
--- 	end)  
+ 		--发送另外一个
+ 		addr = pack.pack("b3",0x00,0x00,0x03) 
+		r = UARTControlInd.encode(addr,loc,timeoutInSec)
+		UartMgr.publishMessage(r)
+
+		-- sys.wait(30000)--两次写入消息之间停留一段时间
+		break
+	end
+	end)  
 

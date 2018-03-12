@@ -105,8 +105,13 @@ function  uart_read()
 	local MAX_CACHE_SIZE=256
 	while true do	
 		-- 将协议数据进行缓存，然后逐步处理	
+		LogUtil.d(TAG,"uart start to read from uart")
 		data = uart.read(UartMgr.devicePath,"*l",0)
-		if not data or string.len(data) == 0 then break end
+		if not data or string.len(data) == 0 then 
+			LogUtil.d(TAG,"empty data")
+			break
+		end
+		
 		readDataCache = readDataCache..data
 		LogUtil.d(TAG,"uart read = "..string.tohex(data))
 		LogUtil.d(TAG,"uart readDataCache = "..string.tohex(readDataCache))
