@@ -140,7 +140,8 @@ function MQTTManager.startmqtt()
         LogUtil.d(TAG,"subscribe mqtt now")
         local topic=string.format("%s/#", USERNAME)
         if mqttc.connected and mqttc:subscribe(topic,QOS) then
-
+            mqttFailCount = 0
+            
             Config.saveValue(CloudConsts.NODE_ID,USERNAME)
             Config.saveValue(CloudConsts.PASSWORD,PASSWORD)
 

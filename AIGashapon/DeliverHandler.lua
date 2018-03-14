@@ -50,6 +50,21 @@ local LOCK_OPEN_STATE="s1state"
 local LOCK_STATE_OPEN = "1"
 local LOCK_STATE_CLOSED = "0"
 
+local function getTableLen( tab )
+    local count = 0  
+
+    if "table"~=type(tab) then
+        return count
+    end
+
+    for k,_ in pairs(tab) do  
+        count = count + 1  
+    end 
+
+    return count 
+end
+
+
 function DeliverHandler:new (o)
     o = o or CloudBaseHandler:new(o)
     setmetatable(o, self)
@@ -210,7 +225,7 @@ function DeliverHandler:handleContent( content )
         local key = device_seq.."_"..location
         gBusyMap[key]=saleLogMap
 
-        LogUtil.d(TAG,TAG.." add to gBusyMap len="..#gBusyMap)
+        LogUtil.d(TAG,TAG.." add to gBusyMap len="..getTableLen(gBusyMap))
 
         if Consts.DEVICE_ENV then
         --start timer monitor already
@@ -239,7 +254,7 @@ function  openLockCallback(addr,flagsTable)
         return
     end
 
-    LogUtil.d(TAG,TAG.."in openLockCallback gBusyMap len="..#gBusyMap.." addr="..addr)
+    LogUtil.d(TAG,TAG.."in openLockCallback gBusyMap len="..getTableLen(gBusyMap).." addr="..addr)
 
     local toRemove = {}
     for key,saleTable in pairs(gBusyMap) do
@@ -309,12 +324,12 @@ function  openLockCallback(addr,flagsTable)
     end
 
     --删除已经出货的订单,需要从最大到最小删除，
-    LogUtil.d(TAG,TAG.." to remove gBusyMap len="..#gBusyMap)
+    LogUtil.d(TAG,TAG.." to remove gBusyMap len="..getTableLen(gBusyMap))
     for key,_ in pairs(toRemove) do
-        gBusyMap[key]=nil
+        table.remove(gBusyMap[key],key)
         LogUtil.d(TAG,TAG.." remove order with key = "..key)
     end
-    LogUtil.d(TAG,TAG.." after remove gBusyMap len="..#gBusyMap)
+    LogUtil.d(TAG,TAG.." after remove gBusyMap len="..getTableLen(gBusyMap))
 
 end
 
@@ -326,8 +341,8 @@ function TimerFunc(id)
         return
     end
 
-    if 0 == #gBusyMap then
-        LogUtil.d(TAG,TAG.." in TimerFunc gBusyMap len="..#gBusyMap)
+    if 0 == getTableLen(gBusyMap) then
+        LogUtil.d(TAG,TAG.." in TimerFunc gBusyMap len="..getTableLen(gBusyMap))
         sys.timer_stop(mTimerId)
         LogUtil.d(TAG,TAG.." deliver queue is empty, stop timer id ="..mTimerId)
         return
