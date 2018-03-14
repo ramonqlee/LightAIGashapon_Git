@@ -206,8 +206,10 @@ function DeliverHandler:handleContent( content )
         UartMgr.publishMessage(r)
 
         LogUtil.d(TAG,TAG.." Deliver openLock,addr = "..string.tohex(addr))
+        
+        local key = device_seq.."_"..location
+        gBusyMap[key]=saleLogMap
 
-        gBusyMap[#gBusyMap+1]=saleLogMap
         LogUtil.d(TAG,TAG.." add to gBusyMap len="..#gBusyMap)
 
         if Consts.DEVICE_ENV then
@@ -239,6 +241,7 @@ function  openLockCallback(addr,flagsTable)
 
     LogUtil.d(TAG,TAG.."in openLockCallback gBusyMap len="..#gBusyMap.." addr="..addr)
 
+    local toRemove = {}
     for key,saleTable in ipairs(gBusyMap) do
         if saleTable then
             seq = saleTable[CloudConsts.DEVICE_SEQ]
@@ -291,10 +294,9 @@ function  openLockCallback(addr,flagsTable)
                         end
                         saleLogHandler:send(s)
                     end
-                    
-                    --添加到待删除订单表中
-                    gBusyMap[key]=nil
-                    LogUtil.d(TAG,TAG.." openLockCallback set content to nil with key = "..key)
+
+                    -- 添加到待删除列表中
+                    toRemove[key] = 1
                 else
                     lockstate="close"
                     if LOCK_STATE_OPEN == saleTable[LOCK_OPEN_STATE] then
@@ -307,14 +309,13 @@ function  openLockCallback(addr,flagsTable)
     end
 
     --删除已经出货的订单,需要从最大到最小删除，
-    for i=#gBusyMap,1,-1 do
-        LogUtil.d(TAG,TAG.." openLockCallback to remove order with index = "..i)
-        saleTable = gBusyMap[i]
-        if not saleTable then
-            table.remove(gBusyMap,i)
-            LogUtil.d(TAG,TAG.." openLockCallback remove order with index = "..i)
-        end
+    LogUtil.d(TAG,TAG.." to remove gBusyMap len="..#gBusyMap)
+    for key,_ in ipairs(toRemove) do
+        gBusyMap[key]=nil
+        LogUtil.d(TAG,TAG.." remove order with key = "..key)
     end
+    LogUtil.d(TAG,TAG.." after remove gBusyMap len="..#gBusyMap)
+
 end
 
 function TimerFunc(id)
