@@ -237,14 +237,16 @@ function  openLockCallback(addr,flagsTable)
         return
     end
 
-    LogUtil.d(TAG,TAG.."in openLockCallback gBusyMap len="..#gBusyMap)
-
+    LogUtil.d(TAG,TAG.."in openLockCallback gBusyMap len="..#gBusyMap.." addr="..addr)
 
     for key,saleTable in ipairs(gBusyMap) do
         if saleTable then
             seq = saleTable[CloudConsts.DEVICE_SEQ]
             loc = saleTable[CloudConsts.LOCATION]
             orderId = saleTable[CloudConsts.VM_ORDER_ID]
+
+            LogUtil.d(TAG,TAG.." openLockCallback handled orderId ="..orderId.." seq = "..seq.." loc = "..loc)
+
             if loc and seq and seq == addr  then
 
                 --  确认订单状态
@@ -261,7 +263,6 @@ function  openLockCallback(addr,flagsTable)
                 if lockOpen then
                     saleTable[LOCK_OPEN_STATE] = LOCK_STATE_OPEN
                 end
-                LogUtil.d(TAG,TAG.." openLockCallback handled orderId ="..orderId.." seq = "..seq.." loc = "..loc)
 
                 if ok then
                     LogUtil.d(TAG,TAG.." openLockCallback delivered OK")
@@ -293,7 +294,7 @@ function  openLockCallback(addr,flagsTable)
                     
                     --添加到待删除订单表中
                     gBusyMap[key]=nil
-                    LogUtil.d(TAG,TAG.." openLockCallback add to removeList key = "..key)
+                    LogUtil.d(TAG,TAG.." openLockCallback set content to nil with key = "..key)
                 else
                     lockstate="close"
                     if LOCK_STATE_OPEN == saleTable[LOCK_OPEN_STATE] then
@@ -307,8 +308,9 @@ function  openLockCallback(addr,flagsTable)
 
     --删除已经出货的订单,需要从最大到最小删除，
     for i=#gBusyMap,1,-1 do
+        LogUtil.d(TAG,TAG.." openLockCallback to remove order with index = "..i)
         saleTable = gBusyMap[i]
-        if not v then
+        if not saleTable then
             table.remove(gBusyMap,i)
             LogUtil.d(TAG,TAG.." openLockCallback remove order with index = "..i)
         end

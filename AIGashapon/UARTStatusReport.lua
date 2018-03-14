@@ -152,9 +152,10 @@ function UARTStatusReport.handle(bins)
 	end
 
 	status = string.sub(bins,dataPos+4)--直接读取状态，跳过运行时间
-	LogUtil.d(TAG,"status = "..string.tohex(status))
 
 	address = string.sub(bins,boardIdAddressPos,boardIdAddressPos+2)
+	LogUtil.d(TAG,"address = "..string.tohex(address).." status = "..string.tohex(status))
+	
 	if mCallback then
 		mCallback(string.tohex(address),status)
 	end
