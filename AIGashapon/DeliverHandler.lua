@@ -195,7 +195,7 @@ function DeliverHandler:handleContent( content )
                     saleLogHandler:setMap(saleTable)
                     saleLogHandler:send(CloudReplyBaseHandler.NOT_ROTATE)
 
-                    table.remove(gBusyMap,key)
+                    gBusyMap[key]=nil
                     LogUtil.d(TAG,TAG.." in deliver, previous order timeout, orderId ="..tmpOrderId)
                     break
                 end
@@ -326,7 +326,7 @@ function  openLockCallback(addr,flagsTable)
     --删除已经出货的订单,需要从最大到最小删除，
     LogUtil.d(TAG,TAG.." to remove gBusyMap len="..getTableLen(gBusyMap))
     for key,_ in pairs(toRemove) do
-        table.remove(gBusyMap[key],key)
+        gBusyMap[key]=nil
         LogUtil.d(TAG,TAG.." remove order with key = "..key)
     end
     LogUtil.d(TAG,TAG.." after remove gBusyMap len="..getTableLen(gBusyMap))
