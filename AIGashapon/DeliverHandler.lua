@@ -148,7 +148,7 @@ function DeliverHandler:handleContent( content )
     LogUtil.d(TAG," expired ="..expired.." orderId="..orderId.." device_seq="..device_seq.." location="..location.." sn="..sn.." timeoutInSec ="..timeoutInSec)
 
     -- 2. 同一location，产生了新的订单(新的订单id),之前较早是的location对应的订单就该删除了
-    for key,saleTable in ipairs(gBusyMap) do
+    for key,saleTable in pairs(gBusyMap) do
         if saleTable then
             -- 同一个弹仓，如果没超过订单本身的expired，则认为当前location对应的上次订单还没处理完，则将当前订单报繁忙(如果是出货成功了，则不会在这个缓存列表中)
             -- 如果超过订单本身的expired，则认为可以处理下一个出货了
@@ -242,7 +242,7 @@ function  openLockCallback(addr,flagsTable)
     LogUtil.d(TAG,TAG.."in openLockCallback gBusyMap len="..#gBusyMap.." addr="..addr)
 
     local toRemove = {}
-    for key,saleTable in ipairs(gBusyMap) do
+    for key,saleTable in pairs(gBusyMap) do
         if saleTable then
             seq = saleTable[CloudConsts.DEVICE_SEQ]
             loc = saleTable[CloudConsts.LOCATION]
@@ -310,7 +310,7 @@ function  openLockCallback(addr,flagsTable)
 
     --删除已经出货的订单,需要从最大到最小删除，
     LogUtil.d(TAG,TAG.." to remove gBusyMap len="..#gBusyMap)
-    for key,_ in ipairs(toRemove) do
+    for key,_ in pairs(toRemove) do
         gBusyMap[key]=nil
         LogUtil.d(TAG,TAG.." remove order with key = "..key)
     end
@@ -337,7 +337,7 @@ function TimerFunc(id)
     -- 1. 订单对应的出货，超过了超时时间；
     --修改为下次同一弹仓出货时，移除这次的或者等待底层硬件上报出货成功后，移除
 
-    for key,saleTable in ipairs(gBusyMap) do
+    for key,saleTable in pairs(gBusyMap) do
         if saleTable then
            -- 是否超时了
            orderTimeoutTime=saleTable[DeliverHandler.ORDER_TIMEOUT_TIME_IN_SEC]
