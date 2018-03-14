@@ -312,6 +312,7 @@ function  openLockCallback(addr,flagsTable)
 
                     -- 添加到待删除列表中
                     toRemove[key] = 1
+                    LogUtil.d(TAG,TAG.." add to to-remove tab,key = "..key)
                 else
                     lockstate="close"
                     if LOCK_STATE_OPEN == saleTable[LOCK_OPEN_STATE] then
@@ -324,13 +325,14 @@ function  openLockCallback(addr,flagsTable)
     end
 
     --删除已经出货的订单,需要从最大到最小删除，
-    LogUtil.d(TAG,TAG.." to remove gBusyMap len="..getTableLen(gBusyMap))
-    for key,_ in pairs(toRemove) do
-        gBusyMap[key]=nil
-        LogUtil.d(TAG,TAG.." remove order with key = "..key)
+    if getTableLen(toRemove)>0 then
+        LogUtil.d(TAG,TAG.." to remove gBusyMap len="..getTableLen(gBusyMap))
+        for key,_ in pairs(toRemove) do
+            gBusyMap[key]=nil
+            LogUtil.d(TAG,TAG.." remove order with key = "..key)
+        end
+        LogUtil.d(TAG,TAG.." after remove gBusyMap len="..getTableLen(gBusyMap))
     end
-    LogUtil.d(TAG,TAG.." after remove gBusyMap len="..getTableLen(gBusyMap))
-
 end
 
 function TimerFunc(id)
