@@ -291,7 +291,6 @@ function  openLockCallback(addr,flagsTable)
                     end
 
                     table.remove(gBusyMap,key)
-                    break
                 else
                     lockstate="close"
                     if LOCK_STATE_OPEN == saleTable[LOCK_OPEN_STATE] then
