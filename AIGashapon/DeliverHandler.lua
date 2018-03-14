@@ -168,7 +168,7 @@ function DeliverHandler:handleContent( content )
                     saleLogHandler:setMap(saleLogMap)
                     saleLogHandler:send(CloudReplyBaseHandler.BUSY)
 
-                    LogUtil.d(TAG,TAG.."oopse, duplicate request for device_seq = "..device_seq.." location = "..location.." ignored order ="..orderId)
+                    LogUtil.d(TAG,TAG.." oopse, duplicate request for device_seq = "..device_seq.." location = "..location.." ignored order ="..orderId)
                     --当前的location，有订单在处理中，上报后，直接返回，不再继续开锁
                     return
                 else
@@ -239,8 +239,6 @@ function  openLockCallback(addr,flagsTable)
 
     LogUtil.d(TAG,TAG.."in openLockCallback gBusyMap len="..#gBusyMap)
 
-    --已经处理完毕的订单
-    local toRemoves = {}
 
     for key,saleTable in ipairs(gBusyMap) do
         if saleTable then
@@ -294,7 +292,8 @@ function  openLockCallback(addr,flagsTable)
                     end
                     
                     --添加到待删除订单表中
-                    toRemoves[#toRemoves+1]=key
+                    gBusyMap[key]=nil
+                    LogUtil.d(TAG,TAG.." openLockCallback add to removeList key = "..key)
                 else
                     lockstate="close"
                     if LOCK_STATE_OPEN == saleTable[LOCK_OPEN_STATE] then
@@ -306,9 +305,13 @@ function  openLockCallback(addr,flagsTable)
         end
     end
 
-    --删除已经出货的订单
-    for _,v in ipairs(toRemoves) do
-       table.remove(gBusyMap,v)
+    --删除已经出货的订单,需要从最大到最小删除，
+    for i=#gBusyMap,1,-1 do
+        saleTable = gBusyMap[i]
+        if not v then
+            table.remove(gBusyMap,i)
+            LogUtil.d(TAG,TAG.." openLockCallback remove order with index = "..i)
+        end
     end
 end
 
