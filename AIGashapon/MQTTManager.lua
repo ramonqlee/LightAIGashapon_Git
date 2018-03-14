@@ -29,6 +29,7 @@ require "GetMachineVars"
 local jsonex = require "jsonex"
 
 -- FIXME username and password to be retrieved from server
+local MAX_MQTT_FAIL_COUNT = 20
 local RETRY_TIME=10000
 local DISCONNECT_WAIT_TIME=5000
 local KEEPALIVE,CLEANSESSION=60,1
@@ -41,7 +42,7 @@ local toPublishMessages={}
 
 local TAG = "MQTTManager"
 local wd = nil
-
+local mqttFailCount=0
 
 -- MQTT request
 local MQTT_DISCONNECT_REQUEST ="disconnect"
@@ -122,9 +123,15 @@ function MQTTManager.startmqtt()
             mqttc = mqtt.client(USERNAME,KEEPALIVE,USERNAME,PASSWORD,CLEANSESSION)
         end
 
+        mqttFailCount = 0
         while not mqttc.connected and not mqttc:connect(ADDR,PORT) do
             mywd.feed()--获取配置中，别忘了喂狗，否则会重启
             LogUtil.d(TAG,"fail to connect mqtt,try after 10s")
+            mqttFailCount = mqttFailCount+1
+            if mqttFailCount >= MAX_MQTT_FAIL_COUNT then
+                sys.restart("mqttFailTooLong")--重启更新包生效
+            end
+
             sys.wait(RETRY_TIME)
         end
 
