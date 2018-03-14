@@ -239,6 +239,9 @@ function  openLockCallback(addr,flagsTable)
 
     LogUtil.d(TAG,TAG.."in openLockCallback gBusyMap len="..#gBusyMap)
 
+    --已经处理完毕的订单
+    local toRemoves = {}
+
     for key,saleTable in ipairs(gBusyMap) do
         if saleTable then
             seq = saleTable[CloudConsts.DEVICE_SEQ]
@@ -289,8 +292,9 @@ function  openLockCallback(addr,flagsTable)
                         end
                         saleLogHandler:send(s)
                     end
-
-                    table.remove(gBusyMap,key)
+                    
+                    --添加到待删除订单表中
+                    toRemoves[#toRemoves+1]=key
                 else
                     lockstate="close"
                     if LOCK_STATE_OPEN == saleTable[LOCK_OPEN_STATE] then
@@ -302,6 +306,10 @@ function  openLockCallback(addr,flagsTable)
         end
     end
 
+    --删除已经出货的订单
+    for _,v in ipairs(toRemoves) do
+       table.remove(gBusyMap,v)
+    end
 end
 
 function TimerFunc(id)
