@@ -130,22 +130,32 @@ function  uart_read()
 		-- 循环处理数据，防止出现无法处理的情况，导致阻塞
 		while true do
 			--打开下面的打印会耗时
-			LogUtil.d(TAG,"uart before dispatch = "..string.tohex(readDataCache))
+			if readDataCache then
+				LogUtil.d(TAG,"uart before dispatch = "..string.tohex(readDataCache))
+			end
+			
 			endPos,startPos = dispatch(readDataCache)
 
 			-- 跳过处理过的数据
 			if endPos and endPos > 0 then
 				readDataCache = string.sub(readDataCache,endPos+1)
-				LogUtil.d(TAG,"uart after dispatch = "..string.tohex(readDataCache))
+				
+				if readDataCache then
+					LogUtil.d(TAG,"uart after dispatch = "..string.tohex(readDataCache))
+				end
 			else
 				--上面的数据没有匹配的处理器
 				--1. 有多个rcv，尝试跳过第一个，因为可能第一个有可能数据不合法
 				--2. 不多于1个rcv，保留下数据，等待后续的处理
 				if countFrame(readDataCache)>1 then
 					readDataCache = string.sub(readDataCache,startFrame(readDataCache)+1)
-					LogUtil.d(TAG,"uart jump to next frame readDataCache = "..string.tohex(readDataCache))
+					if readDataCache then
+						LogUtil.d(TAG,"uart jump to next frame readDataCache = "..string.tohex(readDataCache))
+					end
 				else
-					LogUtil.d(TAG,"uart wait for new stream readDataCache = "..string.tohex(readDataCache))
+					if readDataCache then
+						LogUtil.d(TAG,"uart wait for new stream readDataCache = "..string.tohex(readDataCache))
+					end
 					break
 				end
 			end
