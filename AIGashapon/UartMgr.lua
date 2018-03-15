@@ -66,6 +66,17 @@ local function dispatch( data )
 end 
 
 -- 计算可能存在的帧数
+function startFrame( bins )
+	pos = 0
+	for i=1,#bins do
+		if UARTUtils.RCV == string.byte(bins,i) then
+			return i
+		end
+	end
+	--LogUtil.d(TAG,"find startPos and count = "..c)
+	return pos
+end
+
 function countFrame( bins )
 	c = 0
 	for i=1,#bins do
@@ -92,6 +103,7 @@ function uart_write(s)
 	LogUtil.d(TAG,"uart write = "..string.tohex(s))
 end
 
+local readDataCache=""
 -- uart读取函数
 function  uart_read()
 	-- TODO 待根据具体的协议数据，进行解析
@@ -100,7 +112,7 @@ function  uart_read()
 	--如果接收缓冲区为空，则会以中断方式通知Lua脚本收到了新数据；
 	--如果接收缓冲器不为空，则不会通知Lua脚本
 	--所以Lua脚本中收到中断读串口数据时，每次都要把接收缓冲区中的数据全部读出，这样才能保证底层core中的新数据中断上来，此read函数中的while语句中就保证了这一点
-	local readDataCache=""
+	
 	local MIN_CACHE_SIZE=100
 	local MAX_CACHE_SIZE=256
 	while true do	
@@ -112,44 +124,32 @@ function  uart_read()
 			break
 		end
 		
-		readDataCache = readDataCache..data
 		LogUtil.d(TAG,"uart read = "..string.tohex(data))
-		LogUtil.d(TAG,"uart readDataCache = "..string.tohex(readDataCache))
+		readDataCache = readDataCache..data
 
 		-- 循环处理数据，防止出现无法处理的情况，导致阻塞
 		while true do
 			--打开下面的打印会耗时
 			LogUtil.d(TAG,"uart before dispatch = "..string.tohex(readDataCache))
-			pos,startPos = dispatch(readDataCache)
+			endPos,startPos = dispatch(readDataCache)
 
-			-- 清理处理过的数据
-			if pos and pos >=0 then
-				readDataCache = string.sub(readDataCache,pos+1)
-			end
-			
-			-- 是否不够多次处理了，直接跳出
-			c = countFrame(readDataCache)
-			if c <= 1 then
-				LogUtil.d(TAG,"uart wait for next frame readDataCache = "..string.tohex(readDataCache))
-				break
-			elseif startPos and startPos > 0 then
-				-- 跳到下一帧
-				LogUtil.d(TAG,"uart jump to next frame")
-				readDataCache = string.sub(readDataCache,startPos+1)
-				LogUtil.d(TAG,"uart after jump readDataCache = "..string.tohex(readDataCache))
-			end
-
-			--累计了一定的数据，现在是该清理第一个的时候了
-			if #readDataCache>MIN_CACHE_SIZE and startPos and  startPos > 0 and pos and pos < 0 then
-				readDataCache = string.sub(readDataCache,startPos+1)
-				LogUtil.d(TAG,"oopse,too much byte,jump readDataCache = "..string.tohex(readDataCache))
+			-- 跳过处理过的数据
+			if endPos and endPos > 0 then
+				readDataCache = string.sub(readDataCache,endPos+1)
+				LogUtil.d(TAG,"uart after dispatch = "..string.tohex(readDataCache))
+			else
+				--上面的数据没有匹配的处理器
+				--1. 有多个rcv，尝试跳过第一个，因为可能第一个有可能数据不合法
+				--2. 不多于1个rcv，保留下数据，等待后续的处理
+				if countFrame(readDataCache)>1 then
+					readDataCache = string.sub(readDataCache,startFrame(readDataCache)+1)
+					LogUtil.d(TAG,"uart jump to next frame readDataCache = "..string.tohex(readDataCache))
+				else
+					LogUtil.d(TAG,"uart wait for new stream readDataCache = "..string.tohex(readDataCache))
+					break
+				end
 			end
 
-			-- oops,too much cache,clear it
-			if #readDataCache>MAX_CACHE_SIZE then
-				readDataCache=""
-				LogUtil.d(TAG,"uart oops,too much cache,clear it")
-			end
 		end
 	end
 end
