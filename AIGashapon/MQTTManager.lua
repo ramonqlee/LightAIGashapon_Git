@@ -35,6 +35,8 @@ local DISCONNECT_WAIT_TIME=5000
 local KEEPALIVE,CLEANSESSION=60,1
 local PROT,ADDR,PORT =Consts.PROTOCOL,Consts.MQTT_ADDR,Consts.MQTT_PORT
 local QOS,RETAIN=2,0
+local CLIENT_COMMAND_TIMEOUT = 5000
+local MAX_MSG_CNT_PER_REQ = 2--每次最多发送的消息数
 -- local RETRY_COUNT = 3
 local mqttc
 local toPublishMessages={}
@@ -161,15 +163,15 @@ function MQTTManager.startmqtt()
                     break
                 end
 
-            -- 发送待发送的消息
-            MQTTManager.publishMessageQueue()
+            -- 发送待发送的消息，设定条数，防止出现多条带发送时，出现消息堆积
+            MQTTManager.publishMessageQueue(MAX_MSG_CNT_PER_REQ)
 
             if ntp.isEnd() and not Consts.LAST_REBOOT then
                 Consts.LAST_REBOOT = os.time()
             end
 
             mywd.feed()--等待返回数据，别忘了喂狗，否则会重启
-            local r, data = mqttc:receive(1000)
+            local r, data = mqttc:receive(CLIENT_COMMAND_TIMEOUT)
 
             if not data then
                 LogUtil.d(TAG," mqttc.receive error,break") 
@@ -221,7 +223,8 @@ function MQTTManager.startmqtt()
 end
 end
 
-function MQTTManager.publishMessageQueue()
+--控制每次调用，发送的消息数，防止发送消息，影响了收取消息
+function MQTTManager.publishMessageQueue(maxMsgPerRequest)
     -- 在此发送消息,避免在不同coroutine中发送的bug
     if not toPublishMessages or 0 == #toPublishMessages then
         LogUtil.d(TAG,"publish message queue is empty")
@@ -243,6 +246,7 @@ function MQTTManager.publishMessageQueue()
         return
     end
 
+    local count=0
     local toRemove={}
     for key,msg in pairs(toPublishMessages) do
         topic = msg.topic
@@ -250,11 +254,19 @@ function MQTTManager.publishMessageQueue()
 
         if topic and payload  then
             LogUtil.d(TAG,"publish topic="..topic.." payload="..payload)
+            mywd.feed()--等待返回数据，别忘了喂狗，否则会重启
             local r = mqttc:publish(topic,payload,QOS,RETAIN)
+            
             val = "false"
             if r then
                 val = "true"
                 toRemove[#toRemove+1]=key
+            end
+
+            count = count+1
+            if count>maxMsgPerRequest then
+                LogUtil.d(TAG,"publish count = "..maxMsgPerRequest)
+                break
             end
             -- LogUtil.d(TAG,"publish result = "..val)
         end 
