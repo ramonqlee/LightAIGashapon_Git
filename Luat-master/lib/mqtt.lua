@@ -237,7 +237,6 @@ function mqttc:waitfor(id, timeout)
     log.info("mqtt.client:waitfor", "self.cache size = "..#self.cache.." waitfor id ="..id)
 
     for index, packet in ipairs(self.cache) do
-        log.info("mqtt.client:waitfor", "iterator packet.id = "..packet.id.." id = "..id)
         if packet.id == id then
             log.info("mqtt.client:waitfor", "matched packet")
             return true, table.remove(self.cache, index)
