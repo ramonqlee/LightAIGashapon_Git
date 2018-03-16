@@ -234,9 +234,12 @@ end
 
 -- 等待接收指定的mqtt消息
 function mqttc:waitfor(id, timeout)
+    log.info("mqtt.client:waitfor", "self.cache size = "..#self.cache.." waitfor id ="..id)
+
     for index, packet in ipairs(self.cache) do
+        log.info("mqtt.client:waitfor", "iterator packet.id = "..packet.id.." id = "..id)
         if packet.id == id then
-            log.info("mqtt.client:waitfor", "return cache msg,id = "..id)
+            log.info("mqtt.client:waitfor", "matched packet")
             return true, table.remove(self.cache, index)
         end
     end
@@ -259,6 +262,7 @@ function mqttc:waitfor(id, timeout)
             end
 
             if data.id == id then
+                log.info("mqtt.client:waitfor", "return packet id ="..id)
                 return true, data
             end
             table.insert(self.cache, data)
