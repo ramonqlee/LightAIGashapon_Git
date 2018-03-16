@@ -44,6 +44,7 @@ local UPLOAD_BUSY_ARRIVAL = "busyArrival"--到达时有订单在处理
 local UPLOAD_ARRIVAL_TRIGGER_TIMEOUT = "arrivalTriggerTimeout"--到达时，有订单超时了
 local UPLOAD_TIMER_TIMEOUT= "TimerTimeout"--定时器检测到超时
 local UPLOAD_DELIVER_AFTER_TIMEOUT= "DeliverAfterTimeout"--超时后出货
+local UPLOAD_LOCK_TIMEOUT= "LockTimeout"--锁超时
 
 --发送出货指令后，锁的状态
 local LOCK_OPEN_STATE="s1state"
@@ -282,6 +283,26 @@ function  openLockCallback(addr,flagsTable)
                     saleTable[LOCK_OPEN_STATE] = LOCK_STATE_OPEN
                 end
 
+                -- 锁曾经开过，现在关上了，但是没出货
+                if LOCK_STATE_OPEN==saleTable[LOCK_OPEN_STATE] then
+                    if not lockOpen then
+                        -- 上报超时日志
+                        LogUtil.d(TAG,TAG.." openLockCallback delivered timeout")
+
+                        saleTable[CloudConsts.CTS]=os.time()
+                        saleTable[UPLOAD_POSITION]=UPLOAD_LOCK_TIMEOUT
+                        local saleLogHandler = UploadSaleLogHandler:new()
+                        saleLogHandler:setMap(saleTable)
+                        
+                        saleLogHandler:send(CloudReplyBaseHandler.NOT_ROTATE)
+
+                        -- 添加到待删除列表中
+                        toRemove[key] = 1
+                        LogUtil.d(TAG,TAG.." add to to-remove tab,key = "..key)
+                    end
+                end
+
+                -- 出货成功了
                 if ok then
                     LogUtil.d(TAG,TAG.." openLockCallback delivered OK")
 
@@ -315,7 +336,7 @@ function  openLockCallback(addr,flagsTable)
                     LogUtil.d(TAG,TAG.." add to to-remove tab,key = "..key)
                 else
                     lockstate="close"
-                    if LOCK_STATE_OPEN == saleTable[LOCK_OPEN_STATE] then
+                    if lockOpen then
                         lockstate = "open"
                     end
                     LogUtil.d(TAG,TAG.." openLockCallback deliver lockstate = "..lockstate)
