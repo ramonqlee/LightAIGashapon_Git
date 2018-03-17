@@ -36,7 +36,7 @@ local KEEPALIVE,CLEANSESSION=60,1
 local PROT,ADDR,PORT =Consts.PROTOCOL,Consts.MQTT_ADDR,Consts.MQTT_PORT
 local QOS,RETAIN=2,0
 local CLIENT_COMMAND_TIMEOUT = 5000
-local MAX_MSG_CNT_PER_REQ = 2--每次最多发送的消息数
+local MAX_MSG_CNT_PER_REQ = 1--每次最多发送的消息数
 -- local RETRY_COUNT = 3
 local mqttc
 local toPublishMessages={}
