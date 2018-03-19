@@ -284,8 +284,7 @@ function  openLockCallback(addr,flagsTable)
                 end
 
                 -- 锁曾经开过，现在关上了，但是没出货
-                if LOCK_STATE_OPEN==saleTable[LOCK_OPEN_STATE] then
-                    if not lockOpen then
+                if LOCK_STATE_OPEN==saleTable[LOCK_OPEN_STATE] and not lockOpen and not ok then
                         -- 上报超时日志
                         LogUtil.d(TAG,TAG.." openLockCallback delivered timeout")
 
@@ -299,7 +298,6 @@ function  openLockCallback(addr,flagsTable)
                         -- 添加到待删除列表中
                         toRemove[key] = 1
                         LogUtil.d(TAG,TAG.." add to to-remove tab,key = "..key)
-                    end
                 end
 
                 -- 出货成功了
