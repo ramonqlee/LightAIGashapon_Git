@@ -51,6 +51,20 @@ local MQTT_DISCONNECT_REQUEST ="disconnect"
 
 local toHandleRequests={}
 
+local function getTableLen( tab )
+    local count = 0  
+
+    if "table"~=type(tab) then
+        return count
+    end
+
+    for k,_ in pairs(tab) do  
+        count = count + 1  
+    end 
+
+    return count 
+end
+
 MQTTManager={}
 
 function MQTTManager.getNodeIdAndPasswordFromServer()
@@ -226,7 +240,7 @@ end
 --控制每次调用，发送的消息数，防止发送消息，影响了收取消息
 function MQTTManager.publishMessageQueue(maxMsgPerRequest)
     -- 在此发送消息,避免在不同coroutine中发送的bug
-    if not toPublishMessages or 0 == #toPublishMessages then
+    if not toPublishMessages or 0 == getTableLen(toPublishMessages) then
         LogUtil.d(TAG,"publish message queue is empty")
         return
     end
@@ -260,7 +274,7 @@ function MQTTManager.publishMessageQueue(maxMsgPerRequest)
             val = "false"
             if r then
                 val = "true"
-                toRemove[#toRemove+1]=key
+                toRemove[key]=1
             end
 
             count = count+1
@@ -273,9 +287,9 @@ function MQTTManager.publishMessageQueue(maxMsgPerRequest)
     end
 
     -- 清除已经成功的消息
-    for _,val in ipairs(toRemove) do
-        if val then
-            toPublishMessages[val]=nil
+    for key,_ in pairs(toRemove) do
+        if key then
+            toPublishMessages[key]=nil
         end
     end
 
@@ -308,9 +322,9 @@ function MQTTManager.publish(topic, payload)
     msg={}
     msg.topic=topic
     msg.payload=payload
-    toPublishMessages[#toPublishMessages+1]=msg
+    toPublishMessages[crypto.md5(payload,#payload)]=msg
 
-    --LogUtil.d(TAG,"add to publish queue,topic="..topic.." #toPublishMessages="..#toPublishMessages)
+    LogUtil.d(TAG,"add to publish queue,topic="..topic.." toPublishMessages len="..getTableLen(toPublishMessages))
 end
 
 
