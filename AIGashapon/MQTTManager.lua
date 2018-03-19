@@ -260,6 +260,10 @@ function MQTTManager.publishMessageQueue(maxMsgPerRequest)
         return
     end
 
+    if maxMsgPerRequest <= 0 then
+        maxMsgPerRequest = 1
+    end
+
     local count=0
     local toRemove={}
     for key,msg in pairs(toPublishMessages) do
@@ -271,18 +275,16 @@ function MQTTManager.publishMessageQueue(maxMsgPerRequest)
             mywd.feed()--等待返回数据，别忘了喂狗，否则会重启
             local r = mqttc:publish(topic,payload,QOS,RETAIN)
             
-            val = "false"
+            -- 添加到待删除队列
             if r then
-                val = "true"
                 toRemove[key]=1
             end
 
             count = count+1
-            if count>maxMsgPerRequest then
+            if count>=maxMsgPerRequest then
                 LogUtil.d(TAG,"publish count = "..maxMsgPerRequest)
                 break
             end
-            -- LogUtil.d(TAG,"publish result = "..val)
         end 
     end
 
