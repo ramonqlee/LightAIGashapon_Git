@@ -4,7 +4,7 @@
 MODULE_TYPE = "Air202"
 PROJECT = "AIGashapon"
 
-VERSION = "1.1.36"
+VERSION = "1.1.37"
 
 
 --[[
@@ -20,7 +20,7 @@ PRODUCT_KEY = "ysXG3WqbjNsSyRr0Y5T7LARnkgavKWw7"
 -- 日志级别
 require "Consts"
 require "log"
-LOG_LEVEL = log.LOGLEVEL_TRACE--log.LOG_SILENT-
+local LOG_LEVEL = log.LOG_SILENT--log.LOGLEVEL_TRACE
 require "sys"
 require "mywd"
 require "update"
@@ -97,7 +97,8 @@ require "net"
 net.startQueryAll(5 * 1000, 600 * 1000)
 -- 控制台
 require "console"
-console.setup(2, 115200)--默认为1，和现有app冲突，修改为2
+local CONSOLE_UART_ID = 2
+console.setup(CONSOLE_UART_ID, 115200)--默认为1，和现有app冲突，修改为2
 -- 系统工具
 require "misc"
 -- 看门狗
@@ -114,6 +115,11 @@ require "entry"
 entry.run()
 
 -- require "testUart"
+if log.LOG_SILENT == LOG_LEVEL then
+	_G.print=function( ... )
+	rtos.set_trace(0,CONSOLE_UART_ID)
+	end
+end
 
 -- 启动系统框架
 sys.init(0, 0)

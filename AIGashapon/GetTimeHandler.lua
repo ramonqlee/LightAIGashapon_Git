@@ -8,7 +8,6 @@
 require "CloudBaseHandler"
 require "CloudConsts"
 require "TimeUtil"
--- require "MQTTManager"
 require "LogUtil"
 require "Consts"
 
@@ -41,11 +40,22 @@ function GetTimeHandler:handle( object )
     return r
 end
 
-function GetTimeHandler:sendGetTime()
+function GetTimeHandler:sendGetTime(lastReboot)
     local topic = string.format("%s/%s",Consts.getUserName(),self:name())
 
     local msg = {}
     msg[CloudConsts.TIMESTAMP]=TimeUtil.getCheckedCurrentTime()
+    local myContent = {}
+    
+    t = 0
+    if lastReboot then
+        t = lastReboot
+    end
+    myContent["last_reboot"]=t
+
+    msg[CloudConsts.CONTENT]=myContent
+
+
     MQTTManager.publish(topic,json.encode(msg))
 end          
 

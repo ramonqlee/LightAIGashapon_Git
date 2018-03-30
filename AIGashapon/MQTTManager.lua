@@ -45,6 +45,7 @@ local toPublishMessages={}
 local TAG = "MQTTManager"
 local wd = nil
 local mqttFailCount=0
+local timeUpdated=false
 
 -- MQTT request
 local MQTT_DISCONNECT_REQUEST ="disconnect"
@@ -155,6 +156,7 @@ function MQTTManager.startmqtt()
 
         LogUtil.d(TAG,"subscribe mqtt now")
         local topic=string.format("%s/#", USERNAME)
+
         if mqttc.connected and mqttc:subscribe(topic,QOS) then
             mqttFailCount = 0
             
@@ -182,6 +184,13 @@ function MQTTManager.startmqtt()
 
             if ntp.isEnd() and not Consts.LAST_REBOOT then
                 Consts.LAST_REBOOT = os.time()
+            end
+
+            -- send get_time
+            if not timeUpdated then
+                local handle = GetTimeHandler:new()
+                handle:sendGetTime(os.time())
+                timeUpdated = true
             end
 
             mywd.feed()--等待返回数据，别忘了喂狗，否则会重启
@@ -325,6 +334,8 @@ function MQTTManager.publish(topic, payload)
     msg.topic=topic
     msg.payload=payload
     toPublishMessages[crypto.md5(payload,#payload)]=msg
+    
+    -- TODO 修改为持久化方式，发送消息
 
     LogUtil.d(TAG,"add to publish queue,topic="..topic.." toPublishMessages len="..getTableLen(toPublishMessages))
 end
