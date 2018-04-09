@@ -40,6 +40,7 @@ local MAX_MSG_CNT_PER_REQ = 1--每次最多发送的消息数
 -- local RETRY_COUNT = 3
 local mqttc
 local toPublishMessages={}
+local fdTimerId = nil
 
 
 local TAG = "MQTTManager"
@@ -110,6 +111,13 @@ function MQTTManager.startmqtt()
         return
     end
 
+    -- 定时喂狗
+    if not fdTimerId then
+        fdTimerId = sys.timer_loop_start(function()
+            mywd.feed()--断网了，别忘了喂狗，否则会重启
+        end,Consts.FEEDDOG_PERIOD)
+    end
+
     local count = 0
     local okCount = 0
     local COUNT_MAX = 100
@@ -121,16 +129,16 @@ function MQTTManager.startmqtt()
 
         while not link.isReady() do
             LogUtil.d(TAG,".............................socket not ready.............................")
-             mywd.feed()--断网了，别忘了喂狗，否则会重启
+             -- mywd.feed()--断网了，别忘了喂狗，否则会重启
              sys.wait(RETRY_TIME)
          end
 
          USERNAME = Consts.getUserName(false)
          PASSWORD = Consts.getPassword(false)
          while not USERNAME or 0==#USERNAME or not PASSWORD or 0==#PASSWORD do
-            mywd.feed()--获取配置中，别忘了喂狗，否则会重启
+            -- mywd.feed()--获取配置中，别忘了喂狗，否则会重启
             USERNAME,PASSWORD = MQTTManager.getNodeIdAndPasswordFromServer()
-            mywd.feed()--获取配置中，别忘了喂狗，否则会重启
+            -- mywd.feed()--获取配置中，别忘了喂狗，否则会重启
             LogUtil.d(TAG,".............................startmqtt retry to USERNAME="..USERNAME.." and ver=".._G.VERSION)
             sys.wait(RETRY_TIME)
         end   
@@ -142,7 +150,7 @@ function MQTTManager.startmqtt()
 
         mqttFailCount = 0
         while not mqttc.connected and not mqttc:connect(ADDR,PORT) do
-            mywd.feed()--获取配置中，别忘了喂狗，否则会重启
+            -- mywd.feed()--获取配置中，别忘了喂狗，否则会重启
             LogUtil.d(TAG,"fail to connect mqtt,try after 10s")
             mqttFailCount = mqttFailCount+1
             if mqttFailCount >= MAX_MQTT_FAIL_COUNT then
@@ -152,7 +160,7 @@ function MQTTManager.startmqtt()
             sys.wait(RETRY_TIME)
         end
 
-        mywd.feed()--准备启动主逻辑了，别忘了喂狗，否则会重启
+        -- mywd.feed()--准备启动主逻辑了，别忘了喂狗，否则会重启
 
         LogUtil.d(TAG,"subscribe mqtt now")
         local topic=string.format("%s/#", USERNAME)
@@ -193,7 +201,7 @@ function MQTTManager.startmqtt()
                 timeUpdated = true
             end
 
-            mywd.feed()--等待返回数据，别忘了喂狗，否则会重启
+            -- mywd.feed()--等待返回数据，别忘了喂狗，否则会重启
             local r, data = mqttc:receive(CLIENT_COMMAND_TIMEOUT)
 
             if not data then
@@ -281,7 +289,7 @@ function MQTTManager.publishMessageQueue(maxMsgPerRequest)
 
         if topic and payload  then
             LogUtil.d(TAG,"publish topic="..topic.." payload="..payload)
-            mywd.feed()--等待返回数据，别忘了喂狗，否则会重启
+            -- mywd.feed()--等待返回数据，别忘了喂狗，否则会重启
             local r = mqttc:publish(topic,payload,QOS,RETAIN)
             
             -- 添加到待删除队列

@@ -4,7 +4,7 @@
 MODULE_TYPE = "Air202"
 PROJECT = "AIGashapon"
 
-VERSION = "1.1.37"
+VERSION = "1.1.40"
 
 
 --[[
@@ -20,7 +20,6 @@ PRODUCT_KEY = "ysXG3WqbjNsSyRr0Y5T7LARnkgavKWw7"
 -- 日志级别
 require "Consts"
 require "log"
-local LOG_LEVEL = log.LOG_SILENT--log.LOGLEVEL_TRACE
 require "sys"
 require "mywd"
 require "update"
@@ -89,7 +88,6 @@ sys.timer_loop_start(function()
 	Task.getTask()				 -- 检测是否有新任务
 end,Consts.TASK_PERIOD)
 
-
 require "utils"
 -- 加载GSM
 require "net"
@@ -113,13 +111,6 @@ require "audio"
 -- FIXME 暂时注释掉，测试用
 require "entry"
 entry.run()
-
--- require "testUart"
-if log.LOG_SILENT == LOG_LEVEL then
-	_G.print=function( ... )
-	rtos.set_trace(0,CONSOLE_UART_ID)
-	end
-end
 
 -- 启动系统框架
 sys.init(0, 0)

@@ -30,7 +30,7 @@ function allInfoCallback( ids )
 		mqttStarted = true
 		sys.taskInit(MQTTManager.startmqtt)
 	end
-	mywd.feed()--断网了，别忘了喂狗，否则会重启
+	-- mywd.feed()--断网了，别忘了喂狗，否则会重启
 end
 
 function entry.run()
@@ -40,12 +40,11 @@ function entry.run()
 		--获取所有板子id
 		UartMgr.initSlaves(allInfoCallback)    
 	end)
-
-	mywd.feed()--断网了，别忘了喂狗，否则会重启
+	
 	-- 启动一个延时定时器，防止没有回调时无法正常启动
 	timerId=sys.timer_start(function()
 		LogUtil.d(TAG,"start after timeout in retrieving slaves")
-		mywd.feed()--断网了，别忘了喂狗，否则会重启
+		-- mywd.feed()--断网了，别忘了喂狗，否则会重启
 		if not mqttStarted then
 			mqttStarted = true
 			sys.taskInit(MQTTManager.startmqtt)
