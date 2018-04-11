@@ -85,8 +85,9 @@ function SetConfigHandler:handleContent( content )
  	-- 恢复初始状态
  	if STATE_INIT==state then
     	LogUtil.d(TAG,"state ="..state.." clear nodeId and password")
- 		Config.saveValue(CloudConsts.NODE_ID,"")
-    	Config.saveValue(CloudConsts.PASSWORD,"")
+        Consts.clearUserName()
+        Consts.clearPassword()
+        
     	MQTTManager.disconnect()
     	return
     end
