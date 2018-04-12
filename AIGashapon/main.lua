@@ -28,13 +28,6 @@ require "Task"
 
 local function restart()
 	print("receive restart cmd ")
-	current = os.time()
-
-	if current then
-		Config.saveValue(Consts.LAST_UPDATE_TIME,current)
-		-- print("updateNewVersionTime = "..current.." from version=".._G.VERSION)
-	end
-
 	sys.restart("restart")--重启更新包生效
 end
 

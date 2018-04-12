@@ -59,20 +59,23 @@ function checkUpdate()
     --避免出现升级失败时，多次升级
     local time = Config.getValue(LAST_UPDATE_TIME)
 
+    current = os.time()
     if not time or "number"~=type(time) then
-        Config.saveValue(Consts.LAST_UPDATE_TIME,0)
-        time = 0
+        time = current
+        Config.saveValue(Consts.LAST_UPDATE_TIME,time)
     end
 
-    current = os.time()
     if current then
         -- print("lastUpdateTime = "..time.." current ="..current.." MIN_UPDATE_INTERVAL="..Consts.MIN_UPDATE_INTERVAL )
         if (current-time)<Consts.MIN_UPDATE_INTERVAL then
-            print("update too often,ignore")
+            LogUtil.d(TAG,"update too often,ignore")
             return
         end
     end
+
+    Config.saveValue(Consts.LAST_UPDATE_TIME,current)
     update.run() -- 检测是否有更新包
+    rtos.sleep(Consts.TASK_WAIT_IN_MS)--强制延时
 end
 
 
@@ -80,20 +83,23 @@ end
 function checkTask()
    --避免出现升级失败时，多次升级
     local time = Config.getValue(Consts.LAST_TASK_TIME)
+    current = os.time()
     if not time or "number"~=type(time) then
-        Config.saveValue(Consts.LAST_TASK_TIME,0)
-        time = 0
+        time = current
+        Config.saveValue(Consts.LAST_TASK_TIME,time)
     end
 
-    current = os.time()
     if current then
         -- print("lastTaskTime = "..time.." current ="..current.." MIN_TASK_INTERVAL="..Consts.MIN_TASK_INTERVAL )
         if (current-time)<Consts.MIN_TASK_INTERVAL then
-            print("task check too often,ignore")
+            LogUtil.d(TAG,"task check too often,ignore")
             return
         end
     end
+
+    Config.saveValue(Consts.LAST_TASK_TIME,current)
     Task.getTask()               -- 检测是否有新任务 
+    rtos.sleep(Consts.TASK_WAIT_IN_MS)--强制延时
 end
 
 
@@ -164,7 +170,7 @@ function MQTTManager.startmqtt()
 
     local count = 0
     local okCount = 0
-    local COUNT_MAX = 100
+    local COUNT_MAX = 12*60*24
 
     while true do
         -- collectgarbage("collect")
@@ -302,6 +308,7 @@ end
 function MQTTManager.publishMessageQueue(maxMsgPerRequest)
     -- 在此发送消息,避免在不同coroutine中发送的bug
     if not toPublishMessages or 0 == getTableLen(toPublishMessages) then
+        MQTTManager.handleExtraRequest()--没有消息发送时，请求额外的任务，防止出现联网冲突
         LogUtil.d(TAG,"publish message queue is empty")
         return
     end
@@ -377,8 +384,10 @@ function MQTTManager.handleRequst()
     end
 
     toHandleRequests={}
+end
 
-    -- 检查后台配置的任务和升级,防止和mqtt的联网出现冲突
+-- 检查后台配置的任务和升级,防止和mqtt的联网出现冲突
+function MQTTManager.handleExtraRequest()
     checkTask()
     checkUpdate()
 end
