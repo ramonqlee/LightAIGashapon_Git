@@ -57,7 +57,7 @@ local toHandleRequests={}
 -- 自动升级检测
 function checkUpdate()
     --避免出现升级失败时，多次升级
-    local time = Config.getValue(LAST_UPDATE_TIME)
+    local time = Config.getValue(Consts.LAST_UPDATE_TIME)
 
     current = os.time()
     if not time or "number"~=type(time) then
@@ -68,7 +68,8 @@ function checkUpdate()
     if current then
         -- print("lastUpdateTime = "..time.." current ="..current.." MIN_UPDATE_INTERVAL="..Consts.MIN_UPDATE_INTERVAL )
         if (current-time)<Consts.MIN_UPDATE_INTERVAL then
-            LogUtil.d(TAG,"update too often,ignore")
+            time = Consts.MIN_TASK_INTERVAL -(current-time)
+            LogUtil.d(TAG,"update left time= "..time)
             return
         end
     end
@@ -92,7 +93,8 @@ function checkTask()
     if current then
         -- print("lastTaskTime = "..time.." current ="..current.." MIN_TASK_INTERVAL="..Consts.MIN_TASK_INTERVAL )
         if (current-time)<Consts.MIN_TASK_INTERVAL then
-            LogUtil.d(TAG,"task check too often,ignore")
+            time = Consts.MIN_TASK_INTERVAL -(current-time)
+            LogUtil.d(TAG,"task check left time ="..time)
             return
         end
     end
@@ -170,7 +172,7 @@ function MQTTManager.startmqtt()
 
     local count = 0
     local okCount = 0
-    local COUNT_MAX = 12*60*24
+    local COUNT_MAX = 60*60*24--一天
 
     while true do
         -- collectgarbage("collect")
@@ -266,11 +268,14 @@ function MQTTManager.startmqtt()
                 break
             end
 
-            if r and data then
-                okCount = okCount+1
+            if Consts.LAST_REBOOT then
+                okCount = os.time()-Consts.LAST_REBOOT
                 if okCount > COUNT_MAX then
                     okCount = 0
                 end
+            end
+
+            if r and data then
                 -- dataStr = jsonex.encode(data)
                 --LogUtil.d(TAG,".............................receive str="..dataStr)
                 
@@ -285,13 +290,8 @@ function MQTTManager.startmqtt()
                     end
                 end
             else
-                count = count + 1
-                if count > COUNT_MAX then--每隔100次为一个计数周期
-                    count = 0
-                end
-
-                if data and count and okCount then
-                    log.info('testMqtt.publish', "error message = "..data, count.." okCount="..okCount.." ver=".._G.VERSION)
+                if data and okCount then
+                    log.info('testMqtt.publish', "error message = "..data.." timeSinceBoot="..okCount.." ver=".._G.VERSION)
                 end
                 
                 -- collectgarbage("collect")
@@ -332,8 +332,8 @@ function MQTTManager.publishMessageQueue(maxMsgPerRequest)
         maxMsgPerRequest = 1
     end
 
-    local count=0
     local toRemove={}
+    local count=0
     for key,msg in pairs(toPublishMessages) do
         topic = msg.topic
         payload = msg.payload
