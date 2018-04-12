@@ -53,6 +53,50 @@ local MQTT_DISCONNECT_REQUEST ="disconnect"
 
 local toHandleRequests={}
 
+
+-- 自动升级检测
+function checkUpdate()
+    --避免出现升级失败时，多次升级
+    local time = Config.getValue(LAST_UPDATE_TIME)
+
+    if not time or "number"~=type(time) then
+        Config.saveValue(Consts.LAST_UPDATE_TIME,0)
+        time = 0
+    end
+
+    current = os.time()
+    if current then
+        -- print("lastUpdateTime = "..time.." current ="..current.." MIN_UPDATE_INTERVAL="..Consts.MIN_UPDATE_INTERVAL )
+        if (current-time)<Consts.MIN_UPDATE_INTERVAL then
+            print("update too often,ignore")
+            return
+        end
+    end
+    update.run() -- 检测是否有更新包
+end
+
+
+--任务检测
+function checkTask()
+   --避免出现升级失败时，多次升级
+    local time = Config.getValue(Consts.LAST_TASK_TIME)
+    if not time or "number"~=type(time) then
+        Config.saveValue(Consts.LAST_TASK_TIME,0)
+        time = 0
+    end
+
+    current = os.time()
+    if current then
+        -- print("lastTaskTime = "..time.." current ="..current.." MIN_TASK_INTERVAL="..Consts.MIN_TASK_INTERVAL )
+        if (current-time)<Consts.MIN_TASK_INTERVAL then
+            print("task check too often,ignore")
+            return
+        end
+    end
+    Task.getTask()               -- 检测是否有新任务 
+end
+
+
 local function getTableLen( tab )
     local count = 0  
 
@@ -333,6 +377,10 @@ function MQTTManager.handleRequst()
     end
 
     toHandleRequests={}
+
+    -- 检查后台配置的任务和升级,防止和mqtt的联网出现冲突
+    checkTask()
+    checkUpdate()
 end
 
 function MQTTManager.publish(topic, payload)
