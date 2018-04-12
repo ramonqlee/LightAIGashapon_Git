@@ -76,7 +76,7 @@ function checkUpdate()
 
     Config.saveValue(Consts.LAST_UPDATE_TIME,current)
     update.run() -- 检测是否有更新包
-    rtos.sleep(Consts.TASK_WAIT_IN_MS)--强制延时
+    sys.wait(Consts.TASK_WAIT_IN_MS)--强制延时
 end
 
 
@@ -101,7 +101,7 @@ function checkTask()
 
     Config.saveValue(Consts.LAST_TASK_TIME,current)
     Task.getTask()               -- 检测是否有新任务 
-    rtos.sleep(Consts.TASK_WAIT_IN_MS)--强制延时
+    sys.wait(Consts.TASK_WAIT_IN_MS)--强制延时
 end
 
 
