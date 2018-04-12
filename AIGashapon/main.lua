@@ -37,8 +37,8 @@ sys.subscribe(Consts.REBOOT_DEVICE_CMD,restart)	--重启设备命令
 require "utils"
 -- 加载GSM
 require "net"
---8秒后查询第一次csq
-net.startQueryAll(5 * 1000, 600 * 1000)
+--5秒后查询第一次csq
+-- net.startQueryAll(5 * 1000, 600 * 1000)
 -- 控制台
 require "console"
 local CONSOLE_UART_ID = 2
@@ -52,7 +52,7 @@ wdt.setup(pio.P0_31, pio.P0_29)
 require "ntp"
 ntp.timeSync()
 require "http"
-require "audio"
+-- require "audio"
 
 -- FIXME 暂时注释掉，测试用
 require "entry"

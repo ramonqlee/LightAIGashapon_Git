@@ -173,6 +173,7 @@ function MQTTManager.startmqtt()
     local count = 0
     local okCount = 0
     local COUNT_MAX = 60*60*24--一天
+    local reconnectCount = 0
 
     while true do
         -- collectgarbage("collect")
@@ -216,7 +217,7 @@ function MQTTManager.startmqtt()
 
         LogUtil.d(TAG,"subscribe mqtt now")
         local topic=string.format("%s/#", USERNAME)
-
+        reconnectCount = reconnectCount + 1
         if mqttc.connected and mqttc:subscribe(topic,QOS) then
             mqttFailCount = 0
             
@@ -291,7 +292,7 @@ function MQTTManager.startmqtt()
                 end
             else
                 if data and okCount then
-                    log.info('testMqtt.publish', "error message = "..data.." timeSinceBoot="..okCount.." ver=".._G.VERSION)
+                    log.info(TAG, "msg = "..data.." timeSinceBoot="..okCount.." reconnectCount="..reconnectCount.." ver=".._G.VERSION)
                 end
                 
                 -- collectgarbage("collect")
