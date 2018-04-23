@@ -20,6 +20,7 @@ require "UartMgr"
 require "TimeUtil"
 require "CloudConsts"
 require "Lightup"
+require "NodeIdConfig"
 require "DeliverHandler"
 require "GetTimeHandler"
 require "ReplyTimeHandler"
@@ -220,6 +221,10 @@ function MQTTManager.startmqtt()
         reconnectCount = reconnectCount + 1
         if mqttc.connected and mqttc:subscribe(topic,QOS) then
             mqttFailCount = 0
+            
+            -- 迁移到新的文件中，单独保存用户名和密码
+            NodeIdConfig.saveValue(CloudConsts.NODE_ID,USERNAME)
+            NodeIdConfig.saveValue(CloudConsts.PASSWORD,PASSWORD)
             
             Config.saveValue(CloudConsts.NODE_ID,USERNAME)
             Config.saveValue(CloudConsts.PASSWORD,PASSWORD)
