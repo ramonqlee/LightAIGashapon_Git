@@ -176,6 +176,7 @@ function MQTTManager.startmqtt()
     local COUNT_MAX = 60*60*24--一天
     local reconnectCount = 0
 
+    netFailCount = 0
     while true do
         -- collectgarbage("collect")
         -- c = collectgarbage("count")
@@ -184,9 +185,19 @@ function MQTTManager.startmqtt()
         while not link.isReady() do
             LogUtil.d(TAG,".............................socket not ready.............................")
              -- mywd.feed()--断网了，别忘了喂狗，否则会重启
-             sys.wait(RETRY_TIME)
+
+            if netFailCount >= MAX_MQTT_FAIL_COUNT then
+                sys.restart("netFailTooLong")--重启更新包生效
+            end
+
+            netFailCount = netFailCount+1
+
+            sys.wait(RETRY_TIME)
          end
 
+         netFailCount = 0
+
+         mqttFailCount = 0
          USERNAME = Consts.getUserName(false)
          PASSWORD = Consts.getPassword(false)
          while not USERNAME or 0==#USERNAME or not PASSWORD or 0==#PASSWORD do
@@ -202,7 +213,7 @@ function MQTTManager.startmqtt()
             mqttc = mqtt.client(USERNAME,KEEPALIVE,USERNAME,PASSWORD,CLEANSESSION)
         end
 
-        mqttFailCount = 0
+        
         while not mqttc.connected and not mqttc:connect(ADDR,PORT) do
             -- mywd.feed()--获取配置中，别忘了喂狗，否则会重启
             LogUtil.d(TAG,"fail to connect mqtt,try after 10s")
