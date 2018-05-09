@@ -114,28 +114,3 @@ function UARTUtils.chk( msg )
 	return bit.band(crc,0xffff)--确保是short类型的数据
 end   
 
--- 让灯闪起来
--- addrs 地址数组
--- pos 扭蛋机位置，目前取值1，2
--- time 闪灯次数，每次?ms
-function UARTUtils.twinkle( addrs,pos,times )
-	-- 闪灯协议
-	msgArray = {}
-
-	-- bds = UARTAllInfoReport.getAllBoardIds(true)
-	if addrs and #addrs >0 then
-		for _,addr in pairs(addrs) do
-			-- device["seq"]=v
-			item = {}
-			item["id"] = addr
-			item["group"] = pack.pack("b",pos)--1byte
-			item["color"] = pack.pack("b",2)--1bye
-			item["time"] = pack.pack(">h",times)
-			msgArray[#msgArray+1]=item
-		end
-	end
-	
-
-	r = UARTBroadcastLightup.encode(msgArray)
-	UartMgr.publishMessage(r)      
-end
