@@ -7,7 +7,6 @@
 require "Config"
 require "Consts"
 require "jsonex"
-require "audio"
 require "UartMgr"
 require "TimeUtil"
 require "UARTUtils"

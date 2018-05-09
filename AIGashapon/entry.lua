@@ -37,7 +37,6 @@ function allInfoCallback( ids )
 		sys.taskInit(MQTTManager.startmqtt)
 	end
 
-	entry.startTwinkleTask( )
 end
 
 function entry.run()
@@ -58,6 +57,11 @@ function entry.run()
 		end
 
 	end,30*1000)  
+
+	sys.timer_start(function()
+		LogUtil.d(TAG,"start twinkle task")
+		entry.startTwinkleTask()
+	end,120*1000)  
 end
 
 
@@ -99,11 +103,11 @@ function entry.startTwinkleTask( )
 			addrs = UARTAllInfoReport.getAllBoardIds(true)
 
 			if not addrs or 0 == #addrs then
-				LogUtil.d(TAG,TAG.." no slaves found,ignore twinkle")
+				-- LogUtil.d(TAG,TAG.." no slaves found,ignore twinkle")
 				return
 			end
 
-			LogUtil.d(TAG,TAG.." twinkle pos = "..nextTwinklePos)
+			-- LogUtil.d(TAG,TAG.." twinkle pos = "..nextTwinklePos)
 
             entry.twinkle( addrs,nextTwinklePos,Consts.TWINKLE_TIME )
 

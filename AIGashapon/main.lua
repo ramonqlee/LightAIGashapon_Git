@@ -4,7 +4,7 @@
 MODULE_TYPE = "Air202"
 PROJECT = "AIGashapon"
 
-VERSION = "1.1.50"
+VERSION = "1.1.52"
 
 
 --[[
@@ -25,6 +25,9 @@ require "mywd"
 require "Config"
 require "update"
 require "Task"
+
+
+LOG_LEVEL=log.LOGLEVEL_TRACE
 
 local function restart()
 	print("receive restart cmd ")
@@ -52,7 +55,7 @@ wdt.setup(pio.P0_31, pio.P0_29)
 require "ntp"
 ntp.timeSync()
 require "http"
--- require "audio"
+require "audio"
 
 -- FIXME 暂时注释掉，测试用
 require "entry"
