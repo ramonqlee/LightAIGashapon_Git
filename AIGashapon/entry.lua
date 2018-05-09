@@ -19,6 +19,11 @@ local timerId=nil
 
 entry = {}
 local mqttStarted=false
+local TWINKLE_POS_1 = 1
+local TWINKLE_POS_2 = 2
+local TWINKLE_POS_3 = 3--not used now
+local MAX_TWINKLE	= TWINKLE_POS_2
+local nextTwinklePos=TWINKLE_POS_1
 
 function allInfoCallback( ids )
 	--取消定时器 
@@ -30,7 +35,8 @@ function allInfoCallback( ids )
 		mqttStarted = true
 		sys.taskInit(MQTTManager.startmqtt)
 	end
-	-- mywd.feed()--断网了，别忘了喂狗，否则会重启
+	
+	entry.startTwinkleTask( )
 end
 
 function entry.run()
@@ -51,6 +57,35 @@ function entry.run()
 		end
 
 	end,30*1000)  
+end
+
+function entry.startTwinkleTask( )
+	-- 启动一个定时器，负责闪灯，当出货时停止闪灯
+	sys.timer_loop_start(function()
+			--出货中，不集体闪灯
+			if DeliverHandler.isDelivering() then
+				LogUtil.d(TAG,TAG.." DeliverHandler.isDelivering")
+				return
+			end
+
+			addrs = UARTAllInfoReport.getAllBoardIds(true)
+
+			if not addrs or 0 == #addrs then
+				LogUtil.d(TAG,TAG.." no slaves found,ignore twinkle")
+				return
+			end
+
+			LogUtil.d(TAG,TAG.." twinkle pos = "..nextTwinklePos)
+
+            UARTUtils.twinkle( addrs,nextTwinklePos,Consts.TWINKLE_TIME )
+
+            --切换闪灯位置
+            nextTwinklePos = nextTwinklePos + 1
+			if nextTwinklePos > MAX_TWINKLE then
+				nextTwinklePos = TWINKLE_POS_1
+			end
+
+        end,Consts.TWINKLE_INTERVAL)
 end
 
 

@@ -147,7 +147,7 @@ function UARTAllInfoReport.getAllBoardIds(returnCacheIfEmpty)
 
 	if returnCacheIfEmpty then
 		tmp = Config.getValue(ALL_INFO_CACHE_KEY)
-		if tmp and "string"==type(tmp) then
+		if tmp and "string"==type(tmp) and #tmp>0 then
 			mAllBoardIds = jsonex.decode(tmp)
 			LogUtil.d(TAG,"cached getAllBoardIds size = "..#mAllBoardIds)
 		end

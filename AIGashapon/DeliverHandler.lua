@@ -7,6 +7,7 @@
 require "Config"
 require "Consts"
 require "jsonex"
+require "audio"
 require "UartMgr"
 require "TimeUtil"
 require "UARTUtils"
@@ -20,7 +21,7 @@ require "UARTControlIndClose"
 require "UploadDetection"
 
 local TAG = "DeliverHandler"
-gBusyMap={}--是否在占用的记录
+local gBusyMap={}--是否在占用的记录
 
 local mTimerId
 DeliverHandler = CloudBaseHandler:new{
@@ -50,6 +51,10 @@ local UPLOAD_LOCK_TIMEOUT= "LockTimeout"--锁超时
 local LOCK_OPEN_STATE="s1state"
 local LOCK_STATE_OPEN = "1"
 local LOCK_STATE_CLOSED = "0"
+
+function DeliverHandler.isDelivering()
+    return (not gBusyMap and #gBusyMap>0)
+end
 
 local function getTableLen( tab )
     local count = 0  
@@ -238,6 +243,8 @@ function DeliverHandler:handleContent( content )
         
         -- 待增加最近一次出货的id
         Config.saveValue(CloudConsts.LAST_ID,orderId)
+
+        audio.play(Consts.LOCK_AUDIO)
     end
 
 end 

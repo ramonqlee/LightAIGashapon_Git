@@ -94,7 +94,7 @@ uart.on (UART_ID, "sent", txdone)
 	-- v["time"] = pack.pack(">h",10)
 	-- msgArray[#msgArray+1]=v
 
-	-- r = UARTBroadcast.encode(msgArray)
+	-- r = UARTBroadcastLightup.encode(msgArray)
 	-- UartMgr.publishMessage(r)
 
 -- r = UARTGetBoardInfo.encode() 
