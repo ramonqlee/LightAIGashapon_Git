@@ -244,6 +244,7 @@ function DeliverHandler:handleContent( content )
         -- 待增加最近一次出货的id
         Config.saveValue(CloudConsts.LAST_ID,orderId)
 
+        audio.setVolume(7)
         audio.play(Consts.LOCK_AUDIO)
     end
 

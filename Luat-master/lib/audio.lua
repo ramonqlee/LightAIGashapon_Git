@@ -72,4 +72,4 @@ function chime()
     play_utf8_tts(s)
 end
 
-setVolume(5)
+setVolume(7)
