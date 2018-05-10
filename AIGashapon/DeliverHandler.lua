@@ -52,7 +52,7 @@ local LOCK_STATE_OPEN = "1"
 local LOCK_STATE_CLOSED = "0"
 
 function DeliverHandler.isDelivering()
-    return (not gBusyMap and #gBusyMap>0)
+    return (gBusyMap and #gBusyMap>0)
 end
 
 local function getTableLen( tab )
