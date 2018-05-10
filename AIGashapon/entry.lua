@@ -26,6 +26,13 @@ local TWINKLE_POS_3 = 3--not used now
 local MAX_TWINKLE	= TWINKLE_POS_2
 local nextTwinklePos=TWINKLE_POS_1
 
+local RED  = 0
+local BLUE = 1
+local BOTH = 2
+local MAX_COLOR = BLUE
+local topNextColor = RED
+local bottomNextColor = BLUE
+
 function allInfoCallback( ids )
 	--取消定时器 
 	if timerId then
@@ -83,13 +90,20 @@ function entry.twinkle( addrs,pos,times )
 	local msgArray = {}
 
 	-- bds = UARTAllInfoReport.getAllBoardIds(true)
+	local nextColor = topNextColor
+	if TWINKLE_POS_1 == pos then
+		nextColor = topNextColor
+	else	
+		nextColor = bottomNextColor
+	end
+
 	if addrs and #addrs >0 then
 		for _,addr in pairs(addrs) do
 			-- device["seq"]=v
 			item = {}
 			item["id"] = string.fromhex(addr)
 			item["group"] = pack.pack("b",pos)--1byte
-			item["color"] = pack.pack("b",2)--1bye
+			item["color"] = pack.pack("b",nextColor)--1bye
 			item["time"] = pack.pack(">h",times)
 			msgArray[#msgArray+1]=item
 		end
@@ -101,6 +115,18 @@ function entry.twinkle( addrs,pos,times )
 
 	r = UARTBroadcastLightup.encode(msgArray)
 	UartMgr.publishMessage(r)      
+	
+	-- 切换颜色
+	nextColor = nextColor + 1
+	if nextColor > MAX_COLOR then
+		nextColor = RED
+	end
+	
+	if TWINKLE_POS_1 == pos then
+		topNextColor = nextColor
+	else	
+		bottomNextColor = nextColor
+	end
 end
 
 function entry.startTwinkleTask( )

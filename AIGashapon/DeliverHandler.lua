@@ -50,6 +50,7 @@ local UPLOAD_LOCK_TIMEOUT= "LockTimeout"--锁超时
 local LOCK_OPEN_STATE="s1state"
 local LOCK_STATE_OPEN = "1"
 local LOCK_STATE_CLOSED = "0"
+local lastDeliverTime = 0
 
 
 local function getTableLen( tab )
@@ -67,7 +68,13 @@ local function getTableLen( tab )
 end
 
 function DeliverHandler.isDelivering()
-    return getTableLen(gBusyMap)>0
+    if  getTableLen(gBusyMap)>0 then
+        return true
+    end
+
+    if os.time()-lastDeliverTime<Consts.TWINKLE_TIME_DELAY then
+        return false
+    end
 end
 
 function DeliverHandler:new (o)
@@ -370,6 +377,7 @@ function TimerFunc(id)
     end
 
     if 0 == getTableLen(gBusyMap) then
+        lastDeliverTime = 0
         LogUtil.d(TAG,TAG.." in TimerFunc gBusyMap len="..getTableLen(gBusyMap))
         sys.timer_stop(mTimerId)
         LogUtil.d(TAG,TAG.." deliver queue is empty, stop timer id ="..mTimerId)
@@ -379,8 +387,8 @@ function TimerFunc(id)
 -- 接上条件，在定时中实现（所有如下都基于一个前提，location对应的订单，出货失败时，会自动上报超时，然后触发超时操作）
     -- 1. 订单对应的出货，超过了超时时间；
     --修改为下次同一弹仓出货时，移除这次的或者等待底层硬件上报出货成功后，移除
-
     for key,saleTable in pairs(gBusyMap) do
+        lastDeliverTime = os.time()
         if saleTable then
            -- 是否超时了
            orderTimeoutTime=saleTable[DeliverHandler.ORDER_TIMEOUT_TIME_IN_SEC]
