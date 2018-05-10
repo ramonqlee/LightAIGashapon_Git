@@ -51,9 +51,6 @@ local LOCK_OPEN_STATE="s1state"
 local LOCK_STATE_OPEN = "1"
 local LOCK_STATE_CLOSED = "0"
 
-function DeliverHandler.isDelivering()
-    return (gBusyMap and #gBusyMap>0)
-end
 
 local function getTableLen( tab )
     local count = 0  
@@ -66,9 +63,12 @@ local function getTableLen( tab )
         count = count + 1  
     end 
 
-    return count 
+    return count
 end
 
+function DeliverHandler.isDelivering()
+    return getTableLen(gBusyMap)>0
+end
 
 function DeliverHandler:new (o)
     o = o or CloudBaseHandler:new(o)
