@@ -40,12 +40,18 @@ function allInfoCallback( ids )
 end
 
 function entry.run()
-	sys.taskInit(function()
-		--首先初始化本地环境，然后成功后，启动mqtt
-		UartMgr.init(Consts.UART_ID,Consts.baudRate)
-		--获取所有板子id
-		UartMgr.initSlaves(allInfoCallback)    
-	end)
+	-- 启动一个延时定时器
+	timerId=sys.timer_start(function()
+		LogUtil.d(TAG,"start to retrieve slaves")
+		sys.taskInit(function()
+			--首先初始化本地环境，然后成功后，启动mqtt
+			UartMgr.init(Consts.UART_ID,Consts.baudRate)
+			--获取所有板子id
+			UartMgr.initSlaves(allInfoCallback)    
+		end)
+
+	end,5*1000)
+
 	
 	-- 启动一个延时定时器，防止没有回调时无法正常启动
 	timerId=sys.timer_start(function()
@@ -56,12 +62,11 @@ function entry.run()
 			sys.taskInit(MQTTManager.startmqtt)
 		end
 
-	end,30*1000)  
-
-	sys.timer_start(function()
 		LogUtil.d(TAG,"start twinkle task")
 		entry.startTwinkleTask()
-	end,120*1000)  
+
+	end,60*1000)  
+
 end
 
 
@@ -71,7 +76,7 @@ end
 -- time 闪灯次数，每次?ms
 function entry.twinkle( addrs,pos,times )
 	-- 闪灯协议
-	msgArray = {}
+	local msgArray = {}
 
 	-- bds = UARTAllInfoReport.getAllBoardIds(true)
 	if addrs and #addrs >0 then
@@ -85,7 +90,10 @@ function entry.twinkle( addrs,pos,times )
 			msgArray[#msgArray+1]=item
 		end
 	end
-	
+
+	if 0 == #msgArray then
+		return
+	end
 
 	r = UARTBroadcastLightup.encode(msgArray)
 	UartMgr.publishMessage(r)      
