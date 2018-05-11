@@ -53,6 +53,20 @@ local LOCK_STATE_CLOSED = "0"
 local lastDeliverTime = 0
 
 
+local function getTableLen( tab )
+    local count = 0  
+
+    if "table"~=type(tab) then
+        return count
+    end
+
+    for k,_ in pairs(tab) do  
+        count = count + 1  
+    end 
+
+    return count
+end
+
 function DeliverHandler.isDelivering()
     if  getTableLen(gBusyMap)>0 then
         return true
