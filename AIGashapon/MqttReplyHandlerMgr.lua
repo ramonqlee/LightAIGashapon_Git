@@ -7,17 +7,32 @@
 
 require "Consts"
 require "LogUtil"
+require "ScanQrCode"
+require "CloudConsts"
+require "ReplyMachineVars"
 require "ReplyConfigHandler"
 require "ReplyDeliverHandler"
 require "ReplyLatestSaleLog"
-require "CloudConsts"
-require "ReplyMachineVars"
 local jsonex = require "jsonex"
 
 local TAG = "MqttReplyHandlerMgr"
 local handlerTable={}
 MqttReplyHandlerMgr ={
 }
+
+local function getTableLen( tab )
+    local count = 0  
+
+    if "table"~=type(tab) then
+        return count
+    end
+
+    for k,_ in pairs(tab) do  
+        count = count + 1  
+    end 
+
+    return count
+end
 
 --注册处理器，如果已经注册过，直接覆盖
 function MqttReplyHandlerMgr.registerHandler( handler )
@@ -33,7 +48,7 @@ function MqttReplyHandlerMgr.registerHandler( handler )
 end
 
 function MqttReplyHandlerMgr.makesureInit()
-	if #handlerTable>0 then
+	if getTableLen(handlerTable)>0 then
 		return
 	end
 
@@ -41,6 +56,7 @@ function MqttReplyHandlerMgr.makesureInit()
 	MqttReplyHandlerMgr.registerHandler(ReplyConfigHandler:new(nil))
 	MqttReplyHandlerMgr.registerHandler(ReplyDeliverHandler:new(nil))
 	MqttReplyHandlerMgr.registerHandler(ReplyLatestSaleLog:new(nil))
+	MqttReplyHandlerMgr.registerHandler(ScanQrCode:new(nil))
 end
 
 function MqttReplyHandlerMgr.replyWith(topic,payload)
@@ -55,7 +71,7 @@ function MqttReplyHandlerMgr.replyWith(topic,payload)
 	end
 
 	-- if Consts.LOG_ENABLED then
-	-- 	--LogUtil.d(TAG,"MqttReplyHandlerMgr payload "..jsonex.encode(payload))
+	LogUtil.d(TAG,"MqttReplyHandlerMgr payload "..jsonex.encode(payload))
 	-- end
 
 	local inObject={}
@@ -63,9 +79,9 @@ function MqttReplyHandlerMgr.replyWith(topic,payload)
 	--增加payload
 	inObject[CloudConsts.PAYLOAD]=payload
 	
-	if Consts.LOG_ENABLED then
-		-- --LogUtil.d(TAG,TAG.." replyWith object = "..jsonex.encode( inObject))
-	end
+	-- if Consts.LOG_ENABLED then
+	-- 	LogUtil.d(TAG,TAG.." replyWith object = "..jsonex.encode( inObject))
+	-- end
 	
 	return object:handle(inObject)
 end     
