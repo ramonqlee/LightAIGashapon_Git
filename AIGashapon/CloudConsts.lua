@@ -46,7 +46,10 @@ TOKEN     = "token",
 CONST_POSTERS   = "posters",
 VM_SATE ="vm_state",
 APP_VERSION="version",
-DURATION = "duration"
+DURATION = "duration",
+REBOOT_METHOD = "rebootM",
+SOFT_REBOOT="softReboot",
+WD_REBOOT="wdReboot"
 }
 
 

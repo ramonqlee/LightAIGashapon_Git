@@ -73,8 +73,10 @@ function DeliverHandler.isDelivering()
     end
 
     if os.time()-lastDeliverTime<Consts.TWINKLE_TIME_DELAY then
-        return false
+        return true
     end
+
+    return false
 end
 
 function DeliverHandler:new (o)
@@ -359,6 +361,7 @@ function  openLockCallback(addr,flagsTable)
 
     --删除已经出货的订单,需要从最大到最小删除，
     if getTableLen(toRemove)>0 then
+        lastDeliverTime = os.time()
         LogUtil.d(TAG,TAG.." to remove gBusyMap len="..getTableLen(gBusyMap))
         for key,_ in pairs(toRemove) do
             gBusyMap[key]=nil
@@ -377,7 +380,6 @@ function TimerFunc(id)
     end
 
     if 0 == getTableLen(gBusyMap) then
-        lastDeliverTime = 0
         LogUtil.d(TAG,TAG.." in TimerFunc gBusyMap len="..getTableLen(gBusyMap))
         sys.timer_stop(mTimerId)
         LogUtil.d(TAG,TAG.." deliver queue is empty, stop timer id ="..mTimerId)

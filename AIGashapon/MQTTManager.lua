@@ -177,17 +177,35 @@ function MQTTManager.startmqtt()
     local reconnectCount = 0
 
     netFailCount = 0
+
+    -- 切换下次的重启方式
+    local rebootMethod = Config.getValue(CloudConsts.REBOOT_METHOD)
+    if not rebootMethod or #rebootMethod <=0 then
+        rebootMethod = CloudConsts.SOFT_REBOOT
+    end
+
+    local nextRebootMethod = CloudConsts.WD_REBOOT--代表其他重启方式，目前为通过看门狗重启
+    if CloudConsts.WD_REBOOT == rebootMethod then
+        nextRebootMethod = CloudConsts.SOFT_REBOOT
+    end
+    Config.saveValue(CloudConsts.REBOOT_METHOD,nextRebootMethod)
+    LogUtil.d(TAG,"rebootMethod ="..rebootMethod.." nextRebootMethod = "..nextRebootMethod)
+
     while true do
-        -- collectgarbage("collect")
-        -- c = collectgarbage("count")
-        --LogUtil.d("Mem"," line:"..debug.getinfo(1).currentline.." memory count ="..c)
 
         while not link.isReady() do
             LogUtil.d(TAG,".............................socket not ready.............................")
-             -- mywd.feed()--断网了，别忘了喂狗，否则会重启
 
             if netFailCount >= MAX_MQTT_FAIL_COUNT then
-                sys.restart("netFailTooLong")--重启更新包生效
+                -- 修改为看门狗和软重启交替进行的方式
+                if CloudConsts.SOFT_REBOOT == rebootMethod then
+                    LogUtil.d(TAG,"............softReboot when not link.isReady")
+                   sys.restart("netFailTooLong")--重启更新包生效
+                elseif fdTimerId then
+                    LogUtil.d(TAG,"............wdReboot when not link.isReady")
+                    sys.timer_stop(fdTimerId)--停止看门狗喂狗，等待重启
+                    fdTimerId = nil
+                end
             end
 
             netFailCount = netFailCount+1
@@ -212,20 +230,26 @@ function MQTTManager.startmqtt()
         if not mqttc then
             mqttc = mqtt.client(USERNAME,KEEPALIVE,USERNAME,PASSWORD,CLEANSESSION)
         end
-
         
-        while not mqttc.connected and not mqttc:connect(ADDR,PORT) do
+        while not mqttc:connect(ADDR,PORT) do
             -- mywd.feed()--获取配置中，别忘了喂狗，否则会重启
             LogUtil.d(TAG,"fail to connect mqtt,try after 10s")
-            mqttFailCount = mqttFailCount+1
+            
             if mqttFailCount >= MAX_MQTT_FAIL_COUNT then
-                sys.restart("mqttFailTooLong")--重启更新包生效
+                -- 修改为看门狗和软重启交替进行的方式
+                if CloudConsts.SOFT_REBOOT == rebootMethod then
+                    LogUtil.d(TAG,"............softReboot when not mqtt.connect")
+                   sys.restart("netFailTooLong")--重启更新包生效
+                elseif fdTimerId then
+                    LogUtil.d(TAG,"............wdReboot when not mqtt.connect")
+                    sys.timer_stop(fdTimerId)--停止看门狗喂狗，等待重启
+                    fdTimerId = nil
+                end
             end
 
+            mqttFailCount = mqttFailCount+1
             sys.wait(RETRY_TIME)
         end
-
-        -- mywd.feed()--准备启动主逻辑了，别忘了喂狗，否则会重启
 
         LogUtil.d(TAG,"subscribe mqtt now")
         local topic=string.format("%s/#", USERNAME)
