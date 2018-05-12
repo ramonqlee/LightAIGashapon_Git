@@ -4,7 +4,7 @@
 MODULE_TYPE = "Air202"
 PROJECT = "AIGashapon"
 
-VERSION = "1.1.66"
+VERSION = "1.1.67"
 
 
 --[[
