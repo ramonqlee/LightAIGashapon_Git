@@ -39,27 +39,6 @@ function ScanQrCode:name()
     return self.MY_TOPIC
 end
 
--- testPushStr = [[
--- {
---     "dup": 0,
---     "topic": "1000002/deliver",
---     "id": 3,
---     "payload": {
---         "timestamp": 1515284801,
---         "content": {
---             "device_seq": "1",
---             "location": "1",
---             "online_order_id": 1564010,
---             "sn": "9svwd1ql5m",
---             "expires": 1515284921,
---             "amount": 1
---         }
---     },
---     "qos": 2,
---     "packetId": 2
--- }
--- ]]
-
 function ScanQrCode:handleContent( content )
  	-- TODO to be coded
     -- 出货
@@ -89,4 +68,7 @@ function ScanQrCode:handleContent( content )
 
     lastLocation = location
     lastPurchaseTime = os.time()
-end     
+end   
+
+
+   
