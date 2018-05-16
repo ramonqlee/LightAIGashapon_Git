@@ -6,6 +6,7 @@
 
 require "Consts"
 require "jsonex"
+require "LogUtil"
 require "CloudConsts"
 require "CloudBaseHandler"
 
@@ -71,4 +72,3 @@ function ScanQrCode:handleContent( content )
 end   
 
 
-   
