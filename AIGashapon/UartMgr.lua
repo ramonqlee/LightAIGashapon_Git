@@ -49,7 +49,7 @@ end
 local function dispatch( data )
 	initProtocalStack(false)
 
-	for i,handler in ipairs(protocalStack) do
+	for _,handler in pairs(protocalStack) do
 		-- TODO 处理协议数据
 		-- --LogUtil.d(TAG,"try indexed "..i.." handler")
 		if handler then
@@ -230,7 +230,7 @@ function UartMgr.initSlaves( callback )
 		UARTAllInfoReport.setCallback(function( ids )
 			addr=""
 			ids = UARTAllInfoReport.getAllBoardIds(true)
-			for _,v in ipairs(ids) do
+			for _,v in pairs(ids) do
 				if v then
 					addr = addr.." "..string.fromhex(v)
 				end

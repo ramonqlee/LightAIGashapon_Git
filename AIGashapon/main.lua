@@ -49,8 +49,8 @@ console.setup(CONSOLE_UART_ID, 115200)--默认为1，和现有app冲突，修改
 -- 系统工具
 require "misc"
 -- 看门狗
-require "wdt"
-wdt.setup(pio.P0_31, pio.P0_29)
+-- require "wdt"
+-- wdt.setup(pio.P0_31, pio.P0_29)
 
 require "ntp"
 ntp.timeSync()

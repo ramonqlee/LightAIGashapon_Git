@@ -49,13 +49,13 @@ function msgcache.addMsg2Cache(msg)
 
     local content = payload[CloudConsts.CONTENT]
     if not content or "table" ~= type(content) then
-        LogUtil.d(TAG,"illegal content")
+        LogUtil.d(TAG,"illegal content,return")
         return r
     end
 
     local sn = content[CloudConsts.SN]
     if not sn or "string"~= type(sn) then 
-        LogUtil.d(TAG,"illegal sn")
+        LogUtil.d(TAG,"illegal sn,return")
         return r
     end
 

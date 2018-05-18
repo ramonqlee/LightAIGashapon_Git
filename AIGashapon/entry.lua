@@ -70,7 +70,7 @@ function entry.run()
 			sys.taskInit(MQTTManager.startmqtt)
 		end
 
-	end,60*1000)  
+	end,120*1000)  
 
 	sys.timer_start(function()
 

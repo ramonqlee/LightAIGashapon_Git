@@ -23,9 +23,16 @@ local TOKEN_KEY = "token"
 REBOOT_TYPE = "REBOOT"
 
 local TAG = "Task"
+local isRunning = false
 Task={}
 
+function Task.isRunning()
+	return isRunning
+end
+
 function Task.getTask()
+	isRunning = true
+
 	sys.taskInit(function()
 		-- 去服务器端请求任务
 		local nodeId = Consts.getUserName(false)
@@ -46,6 +53,8 @@ function Task.getTask()
 		url = string.format(Consts.MQTT_TASK_URL_FORMATTER,nodeId, nonce, timestamp, sign)
 	    LogUtil.d(TAG,"url = "..url)
 	    local code, header, body = http.request("GET", url, 15000)
+	    isRunning = false
+	    
 	    if not code then
 	        LogUtil.d(TAG,"http empty code,return")
 	        return

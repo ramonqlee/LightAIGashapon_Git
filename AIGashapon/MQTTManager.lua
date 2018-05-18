@@ -17,16 +17,19 @@ require "Config"
 require "Consts"
 require "LogUtil"
 require "UartMgr"
-require "TimeUtil"
-require "CloudConsts"
 require "Lightup"
+require "TimeUtil"
+require "ScanQrCode"
+require "CloudConsts"
 require "NodeIdConfig"
+require "GetMachineVars"
 require "DeliverHandler"
 require "GetTimeHandler"
 require "ReplyTimeHandler"
 require "SetConfigHandler"
 require "GetLatestSaleLog"
-require "GetMachineVars"
+
+
 local jsonex = require "jsonex"
 
 -- FIXME username and password to be retrieved from server
@@ -58,6 +61,7 @@ local toHandleRequests={}
 
 -- 自动升级检测
 function checkUpdate()
+    
     --避免出现升级失败时，多次升级
     local time = Config.getValue(Consts.LAST_UPDATE_TIME)
 
@@ -76,9 +80,22 @@ function checkUpdate()
         end
     end
 
+    LogUtil.d(TAG,"checkUpdate start")
     Config.saveValue(Consts.LAST_UPDATE_TIME,current)
     update.run() -- 检测是否有更新包
-    sys.wait(Consts.TASK_WAIT_IN_MS)--强制延时
+
+    sys.wait(Consts.TASK_WAIT_IN_MS)--强制延时,等待完成
+    local cnt=1
+    local max_cnt = 5
+    while update.isDownloading() do
+        sys.wait(Consts.TASK_WAIT_IN_MS)--强制延时
+
+        cnt = cnt+1
+        if cnt > max_cnt then
+            break
+        end
+    end
+    LogUtil.d(TAG,"checkUpdate end")
 end
 
 
@@ -101,9 +118,22 @@ function checkTask()
         end
     end
 
+    LogUtil.d(TAG,"task check start")
     Config.saveValue(Consts.LAST_TASK_TIME,current)
     Task.getTask()               -- 检测是否有新任务 
-    sys.wait(Consts.TASK_WAIT_IN_MS)--强制延时
+
+    sys.wait(Consts.TASK_WAIT_IN_MS)--强制延时,等待完成
+    local cnt=1
+    local max_cnt = 5
+    while Task.isRunning() do
+        sys.wait(Consts.TASK_WAIT_IN_MS)--强制延时
+
+        cnt = cnt+1
+        if cnt > max_cnt then
+            break
+        end
+    end
+    LogUtil.d(TAG,"task check done")
 end
 
 
@@ -270,10 +300,25 @@ function MQTTManager.startmqtt()
         end
 
         LogUtil.d(TAG,"subscribe mqtt now")
-        local topic=string.format("%s/#", USERNAME)
+        -- local topic=string.format("%s/#", USERNAME)
         reconnectCount = reconnectCount + 1
 
-        if mqttc.connected and mqttc:subscribe(topic,QOS) then
+        local mMqttProtocolHandlerPool={}
+        mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=ReplyTimeHandler:new(nil)
+        mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=SetConfigHandler:new(nil)
+        mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=GetMachineVars:new(nil)
+        mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=GetLatestSaleLog:new(nil)
+        mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=DeliverHandler:new(nil)
+        mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=Lightup:new(nil)
+        mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=ScanQrCode:new(nil)
+
+        local topics = {}
+        for _,v in pairs(mMqttProtocolHandlerPool) do
+            topics[string.format("%s/%s", USERNAME,v:name())]=QOS
+        end
+
+        LogUtil.d(TAG,".............................subscribe topic ="..jsonex.encode(topics))
+        if mqttc.connected and mqttc:subscribe(topics) then
             mqttFailCount = 0
             
             -- 迁移到新的文件中，单独保存用户名和密码
@@ -282,16 +327,6 @@ function MQTTManager.startmqtt()
             
             Config.saveValue(CloudConsts.NODE_ID,USERNAME)
             Config.saveValue(CloudConsts.PASSWORD,PASSWORD)
-
-            LogUtil.d(TAG,".............................subscribe topic ="..topic)
-
-            local mMqttProtocolHandlerPool={}
-            mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=ReplyTimeHandler:new(nil)
-            mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=SetConfigHandler:new(nil)
-            mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=GetMachineVars:new(nil)
-            mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=GetLatestSaleLog:new(nil)
-            mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=DeliverHandler:new(nil)
-            mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=Lightup:new(nil)
 
             while true do
                 if not mqttc.connected then
@@ -323,12 +358,6 @@ function MQTTManager.startmqtt()
             MQTTManager.handleRequst()
             mainLoopTime =os.time()
 
-            --oopse disconnect
-            if not mqttc.connected then
-                LogUtil.d(TAG," mqttc.disconnected,break")
-                break
-            end
-
             if Consts.LAST_REBOOT then
                 okCount = os.time()-Consts.LAST_REBOOT
                 if okCount > COUNT_MAX then
@@ -358,6 +387,12 @@ function MQTTManager.startmqtt()
                 -- collectgarbage("collect")
                 -- c = collectgarbage("count")
                 --LogUtil.d("Mem"," line:"..debug.getinfo(1).currentline.." memory count ="..c)
+            end
+
+            --oopse disconnect
+            if not mqttc.connected then
+                LogUtil.d(TAG," mqttc.disconnected,break")
+                break
             end
         end
     end

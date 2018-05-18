@@ -7,7 +7,6 @@
 
 require "Consts"
 require "LogUtil"
-require "ScanQrCode"
 require "CloudConsts"
 require "ReplyMachineVars"
 require "ReplyConfigHandler"
@@ -56,7 +55,6 @@ function MqttReplyHandlerMgr.makesureInit()
 	MqttReplyHandlerMgr.registerHandler(ReplyConfigHandler:new(nil))
 	MqttReplyHandlerMgr.registerHandler(ReplyDeliverHandler:new(nil))
 	MqttReplyHandlerMgr.registerHandler(ReplyLatestSaleLog:new(nil))
-	MqttReplyHandlerMgr.registerHandler(ScanQrCode:new(nil))
 end
 
 function MqttReplyHandlerMgr.replyWith(topic,payload)

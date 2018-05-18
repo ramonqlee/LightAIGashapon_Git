@@ -15,14 +15,20 @@ local RETRY = 1
 -- 升级包保存路径
 local UPD_PATH = "/luazip/update.bin"
 ---  自动连接服务器，检查升级，下载升级包s
-downloading = false
+local downloading = false
+local finished = false
+
+function isDownloading()
+	return downloading
+end
+
 -- @return 无
 -- @usage update.run()
 function run()
 	if downloading then return end
 	sys.taskInit(
 		function()
-			local cnt,finished = 1
+			local cnt = 1
 			for cnt=1,RETRY do
 				if downloading then return end
 				while not socket.isReady() do sys.waitUntil('IP_READY_IND') end
