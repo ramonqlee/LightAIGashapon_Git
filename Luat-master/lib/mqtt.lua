@@ -161,9 +161,11 @@ function client(clientId, keepAlive, username, password, cleanSession, will)
     o.connected = false
     o.getNextPacketId = function()
         packetId = packetId == 65535 and 1 or (packetId + 1)
+        log.info("mqtt.client:getNextPacketId", packetId)
         return packetId
     end
     o.lastIOTime = 0
+    o.subscribeTopics={}
 
     setmetatable(o, mqttc)
 
@@ -198,7 +200,6 @@ function mqttc:read(timeout)
     local packet, nextpos = unpack(self.inbuf)
     if packet then
         self.inbuf = string.sub(self.inbuf, nextpos)
-        log.info("mqtt.client:read", "return from inbuf")
         return true, packet
     end
 
@@ -232,44 +233,133 @@ function mqttc:read(timeout)
     end
 end
 
+local function getTableLen( tab )
+    local count = 0  
+
+    if "table"~=type(tab) then
+        return count
+    end
+
+    for k,_ in pairs(tab) do  
+        count = count + 1  
+    end 
+
+    return count
+end
+
+function mqttc:removeFromCache(packetId)
+    log.info("mqtt.client:waitfor", "cache size = ",getTableLen(self.cache),"packetId = ",packetId)
+    for i=#self.cache,1,-1 do
+        local temp = self.cache[i]
+        log.info("mqtt.client:waitfor", "parse ",jsonex.encode(temp)," index = ",i)
+        if temp and temp.packetId==packetId then
+            log.info("mqtt.client:waitfor", "index = ",i)
+            table.remove(self.cache, i)
+        end
+    end
+end
+
 -- 等待接收指定的mqtt消息
 function mqttc:waitfor(id, timeout)
-    log.info("mqtt.client:waitfor", "self.cache size = "..#self.cache.." waitfor id ="..id)
-
-    for index, packet in ipairs(self.cache) do
+    for index, packet in pairs(self.cache) do
         if packet.id == id then
-            log.info("mqtt.client:waitfor", "matched packet")
-            return true, table.remove(self.cache, index)
+            log.info("mqtt.client:waitfor","id = ",id,"remove from cache ",jsonex.encode(packet))
+            return true,table.remove(self.cache, index)
         end
     end
 
     while true do
         local r, data = self:read(timeout)
         if r then
+            log.info("mqtt.client:waitfor", "read data =",jsonex.encode(data))
+
+            local finishedMsg = false
+            if PUBCOMP == data.id then
+                finishedMsg = true
+            end
+
             if data.id == PUBLISH then
                 if data.qos > 0 then
                     if not self:write(packACK(data.qos == 1 and PUBACK or PUBREC, 0, data.packetId)) then
                         log.info("mqtt.client:waitfor", "send publish ack failed", data.qos)
                         return false
+                    else
+                        if 1 == data.pos then
+                            finishedMsg = true
+                        end
+
+                        log.info("mqtt.client:waitfor", "send publish ack ok,packetId = ", data.packetId, "data.id = ",data.qos == 1 and "PUBACK" or "PUBREC")
                     end
                 end
             elseif data.id == PUBREC or data.id == PUBREL then
                 if not self:write(packACK(data.id == PUBREC and PUBREL or PUBCOMP, 0, data.packetId)) then
-                    log.info("mqtt.client:waitfor", "send ack fail", data.id == PUBREC and "PUBREC" or "PUBCOMP")
+                    log.info("mqtt.client:waitfor", "send ack fail", data.id == PUBREC and "PUBREL" or "PUBCOMP")
                     return false
-                end
+                else
+                    log.info("mqtt.client:waitfor", "send ack ok,packetId = ", data.packetId, "data.id = ",data.id == PUBREC and "PUBREL" or "PUBCOMP")
+                    if PUBREL == data.id then
+                        finishedMsg = true
+                    end
+                end 
             end
 
             if data.id == id then
-                log.info("mqtt.client:waitfor", "return packet id ="..id)
+                -- TODO 删除相同packetid的消息
+                if finishedMsg then
+                    self:removeFromCache(data.packetId)
+                end
+                log.info("mqtt.client:waitfor", "return ",jsonex.encode(data))
                 return true, data
             end
-            table.insert(self.cache, data)
+
+            if PINGRESP == data.id then
+                finishedMsg = true
+            end
+
+            if not finishedMsg then
+                table.insert(self.cache, data)
+                log.info("mqtt.client:waitfor", "insert into cache = ",jsonex.encode(data))
+            end
         else
             return false, data
         end
     end
 end
+
+-- function mqttc:waitfor(id, timeout)
+--     for index, packet in ipairs(self.cache) do
+--         if packet.id == id then
+--             return true, table.remove(self.cache, index)
+--         end
+--     end
+
+--     while true do
+--         local r, data = self:read(timeout)
+--         if r then
+--             log.info("mqtt.client:waitfor", "read data =",jsonex.encode(data))
+--             if data.id == PUBLISH then
+--                 if data.qos > 0 then
+--                     if not self:write(packACK(data.qos == 1 and PUBACK or PUBREC, 0, data.packetId)) then
+--                         log.info("mqtt.client:waitfor", "send publish ack failed", data.qos)
+--                         return false
+--                     end
+--                 end
+--             elseif data.id == PUBREC or data.id == PUBREL then
+--                 if not self:write(packACK(data.id == PUBREC and PUBREL or PUBCOMP, 0, data.packetId)) then
+--                     log.info("mqtt.client:waitfor", "send ack fail", data.id == PUBREC and "PUBREC" or "PUBCOMP")
+--                     return false
+--                 end
+--             end
+
+--             if data.id == id then
+--                 return true, data
+--             end
+--             table.insert(self.cache, data)
+--         else
+--             return false, data
+--         end
+--     end
+-- end
 
 --- 连接mqtt服务器
 -- @param host 地址
@@ -336,6 +426,8 @@ function mqttc:subscribe(topic, qos)
         topics = topic
     end
 
+    self.subscribeTopics=topics
+
     if not self:write(packSUBSCRIBE(0, self.getNextPacketId(), topics)) then
         log.info("mqtt.client:subscribe", "send failed")
         return false
@@ -368,9 +460,12 @@ function mqttc:publish(topic, payload, qos, retain)
     qos = qos or 0
     retain = retain or 0
 
-    if not self:write(packPUBLISH(0, qos, retain, qos > 0 and self.getNextPacketId() or 0, topic, payload)) then
-        log.info("mqtt.client:publish", "socket send failed")
+    local packetId = self.getNextPacketId()
+    if not self:write(packPUBLISH(0, qos, retain, qos > 0 and packetId or 0, topic, payload)) then
+        log.info("mqtt.client:publish", "socket send failed",topic,payload)
         return false
+    else
+        log.info("mqtt.client:publish", "socket send ok,packetId",packetId)
     end
 
     if qos == 0 then return true end
@@ -378,6 +473,8 @@ function mqttc:publish(topic, payload, qos, retain)
     if not self:waitfor(qos == 1 and PUBACK or PUBCOMP, self.commandTimeout) then
         log.warn("mqtt.client:publish", "wait ack timeout")
         return false
+    else
+        log.info("mqtt.client:publish", "wait ack ok,packetId = ",packetId)
     end
 
     return true
