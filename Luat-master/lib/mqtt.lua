@@ -281,7 +281,7 @@ function mqttc:waitfor(id, timeout)
             if data.id == PUBLISH then
                 if data.qos > 0 then
                     if not self:write(packACK(data.qos == 1 and PUBACK or PUBREC, 0, data.packetId)) then
-                        log.info("mqtt.client:waitfor", "send publish ack failed", data.qos)
+                        log.info("mqtt.client:waitfor", "send publish ack failed", data.qos,"packetId=",packetId)
                         return false
                     else
                         if 1 == data.pos then
