@@ -14,6 +14,20 @@ module(..., package.seeall)
 local CONNECT, CONNACK, PUBLISH, PUBACK, PUBREC, PUBREL, PUBCOMP, SUBSCRIBE, SUBACK, UNSUBSCRIBE, UNSUBACK, PINGREQ, PINGRESP, DISCONNECT = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
 local CLIENT_COMMAND_TIMEOUT = 5000
 
+local function getTableLen( tab )
+    local count = 0  
+
+    if "table"~=type(tab) then
+        return 0
+    end
+
+    for k,_ in pairs(tab) do  
+        count = count + 1  
+    end 
+
+    return count
+end
+
 local function encodeLen(len)
     local s = ""
     local digit
@@ -233,19 +247,6 @@ function mqttc:read(timeout)
     end
 end
 
-local function getTableLen( tab )
-    local count = 0  
-
-    if "table"~=type(tab) then
-        return count
-    end
-
-    for k,_ in pairs(tab) do  
-        count = count + 1  
-    end 
-
-    return count
-end
 
 function mqttc:removeFromCache(packetId)
     log.info("mqtt.client:waitfor", "cache size = ",getTableLen(self.cache),"packetId = ",packetId)
