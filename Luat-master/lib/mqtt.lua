@@ -193,6 +193,8 @@ function mqttc:checkKeepAlive()
         if not self:write(packZeroData(PINGREQ)) then
             log.info("mqtt.client:checkKeepAlive", "pingreq send fail")
             return false
+        else
+            log.info("mqtt.client:checkKeepAlive", "pingreq sent")
         end
     end
     return true
