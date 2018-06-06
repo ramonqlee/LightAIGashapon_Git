@@ -67,6 +67,15 @@ local function packCONNECT(clientId, keepAlive, username, password, cleanSession
         content)
 end
 
+local function packUNSUBSCRIBE( dup, packetId, topics )
+    local header = UNSUBSCRIBE * 16 + dup * 8 + 2
+    local data = pack.pack(">H", packetId)
+    for topic,_ in pairs(topics) do
+        data = data .. pack.pack(">P", topic)
+    end
+    return pack.pack(">bAA", header, encodeLen(#data), data)
+end
+
 local function packSUBSCRIBE(dup, packetId, topics)
     local header = SUBSCRIBE * 16 + dup * 8 + 2
     local data = pack.pack(">H", packetId)
@@ -438,6 +447,32 @@ function mqttc:subscribe(topic, qos)
 
     if not self:waitfor(SUBACK, self.commandTimeout) then
         log.info("mqtt.client:subscribe", "wait ack failed")
+        return false
+    end
+
+    return true
+end
+
+function mqttc:unsubscribe(topic)
+    if not self.connected then
+        log.info("mqtt.client:unsubscribe", "not connected")
+        return false
+    end
+
+    local topics
+    if type(topic) == "string" then
+        topics = { [topic] = 0 }
+    else
+        topics = topic
+    end
+
+    if not self:write(packUNSUBSCRIBE(0, self.getNextPacketId(), topics)) then
+        log.info("mqtt.client:unsubscribe", "send failed")
+        return false
+    end
+
+    if not self:waitfor(UNSUBACK, self.commandTimeout) then
+        log.info("mqtt.client:unsubscribe", "wait ack failed")
         return false
     end
 

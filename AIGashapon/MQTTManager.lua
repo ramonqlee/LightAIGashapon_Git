@@ -317,6 +317,11 @@ function MQTTManager.startmqtt()
             topics[string.format("%s/%s", USERNAME,v:name())]=QOS
         end
 
+        --先取消之前的订阅
+        local unsubscribeTopic = string.format("%s/#",USERNAME)
+        mqttc:unsubscribe(unsubscribeTopic)
+        LogUtil.d(TAG,".............................unsubscribe topic = "..unsubscribeTopic)
+
         LogUtil.d(TAG,".............................subscribe topic ="..jsonex.encode(topics))
         if mqttc.connected and mqttc:subscribe(topics) then
             mqttFailCount = 0
