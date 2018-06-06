@@ -54,21 +54,21 @@ function msgcache.addMsg2Cache(msg)
     end
 
     local sn = content[CloudConsts.SN]
-    if not sn or "string"~= type(sn) then 
-        LogUtil.d(TAG,"illegal sn,return")
-        return r
+    if not sn or "string"~= type(sn) then
+        LogUtil.d(TAG,"no sn,no cache")
+        return true--不缓存，直接向下传递
     end
 
     --是否超时
     local tms = payload[CloudConsts.TIMESTAMP]
-    if tms then
+    if tms and TimeUtil.timeSync() then
         local st = os.time()
         local offset = tms -  st
         if tms < st then
             offset = st - tms
         end
         if offset > TIMEOUT_CMD then
-            LogUtil.d(TAG,"timeout cmd,sn = "..sn)
+            LogUtil.d(TAG,"timeout cmd,sn = "..sn.." os.time="..st)
             return r
         end
     end

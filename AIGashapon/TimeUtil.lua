@@ -11,9 +11,14 @@ local TAG = "TimeUtil"
 
 local sTimeOffsetInMs = 0
 local sLastTimeInMs = 0
+local sTimeSync = false
 
+function TimeUtil.timeSync(  )
+	return sTimeSync
+end
 function TimeUtil.setTimeOffset(offsetInMs) 
     sTimeOffsetInMs = offsetInMs
+    sTimeSync = true
 end
 
 

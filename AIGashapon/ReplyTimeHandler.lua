@@ -9,6 +9,7 @@ require "CloudBaseHandler"
 require "TimeUtil"
 require "CloudConsts"
 require "LogUtil"
+require "misc"
 local json = require "jsonex"
 -- module(...,package.seeall)
 
@@ -45,16 +46,19 @@ end
 function ReplyTimeHandler:handleContent( timestampInSec,content )
     local r = false
     if (timestampInSec<=0) then
-        --LogUtil.d(TAG,TAG.." illegal content or timestamp,handleContent return")
+        LogUtil.d(TAG,TAG.." illegal content or timestamp,handleContent return")
         return r
     end
 
-    --LogUtil.d(TAG,TAG.." handleContent now timestampInSec="..timestampInSec)
     r = true
 
     self.mServerTimestamp = timestampInSec
     TimeUtil.setTimeOffset(self.mServerTimestamp-os.time())
     TimeUtil.setLastTimeInMs(TimeUtil.getCheckedCurrentTime())
 
+    -- 设置系统时间
+    ntpTime=os.date("*t",timestampInSec)
+    LogUtil.d(TAG,TAG.." handleContent now timestampInSec="..timestampInSec.." ntpTime="..jsonex.encode(ntpTime))
+    misc.setClock(ntpTime)
     return r
 end                     

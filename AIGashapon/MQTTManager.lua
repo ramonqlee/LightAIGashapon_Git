@@ -342,7 +342,7 @@ function MQTTManager.startmqtt()
             -- 发送待发送的消息，设定条数，防止出现多条带发送时，出现消息堆积
             MQTTManager.publishMessageQueue(MAX_MSG_CNT_PER_REQ)
 
-            if ntp.isEnd() and not Consts.LAST_REBOOT then
+            if TimeUtil.timeSync() and not Consts.LAST_REBOOT then
                 Consts.LAST_REBOOT = os.time()
             end
 
@@ -372,7 +372,7 @@ function MQTTManager.startmqtt()
 
             if r and data then
                 -- dataStr = jsonex.encode(data)
-                --LogUtil.d(TAG,".............................receive str="..dataStr)
+                -- LogUtil.d(TAG,".............................receive str="..dataStr)
                 
                 -- 去除重复的sn消息
                 if msgcache.addMsg2Cache(data) then
@@ -386,7 +386,7 @@ function MQTTManager.startmqtt()
                 end
             else
                 if data and okCount then
-                    log.info(TAG, "msg = "..data.." timeSinceBoot="..okCount.." reconnectCount="..reconnectCount.." ver=".._G.VERSION)
+                    log.info(TAG, "msg = "..data.." timeSinceBoot="..okCount.." reconnectCount="..reconnectCount.." ver=".._G.VERSION.." os.time="..os.time())
                 end
                 
                 -- collectgarbage("collect")

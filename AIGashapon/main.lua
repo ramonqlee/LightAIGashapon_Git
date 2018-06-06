@@ -4,7 +4,7 @@
 MODULE_TYPE = "Air202"
 PROJECT = "AIGashapon"
 
-VERSION = "1.1.75"
+VERSION = "1.1.76"
 
 
 --[[
@@ -52,8 +52,8 @@ require "misc"
 -- require "wdt"
 -- wdt.setup(pio.P0_31, pio.P0_29)
 
-require "ntp"
-ntp.timeSync()
+-- require "ntp"
+-- ntp.timeSync()--有bug，暂时取缔
 require "http"
 require "audio"
 
