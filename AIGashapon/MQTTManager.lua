@@ -57,20 +57,16 @@ local mainLoopTime = 0--上次mqtt处理的时间，用于判断是否主循环�
 local MQTT_DISCONNECT_REQUEST ="disconnect"
 
 local toHandleRequests={}
-
+local lastUpdateTime = 0
+local lastCheckTask = 0
 
 -- 自动升级检测
 function checkUpdate()
     
     --避免出现升级失败时，多次升级
-    local time = Config.getValue(Consts.LAST_UPDATE_TIME)
+    local time = lastUpdateTime
 
     current = os.time()
-    if not time or "number"~=type(time) then
-        time = current
-        Config.saveValue(Consts.LAST_UPDATE_TIME,time)
-    end
-
     if current then
         local offset = current-time
         if offset < 0 then
@@ -85,7 +81,7 @@ function checkUpdate()
     end
 
     LogUtil.d(TAG,"checkUpdate start")
-    Config.saveValue(Consts.LAST_UPDATE_TIME,current)
+    lastUpdateTime = current
     update.run() -- 检测是否有更新包
 
     sys.wait(Consts.TASK_WAIT_IN_MS)--强制延时,等待完成
@@ -106,12 +102,8 @@ end
 --任务检测
 function checkTask()
    --避免出现升级失败时，多次升级
-    local time = Config.getValue(Consts.LAST_TASK_TIME)
+    local time = lastCheckTask--Config.getValue(Consts.LAST_TASK_TIME)
     current = os.time()
-    if not time or "number"~=type(time) then
-        time = current
-        Config.saveValue(Consts.LAST_TASK_TIME,time)
-    end
 
     if current then
         local offset = current-time
@@ -127,7 +119,7 @@ function checkTask()
     end
 
     LogUtil.d(TAG,"task check start")
-    Config.saveValue(Consts.LAST_TASK_TIME,current)
+    lastCheckTask = current
     Task.getTask()               -- 检测是否有新任务 
 
     sys.wait(Consts.TASK_WAIT_IN_MS)--强制延时,等待完成
