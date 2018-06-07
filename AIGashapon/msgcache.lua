@@ -60,18 +60,18 @@ function msgcache.addMsg2Cache(msg)
     end
 
     --是否超时
-    local tms = payload[CloudConsts.TIMESTAMP]
-    if tms and TimeUtil.timeSync() then
-        local st = os.time()
-        local offset = tms -  st
-        if tms < st then
-            offset = st - tms
-        end
-        if offset > TIMEOUT_CMD then
-            LogUtil.d(TAG,"timeout cmd,sn = "..sn.." os.time="..st)
-            return r
-        end
-    end
+    -- local tms = payload[CloudConsts.TIMESTAMP]
+    -- if tms and TimeUtil.timeSync() then
+    --     local st = os.time()
+    --     local offset = tms -  st
+    --     if tms < st then
+    --         offset = st - tms
+    --     end
+    --     if offset > TIMEOUT_CMD then
+    --         LogUtil.d(TAG,"timeout cmd,sn = "..sn.." os.time="..st)
+    --         return r
+    --     end
+    -- end
 
 
     --从文件中提取历史消息，然后进行追加

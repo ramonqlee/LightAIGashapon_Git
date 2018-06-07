@@ -72,9 +72,13 @@ function checkUpdate()
     end
 
     if current then
+        local offset = current-time
+        if offset < 0 then
+            offset = -offset
+        end
         -- print("lastUpdateTime = "..time.." current ="..current.." MIN_UPDATE_INTERVAL="..Consts.MIN_UPDATE_INTERVAL )
-        if (current-time)<Consts.MIN_UPDATE_INTERVAL then
-            time = Consts.MIN_TASK_INTERVAL -(current-time)
+        if offset<Consts.MIN_UPDATE_INTERVAL then
+            time = Consts.MIN_TASK_INTERVAL - offset
             LogUtil.d(TAG,"update left time= "..time)
             return
         end
@@ -110,9 +114,13 @@ function checkTask()
     end
 
     if current then
+        local offset = current=time
+        if offset < 0 then
+            offset = -offset
+        end
         -- print("lastTaskTime = "..time.." current ="..current.." MIN_TASK_INTERVAL="..Consts.MIN_TASK_INTERVAL )
-        if (current-time)<Consts.MIN_TASK_INTERVAL then
-            time = Consts.MIN_TASK_INTERVAL -(current-time)
+        if offset<Consts.MIN_TASK_INTERVAL then
+            time = Consts.MIN_TASK_INTERVAL -offset
             LogUtil.d(TAG,"task check left time ="..time)
             return
         end
