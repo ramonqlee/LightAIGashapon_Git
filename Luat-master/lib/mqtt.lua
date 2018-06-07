@@ -283,7 +283,7 @@ function mqttc:waitfor(id, timeout)
     while true do
         local r, data = self:read(timeout)
         if r then
-            log.info("mqtt.client:waitfor", "read data =",jsonex.encode(data))
+            log.info("mqtt.client:waitfor", "read data =",jsonex.encode(data),"waitfor id =",id)
 
             local finishedMsg = false
             if PUBCOMP == data.id then
@@ -329,8 +329,20 @@ function mqttc:waitfor(id, timeout)
             end
 
             if not finishedMsg then
-                table.insert(self.cache, data)
-                log.info("mqtt.client:waitfor", "insert into cache = ",jsonex.encode(data))
+                -- 防止id和packetId重复进入
+                local dupPacket = false
+                for _, packet in pairs(self.cache) do
+                    if packet.id == id and packet.packetId==data.packetId then
+                        log.info("mqtt.client:waitfor","duplicate id = ",id," packetId",data.packetId)
+                        dupPacket = true
+                        break
+                    end
+                end
+
+                if not dupPacket then
+                    table.insert(self.cache, data)
+                    log.info("mqtt.client:waitfor", "insert into cache = ",jsonex.encode(data))
+                end
             end
         else
             return false, data
