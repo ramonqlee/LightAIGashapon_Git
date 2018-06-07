@@ -399,7 +399,7 @@ function TimerFunc(id)
                orderId = saleTable[CloudConsts.ONLINE_ORDER_ID]
                seq = saleTable[CloudConsts.DEVICE_SEQ]
                loc = saleTable[CloudConsts.LOCATION]
-               LogUtil.d(TAG,"TimeoutTable orderId = "..orderId.." timeoutTime at "..orderTimeoutTime.." seq = "..seq.." location="..loc)
+               LogUtil.d(TAG,"TimeoutTable orderId = "..orderId.." seq = "..seq.." location="..loc.." systemTime = "..systemTime.." timeoutTime at "..orderTimeoutTime)
                if systemTime > orderTimeoutTime then
                 LogUtil.d(TAG,TAG.."in TimerFunc timeouted orderId ="..orderId)
                 
