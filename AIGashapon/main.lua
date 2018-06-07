@@ -52,8 +52,6 @@ require "misc"
 -- require "wdt"
 -- wdt.setup(pio.P0_31, pio.P0_29)
 
--- require "ntp"
--- ntp.timeSync()--有bug，暂时取缔
 require "http"
 require "audio"
 
