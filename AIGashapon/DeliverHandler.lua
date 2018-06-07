@@ -21,7 +21,7 @@ require "UploadDetection"
 
 local TAG = "DeliverHandler"
 local gBusyMap={}--是否在占用的记录
-
+local ORDER_EXPIRED_SPAN = 5*60--订单超期时间和系统当前当前时间的偏差
 local mTimerId
 DeliverHandler = CloudBaseHandler:new{
     MY_TOPIC = "deliver",
@@ -34,6 +34,7 @@ DeliverHandler = CloudBaseHandler:new{
     LOOP_TIME_IN_MS = 5*1000,-- 检查是否超时的时间间隔
     -- FIXME TEMP CODE
     ORDER_EXTRA_TIMEOUT_IN_SEC = 0--一个location的订单，如果超过了这个时间，则认为订单周期结束了(真的超时了)
+    
 }
 
 -- 上传销售日志的的位置
@@ -55,6 +56,10 @@ local lastDeliverTime = 0
 
 local function getTableLen( tab )
     local count = 0  
+
+    if not tab then
+        return 0
+    end
 
     if "table"~=type(tab) then
         return count
@@ -159,9 +164,11 @@ function DeliverHandler:handleContent( content )
     saleLogMap[DeliverHandler.ORDER_TIMEOUT_TIME_IN_SEC]= expired
     saleLogMap[LOCK_OPEN_STATE] = LOCK_STATE_CLOSED--出货时设置锁的状态为关闭
 
-    if expired<os.time() then
-        LogUtil.d(TAG,TAG.." timeout orderId="..orderId.." expired ="..expired.." os.time()="..os.time())
-        saleLogMap[CloudConsts.CTS]=os.time()
+    -- 如果收到订单时，已经过期或者本地时间不准:过早收到了订单，则直接上传超时
+    local osTime = os.time()
+    if osTime>expired or expired-osTime>ORDER_EXPIRED_SPAN then
+        LogUtil.d(TAG,TAG.." timeout orderId="..orderId.." expired ="..expired.." os.time()="..osTime)
+        saleLogMap[CloudConsts.CTS]=osTime
         saleLogMap[UPLOAD_POSITION]=UPLOAD_TIMEOUT_ARRIVAL
         saleLogHandler = UploadSaleLogHandler:new()
         saleLogHandler:setMap(saleLogMap)
@@ -173,7 +180,7 @@ function DeliverHandler:handleContent( content )
     map[CloudConsts.SN] = sn
     MqttReplyHandlerMgr.replyWith(ReplyDeliverHandler.MY_TOPIC,map)
     
-    timeoutInSec = expired-os.time()
+    timeoutInSec = expired-osTime
     LogUtil.d(TAG," expired ="..expired.." orderId="..orderId.." device_seq="..device_seq.." location="..location.." sn="..sn.." timeoutInSec ="..timeoutInSec)
 
     -- 2. 同一location，产生了新的订单(新的订单id),之前较早是的location对应的订单就该删除了
@@ -190,20 +197,20 @@ function DeliverHandler:handleContent( content )
                 saleLogHandler = UploadSaleLogHandler:new()
 
                 --相同location，之前的订单还没到过期时间,那么当前的订单直接上报硬件繁忙
-                if os.time()<saleTable[DeliverHandler.ORDER_TIMEOUT_TIME_IN_SEC] then
-                    saleLogMap[CloudConsts.CTS]=os.time()
+                if osTime<saleTable[DeliverHandler.ORDER_TIMEOUT_TIME_IN_SEC] then
+                    saleLogMap[CloudConsts.CTS]=osTime
                     saleLogMap[UPLOAD_POSITION]=UPLOAD_BUSY_ARRIVAL
 
                     saleLogHandler:setMap(saleLogMap)
                     saleLogHandler:send(CloudReplyBaseHandler.BUSY)
 
-                    LogUtil.d(TAG,TAG.." oopse, duplicate request for device_seq = "..device_seq.." location = "..location.." ignored order ="..orderId)
+                    LogUtil.d(TAG,TAG.." duprequest for seq = "..device_seq.." loc = "..location.." ignored order ="..orderId)
                     --当前的location，有订单在处理中，上报后，直接返回，不再继续开锁
                     return
                 else
                     --之前的订单已经超时了，那么上报状态，并且从缓存中删除
                     saleTable[DeliverHandler.ORDER_TIMEOUT_TIME_IN_SEC]=nil--remove this key
-                    saleTable[CloudConsts.CTS]=os.time()
+                    saleTable[CloudConsts.CTS]=osTime
                     saleTable[UPLOAD_POSITION]=UPLOAD_ARRIVAL_TRIGGER_TIMEOUT
 
                     saleLogHandler:setMap(saleTable)
@@ -239,7 +246,7 @@ function DeliverHandler:handleContent( content )
         local key = device_seq.."_"..location
         gBusyMap[key]=saleLogMap
 
-        LogUtil.d(TAG,TAG.." add to gBusyMap len="..getTableLen(gBusyMap))
+        -- LogUtil.d(TAG,TAG.." add to gBusyMap len="..getTableLen(gBusyMap))
 
         if Consts.DEVICE_ENV then
         --start timer monitor already
@@ -247,10 +254,11 @@ function DeliverHandler:handleContent( content )
             LogUtil.d(TAG,TAG.." timer_is_active id ="..mTimerId)
         else
             mTimerId = sys.timer_loop_start(TimerFunc,self.LOOP_TIME_IN_MS)
+            LogUtil.d(TAG,TAG.." timer_loop_start id ="..mTimerId)
         end
         
         -- 待增加最近一次出货的id
-        Config.saveValue(CloudConsts.LAST_ID,orderId)
+        -- Config.saveValue(CloudConsts.LAST_ID,orderId)
 
         audio.setVolume(7)
         audio.play(Consts.LOCK_AUDIO)
@@ -372,35 +380,27 @@ function  openLockCallback(addr,flagsTable)
 end
 
 function TimerFunc(id)
-    if not gBusyMap then
-        --LogUtil.d(TAG,TAG.." in TimerFunc gBusyMap is nil")
-        sys.timer_stop(mTimerId)
-        LogUtil.d(TAG,TAG.." deliver queue is empty, stop timer id ="..mTimerId)
-        return
-    end
-
     if 0 == getTableLen(gBusyMap) then
-        LogUtil.d(TAG,TAG.." in TimerFunc gBusyMap len="..getTableLen(gBusyMap))
+        LogUtil.d(TAG,TAG.." in TimerFunc gBusyMap len="..getTableLen(gBusyMap).." stop timer and return")
         sys.timer_stop(mTimerId)
-        LogUtil.d(TAG,TAG.." deliver queue is empty, stop timer id ="..mTimerId)
         return
     end
 
 -- 接上条件，在定时中实现（所有如下都基于一个前提，location对应的订单，出货失败时，会自动上报超时，然后触发超时操作）
     -- 1. 订单对应的出货，超过了超时时间；
     --修改为下次同一弹仓出货时，移除这次的或者等待底层硬件上报出货成功后，移除
+    local systemTime = os.time()
     for key,saleTable in pairs(gBusyMap) do
-        lastDeliverTime = os.time()
+        lastDeliverTime = systemTime
         if saleTable then
            -- 是否超时了
            orderTimeoutTime=saleTable[DeliverHandler.ORDER_TIMEOUT_TIME_IN_SEC]
            if orderTimeoutTime then
-               systemTime = os.time()
                orderId = saleTable[CloudConsts.ONLINE_ORDER_ID]
                seq = saleTable[CloudConsts.DEVICE_SEQ]
                loc = saleTable[CloudConsts.LOCATION]
-               LogUtil.d(TAG,"TimeoutTable orderId = "..orderId.." seq = "..seq.." location="..loc.." systemTime = "..systemTime.." timeoutTime at "..orderTimeoutTime)
-               if systemTime > orderTimeoutTime then
+               LogUtil.d(TAG,"TimeoutTable orderId = "..orderId.." seq = "..seq.." loc="..loc.." timeout at "..orderTimeoutTime.." nowTime = "..systemTime)
+               if systemTime > orderTimeoutTime or orderTimeoutTime-systemTime>ORDER_EXPIRED_SPAN then
                 LogUtil.d(TAG,TAG.."in TimerFunc timeouted orderId ="..orderId)
                 
                 --上传超时，如果已经上传过，则不再上传
