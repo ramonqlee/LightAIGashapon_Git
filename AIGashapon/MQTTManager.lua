@@ -114,7 +114,7 @@ function checkTask()
     end
 
     if current then
-        local offset = current=time
+        local offset = current-time
         if offset < 0 then
             offset = -offset
         end

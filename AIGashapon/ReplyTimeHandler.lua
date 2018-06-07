@@ -59,6 +59,7 @@ function ReplyTimeHandler:handleContent( timestampInSec,content )
     -- 设置系统时间
     ntpTime=os.date("*t",timestampInSec)
     LogUtil.d(TAG,TAG.." handleContent now timestampInSec="..timestampInSec.." ntpTime="..jsonex.encode(ntpTime))
+
     misc.setClock(ntpTime)
     return r
 end                     
