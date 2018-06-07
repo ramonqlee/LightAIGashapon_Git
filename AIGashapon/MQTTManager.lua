@@ -386,7 +386,7 @@ function MQTTManager.startmqtt()
                 end
             else
                 if data and okCount then
-                    log.info(TAG, "msg = "..data.." timeSinceBoot="..okCount.." reconnectCount="..reconnectCount.." ver=".._G.VERSION.." os.time="..os.time())
+                    log.info(TAG, "msg = "..data.." timeSinceBoot="..okCount.." reconnectCount="..reconnectCount.." ver=".._G.VERSION.." ostime="..os.time())
                 end
                 
                 -- collectgarbage("collect")
