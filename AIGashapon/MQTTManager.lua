@@ -55,34 +55,39 @@ local mainLoopTime = 0--上次mqtt处理的时间，用于判断是否主循环�
 
 -- MQTT request
 local MQTT_DISCONNECT_REQUEST ="disconnect"
+local MAX_MQTT_RECEIVE_COUNT = 2
 
 local toHandleRequests={}
-local lastUpdateTime = 0
-local lastCheckTask = 0
+local lastUpdateCheckCount = 0
+local lastCheckTaskCount = 0
+
+local function timeSync()
+
+    if Consts.gTimerId and sys.timer_is_active(Consts.gTimerId) then
+        return
+    end
+
+    Consts.gTimerId=sys.timer_loop_start(function()
+            local handle = GetTimeHandler:new()
+            handle:sendGetTime(os.time())
+            LogUtil.d(TAG,"timeSync now")
+        end,Consts.TIME_SYNC_INTERVAL_MS)
+end
 
 -- 自动升级检测
 function checkUpdate()
-    
     --避免出现升级失败时，多次升级
-    local time = lastUpdateTime
+    lastUpdateCheckCount = lastUpdateCheckCount+1
 
-    current = os.time()
-    if current then
-        local offset = current-time
-        if offset < 0 then
-            offset = -offset
-        end
-        -- print("lastUpdateTime = "..time.." current ="..current.." MIN_UPDATE_INTERVAL="..Consts.MIN_UPDATE_INTERVAL )
-        if offset<Consts.MIN_UPDATE_INTERVAL then
-            time = Consts.MIN_TASK_INTERVAL - offset
-            LogUtil.d(TAG,"update left time= "..time)
-            return
-        end
+    if  lastUpdateCheckCount<Consts.MIN_UPDATE_INTERVAL then
+        local left = Consts.MIN_TASK_INTERVAL - lastUpdateCheckCount
+        LogUtil.d(TAG,"checkUpdate left count= "..left)
+        return
     end
 
-    LogUtil.d(TAG,"checkUpdate start")
-    lastUpdateTime = current
     update.run() -- 检测是否有更新包
+    lastUpdateCheckCount = 0--reset count
+    LogUtil.d(TAG,"start checkUpdate now")
 
     sys.wait(Consts.TASK_WAIT_IN_MS)--强制延时,等待完成
     local cnt=1
@@ -95,32 +100,23 @@ function checkUpdate()
             break
         end
     end
-    LogUtil.d(TAG,"checkUpdate end")
 end
 
 
 --任务检测
 function checkTask()
    --避免出现升级失败时，多次升级
-    local time = lastCheckTask--Config.getValue(Consts.LAST_TASK_TIME)
-    current = os.time()
+    lastCheckTaskCount = lastCheckTaskCount+1
 
-    if current then
-        local offset = current-time
-        if offset < 0 then
-            offset = -offset
-        end
-        -- print("lastTaskTime = "..time.." current ="..current.." MIN_TASK_INTERVAL="..Consts.MIN_TASK_INTERVAL )
-        if offset<Consts.MIN_TASK_INTERVAL then
-            time = Consts.MIN_TASK_INTERVAL -offset
-            LogUtil.d(TAG,"task check left time ="..time)
-            return
-        end
+    if lastCheckTaskCount<Consts.MIN_TASK_INTERVAL then
+        local left = Consts.MIN_TASK_INTERVAL -lastCheckTaskCount
+        LogUtil.d(TAG,"checkTask left count ="..left)
+        return
     end
 
-    LogUtil.d(TAG,"task check start")
-    lastCheckTask = current
+    LogUtil.d(TAG,"start checkTask now")
     Task.getTask()               -- 检测是否有新任务 
+    lastCheckTaskCount = 0
 
     sys.wait(Consts.TASK_WAIT_IN_MS)--强制延时,等待完成
     local cnt=1
@@ -133,7 +129,6 @@ function checkTask()
             break
         end
     end
-    LogUtil.d(TAG,"task check done")
 end
 
 
@@ -318,14 +313,20 @@ function MQTTManager.startmqtt()
         end
 
         --先取消之前的订阅
-        local unsubscribeTopic = string.format("%s/#",USERNAME)
-        mqttc:unsubscribe(unsubscribeTopic)
-        LogUtil.d(TAG,".............................unsubscribe topic = "..unsubscribeTopic)
+        unsubscribe = Config.getValue(Consts.UNSUBSCRIBE_KEY)
+        if not unsubscribe then
+            local unsubscribeTopic = string.format("%s/#",USERNAME)
+            local r = mqttc:unsubscribe(unsubscribeTopic)
+            if r then
+                Config.saveValue(Consts.UNSUBSCRIBE_KEY,"1")
+            end
+            local result = r and "true" or "false"
+            LogUtil.d(TAG,".............................unsubscribe topic = "..unsubscribeTopic.." result = "..result)
+        end
 
-        LogUtil.d(TAG,".............................subscribe topic ="..jsonex.encode(topics))
         if mqttc.connected and mqttc:subscribe(topics) then
+            LogUtil.d(TAG,".............................subscribe topic ="..jsonex.encode(topics))
             mqttFailCount = 0
-            
             -- 迁移到新的文件中，单独保存用户名和密码
             NodeIdConfig.saveValue(CloudConsts.NODE_ID,USERNAME)
             NodeIdConfig.saveValue(CloudConsts.PASSWORD,PASSWORD)
@@ -333,6 +334,8 @@ function MQTTManager.startmqtt()
             Config.saveValue(CloudConsts.NODE_ID,USERNAME)
             Config.saveValue(CloudConsts.PASSWORD,PASSWORD)
 
+            local mqttReceiveErrCount=0
+            
             while true do
                 if not mqttc.connected then
                     LogUtil.d(TAG," mqttc.disconnected,break") 
@@ -356,9 +359,12 @@ function MQTTManager.startmqtt()
             -- mywd.feed()--等待返回数据，别忘了喂狗，否则会重启
             local r, data = mqttc:receive(CLIENT_COMMAND_TIMEOUT)
 
-            if not data then
-                LogUtil.d(TAG," mqttc.receive error,break") 
-                break
+            if not r then
+                mqttReceiveErrCount = mqttReceiveErrCount+1
+                if mqttReceiveErrCount >= MAX_MQTT_RECEIVE_COUNT then
+                    LogUtil.d(TAG," mqttc.receive error,break") 
+                    break
+                end
             end
             MQTTManager.handleRequst()
             mainLoopTime =os.time()
@@ -402,6 +408,7 @@ function MQTTManager.startmqtt()
         end
     end
     mqttc:disconnect()
+    LogUtil.d(TAG," mqttc.disconnected")
 end
 end
 
@@ -467,6 +474,8 @@ function MQTTManager.publishMessageQueue(maxMsgPerRequest)
 end
 
 function MQTTManager.handleRequst()
+    timeSync()
+
     LogUtil.d(TAG,"mqtt handleRequst")
     if not toHandleRequests or 0 == #toHandleRequests then
         return
