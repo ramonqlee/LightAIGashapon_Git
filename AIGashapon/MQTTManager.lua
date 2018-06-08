@@ -361,6 +361,7 @@ function MQTTManager.startmqtt()
 
             if not data then
                 LogUtil.d(TAG," mqttc.receive error,break") 
+                break
             end
 
             MQTTManager.handleRequst()
