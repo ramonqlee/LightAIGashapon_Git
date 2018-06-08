@@ -345,10 +345,6 @@ function MQTTManager.startmqtt()
             -- 发送待发送的消息，设定条数，防止出现多条带发送时，出现消息堆积
             MQTTManager.publishMessageQueue(MAX_MSG_CNT_PER_REQ)
 
-            if TimeUtil.timeSync() and not Consts.LAST_REBOOT then
-                Consts.LAST_REBOOT = os.time()
-            end
-
             -- send get_time
             if not timeUpdated then
                 local handle = GetTimeHandler:new()

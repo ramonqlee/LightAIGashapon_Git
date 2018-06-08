@@ -44,7 +44,7 @@ function ReplyMachineVars:addExtraPayloadContent( content )
 	content["imei"]=misc.getimei()
 	t = 0
 	if not Consts.LAST_REBOOT then
-		t = 0
+		t = os.time()
 	else
 		t = Consts.LAST_REBOOT
 	end

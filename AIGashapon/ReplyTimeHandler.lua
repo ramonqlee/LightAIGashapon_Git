@@ -64,6 +64,7 @@ function ReplyTimeHandler:handleContent( timestampInSec,content )
     if now.year ~= ntpTime.year or now.month ~= ntpTime.month or now.day ~= ntpTime.day or now.hour ~= ntpTime.hour or now.min ~= ntpTime.min then
         misc.setClock(ntpTime)
         LogUtil.d(TAG," timeSync major ntpTime="..jsonex.encode(ntpTime).." now ="..jsonex.encode(now))
+        Consts.LAST_REBOOT = timestampInSec
         return
     end
 
@@ -75,6 +76,7 @@ function ReplyTimeHandler:handleContent( timestampInSec,content )
 
     if offset > Consts.MIN_TIME_SYNC_OFFSET then
         misc.setClock(ntpTime)
+        Consts.LAST_REBOOT = timestampInSec
         LogUtil.d(TAG," timeSync minor ntpTime="..jsonex.encode(ntpTime).." now ="..jsonex.encode(now))
     else
         if Consts.gTimerId and sys.timer_is_active(Consts.gTimerId) then
