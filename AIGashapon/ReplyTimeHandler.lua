@@ -46,7 +46,7 @@ end
 function ReplyTimeHandler:handleContent( timestampInSec,content )
     local r = false
     if (timestampInSec<=0) then
-        LogUtil.d(TAG,TAG.." illegal content or timestamp,handleContent return")
+        LogUtil.d(TAG," illegal content or timestamp,handleContent return")
         return r
     end
 
@@ -58,8 +58,30 @@ function ReplyTimeHandler:handleContent( timestampInSec,content )
 
     -- 设置系统时间
     ntpTime=os.date("*t",timestampInSec)
-    LogUtil.d(TAG,TAG.." handleContent now timestampInSec="..timestampInSec.." ntpTime="..jsonex.encode(ntpTime))
 
-    misc.setClock(ntpTime)
+    --比对下，如果时间没问题，则加长校对的周期
+    now = misc.getClock()
+    if now.year ~= ntpTime.year or now.month ~= ntpTime.month or now.day ~= ntpTime.day or now.hour ~= ntpTime.hour or now.min ~= ntpTime.min then
+        misc.setClock(ntpTime)
+        LogUtil.d(TAG," timeSync major ntpTime="..jsonex.encode(ntpTime).." now ="..jsonex.encode(now))
+        return
+    end
+
+    -- 比对差多少秒
+    local offset = now.sec - ntpTime.sec
+    if offset < 0 then
+        offset = -offset
+    end
+
+    if offset > Consts.MIN_TIME_SYNC_OFFSET then
+        misc.setClock(ntpTime)
+        LogUtil.d(TAG," timeSync minor ntpTime="..jsonex.encode(ntpTime).." now ="..jsonex.encode(now))
+    else
+        if Consts.gTimerId and sys.timer_is_active(Consts.gTimerId) then
+            sys.timer_stop(Consts.gTimerId)
+        end
+        LogUtil.d(TAG," timeSync finished")
+    end
+
     return r
 end                     
