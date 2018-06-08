@@ -359,13 +359,10 @@ function MQTTManager.startmqtt()
             -- mywd.feed()--等待返回数据，别忘了喂狗，否则会重启
             local r, data = mqttc:receive(CLIENT_COMMAND_TIMEOUT)
 
-            if not r then
-                mqttReceiveErrCount = mqttReceiveErrCount+1
-                if mqttReceiveErrCount >= MAX_MQTT_RECEIVE_COUNT then
-                    LogUtil.d(TAG," mqttc.receive error,break") 
-                    break
-                end
+            if not data then
+                LogUtil.d(TAG," mqttc.receive error,break") 
             end
+
             MQTTManager.handleRequst()
             mainLoopTime =os.time()
 
