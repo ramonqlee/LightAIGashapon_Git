@@ -34,9 +34,17 @@ local MAX_COLOR = BLUE
 local topNextColor = RED
 local bottomNextColor = BLUE
 
+local MAX_RETRY_COUNT = 3
+local boardIdentified = false
+local retryCount = 0
+
 function allInfoCallback( ids )
+	if ids and #ids > 0 then
+		boardIdentified = true
+	end
+
 	--取消定时器 
-	if timerId then
+	if timerId and  sys.timer_is_active(timerId) then
 		sys.timer_stop(timerId)
 	end 
 
@@ -47,10 +55,20 @@ function allInfoCallback( ids )
 
 end
 
-function entry.run()
-	-- 启动一个延时定时器
+function entry.retryIdentify()
+	-- 超过了最大的重试次数
+	retryCount = retryCount + 1
+	if retryCount > MAX_RETRY_COUNT then
+		return
+	end
+
+	if timerId and  sys.timer_is_active(timerId) then
+		sys.timer_stop(timerId)
+	end 
+
+	-- 发起识别请求，并进行超时处理
 	timerId=sys.timer_start(function()
-		LogUtil.d(TAG,"start to retrieve slaves")
+		LogUtil.d(TAG,"start to retry identify slaves")
 		sys.taskInit(function()
 			--首先初始化本地环境，然后成功后，启动mqtt
 			UartMgr.init(Consts.UART_ID,Consts.baudRate)
@@ -60,24 +78,55 @@ function entry.run()
 
 	end,5*1000)
 
+
+	sys.timer_start(function()
+		LogUtil.d(TAG,"retry timeout in retrieving slaves")
+		if timerId and  sys.timer_is_active(timerId) then
+			sys.timer_stop(timerId)
+		end
+
+		if not boardIdentified then
+			entry.retryIdentify()
+		end
+
+	end,180*1000)  
+
+end
+
+
+
+function entry.run()
+	-- 启动一个延时定时器, 获取板子id
+	timerId=sys.timer_start(function()
+		LogUtil.d(TAG,"start to retrieve slaves")
+		sys.taskInit(function()
+			--首先初始化本地环境，然后成功后，启动mqtt
+			UartMgr.init(Consts.UART_ID,Consts.baudRate)
+			--获取所有板子id
+			UartMgr.initSlaves(allInfoCallback)    
+		end)
+
+	end,10*1000)
+
 	
 	-- 启动一个延时定时器，防止没有回调时无法正常启动
-	timerId=sys.timer_start(function()
+	sys.timer_start(function()
 		LogUtil.d(TAG,"start after timeout in retrieving slaves")
-		-- mywd.feed()--断网了，别忘了喂狗，否则会重启
 		if not mqttStarted then
 			mqttStarted = true
 			sys.taskInit(MQTTManager.startmqtt)
+
+			entry.retryIdentify()
 		end
 
-	end,Consts.TEST_MODE and 15*1000 or 120*1000)  
+	end,Consts.TEST_MODE and 15*1000 or 180*1000)  
 
 	sys.timer_start(function()
 
 		LogUtil.d(TAG,"start twinkle task")
 		entry.startTwinkleTask()
 
-	end,120*1000)  
+	end,180*1000)  
 
 end
 
