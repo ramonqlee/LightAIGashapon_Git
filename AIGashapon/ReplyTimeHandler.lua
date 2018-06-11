@@ -51,6 +51,11 @@ function ReplyTimeHandler:handleContent( timestampInSec,content )
 
     r = true
 
+    if Consts.timeSynced then
+        LogUtil.d(TAG," timeSynced but reply_time again")
+        return true
+    end
+
     self.mServerTimestamp = timestampInSec
 
     -- 设置系统时间
