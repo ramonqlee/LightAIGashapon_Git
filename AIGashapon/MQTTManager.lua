@@ -88,6 +88,11 @@ function checkUpdate()
         return
     end
 
+    if update.isDownloading() then
+        LogUtil.d(TAG,"checkUpdating,return")
+        return 
+    end
+
     update.run() -- 检测是否有更新包
     lastUpdateCheckCount = 0--reset count
     LogUtil.d(TAG,"start checkUpdate now")
