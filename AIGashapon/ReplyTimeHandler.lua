@@ -69,20 +69,21 @@ function ReplyTimeHandler:handleContent( timestampInSec,content )
     end
 
     -- 比对差多少秒
-    local offset = now.sec - ntpTime.sec
+    local offset = os.time() - timestampInSec
     if offset < 0 then
         offset = -offset
     end
 
     if offset > Consts.MIN_TIME_SYNC_OFFSET then
         misc.setClock(ntpTime)
-        Consts.LAST_REBOOT = timestampInSec
         LogUtil.d(TAG," timeSync minor ntpTime="..jsonex.encode(ntpTime).." now ="..jsonex.encode(now))
     else
         if Consts.gTimerId and sys.timer_is_active(Consts.gTimerId) then
             sys.timer_stop(Consts.gTimerId)
+            Consts.timeSynced = true
+            Consts.LAST_REBOOT = timestampInSec
+            LogUtil.d(TAG," timeSync finished")
         end
-        LogUtil.d(TAG," timeSync finished")
     end
 
     return r

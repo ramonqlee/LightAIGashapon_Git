@@ -62,6 +62,10 @@ local lastUpdateCheckCount = 0
 local lastCheckTaskCount = 0
 
 local function timeSync()
+    if Consts.timeSynced then
+        LogUtil.d(TAG," timeSynced")
+        return
+    end
 
     if Consts.gTimerId and sys.timer_is_active(Consts.gTimerId) then
         return
