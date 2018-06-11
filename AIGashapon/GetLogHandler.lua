@@ -4,7 +4,6 @@
 -- @copyright idreems.com
 -- @release 2017.12.23
 
-require "TimeUtil"
 require "CloudConsts"
 
 local TAG = "GetLogHandler"

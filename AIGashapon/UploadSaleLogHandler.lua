@@ -5,7 +5,6 @@
 -- @release 2017.12.23
 -- @test 2018.1.7
 
-require "TimeUtil"
 require "CloudConsts"
 require "CloudReplyBaseHandler"
 jsonex = require "jsonex"
@@ -41,7 +40,7 @@ function UploadSaleLogHandler:send( state )
  	end
  	myContent[CloudConsts.STATE]=state
  	local myPayload = {}
- 	myPayload[CloudConsts.TIMESTAMP]=TimeUtil.getCheckedCurrentTime()
+ 	myPayload[CloudConsts.TIMESTAMP]=os.time()
  	myPayload[CloudConsts.CONTENT]=myContent
  	MQTTManager.publish(self:getTopic(),jsonex.encode(myPayload))
 end         

@@ -7,7 +7,6 @@
 
 require "CloudBaseHandler"
 require "CloudConsts"
-require "TimeUtil"
 require "LogUtil"
 require "Consts"
 
@@ -44,7 +43,7 @@ function GetTimeHandler:sendGetTime(lastReboot)
     local topic = string.format("%s/%s",Consts.getUserName(),self:name())
 
     local msg = {}
-    msg[CloudConsts.TIMESTAMP]=TimeUtil.getCheckedCurrentTime()
+    msg[CloudConsts.TIMESTAMP] = os.time()
     local myContent = {}
     
     t = 0

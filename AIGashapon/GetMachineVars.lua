@@ -4,7 +4,6 @@
 -- @release 2017.12.23
 -- tested 2017.12.27
 
-require "TimeUtil"
 require "CloudConsts"
 require "CloudBaseHandler"
 require "MqttReplyHandlerMgr"

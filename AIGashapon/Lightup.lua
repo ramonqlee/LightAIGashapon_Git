@@ -5,7 +5,6 @@
 -- @release 2017.12.23
 -- tested 
 
-require "TimeUtil"
 require "LogUtil"
 require "UartMgr"
 require "jsonex"

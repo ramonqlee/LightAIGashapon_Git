@@ -4,7 +4,6 @@
 -- @release 2017.12.21
 -- tested 2017.12.27
 
-require "TimeUtil"
 require "LogUtil"
 require "CloudConsts"
 -- require "MQTTManager"
@@ -75,7 +74,7 @@ function CloudReplyBaseHandler:handleContent( payloadJsons )
 	local myPayload = {}
 	local myContent = payloadJsons or {}
 
-	myPayload[CloudConsts.TIMESTAMP]=TimeUtil.getCheckedCurrentTime()
+	myPayload[CloudConsts.TIMESTAMP]=os.time()
 	self:addExtraPayloadContent(myContent)
 	myPayload[CloudConsts.CONTENT]=myContent
 	

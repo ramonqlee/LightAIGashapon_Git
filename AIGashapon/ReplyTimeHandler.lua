@@ -6,7 +6,6 @@
 -- tested 2017.12.26
 
 require "CloudBaseHandler"
-require "TimeUtil"
 require "CloudConsts"
 require "LogUtil"
 require "misc"
@@ -53,8 +52,6 @@ function ReplyTimeHandler:handleContent( timestampInSec,content )
     r = true
 
     self.mServerTimestamp = timestampInSec
-    TimeUtil.setTimeOffset(self.mServerTimestamp-os.time())
-    TimeUtil.setLastTimeInMs(TimeUtil.getCheckedCurrentTime())
 
     -- 设置系统时间
     ntpTime=os.date("*t",timestampInSec)
@@ -69,7 +66,7 @@ function ReplyTimeHandler:handleContent( timestampInSec,content )
 
     if offset > Consts.MIN_TIME_SYNC_OFFSET then
         misc.setClock(ntpTime)
-        LogUtil.d(TAG," timeSync minor ntpTime="..jsonex.encode(ntpTime).." now ="..jsonex.encode(now))
+        LogUtil.d(TAG," timeSync ntpTime="..jsonex.encode(ntpTime).." now ="..jsonex.encode(now))
     else
         if Consts.gTimerId and sys.timer_is_active(Consts.gTimerId) then
             sys.timer_stop(Consts.gTimerId)

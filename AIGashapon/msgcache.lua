@@ -59,21 +59,6 @@ function msgcache.addMsg2Cache(msg)
         return true--不缓存，直接向下传递
     end
 
-    --是否超时
-    -- local tms = payload[CloudConsts.TIMESTAMP]
-    -- if tms and TimeUtil.timeSync() then
-    --     local st = os.time()
-    --     local offset = tms -  st
-    --     if tms < st then
-    --         offset = st - tms
-    --     end
-    --     if offset > TIMEOUT_CMD then
-    --         LogUtil.d(TAG,"timeout cmd,sn = "..sn.." os.time="..st)
-    --         return r
-    --     end
-    -- end
-
-
     --从文件中提取历史消息，然后进行追加
     local mqttMsgSet = {}
     local allset = Config.getValue(SN_SET_PERSISTENCE_KEY)

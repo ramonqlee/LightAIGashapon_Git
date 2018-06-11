@@ -6,7 +6,6 @@
 -- tested 2017.12.27
 
 require "Config"
-require "TimeUtil"
 require "CloudConsts"
 require "CloudBaseHandler"
 require "MqttReplyHandlerMgr"
