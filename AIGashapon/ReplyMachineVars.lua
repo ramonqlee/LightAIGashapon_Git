@@ -43,11 +43,7 @@ function ReplyMachineVars:addExtraPayloadContent( content )
 	content["mac"]= misc.getimei()
 	content["imei"]=misc.getimei()
 
-	if not Consts.LAST_REBOOT then
-		Consts.LAST_REBOOT = os.time()
-	end
-
-	content["last_reboot"]=Consts.LAST_REBOOT
+	content["last_reboot"] = Consts.LAST_REBOOT and Consts.LAST_REBOOT or 0 --0--用户标识时间未同步
 	-- FIXME 待赋值
 	content["signal_strength"]=net.getRssi()
 	content["app_version"]="NIUQUMCS-01-".._G.VERSION

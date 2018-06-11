@@ -58,15 +58,8 @@ function ReplyTimeHandler:handleContent( timestampInSec,content )
 
     -- 设置系统时间
     ntpTime=os.date("*t",timestampInSec)
-
     --比对下，如果时间没问题，则加长校对的周期
     now = misc.getClock()
-    if now.year ~= ntpTime.year or now.month ~= ntpTime.month or now.day ~= ntpTime.day or now.hour ~= ntpTime.hour or now.min ~= ntpTime.min then
-        misc.setClock(ntpTime)
-        LogUtil.d(TAG," timeSync major ntpTime="..jsonex.encode(ntpTime).." now ="..jsonex.encode(now))
-        Consts.LAST_REBOOT = timestampInSec
-        return
-    end
 
     -- 比对差多少秒
     local offset = os.time() - timestampInSec
