@@ -42,14 +42,12 @@ function ReplyMachineVars:addExtraPayloadContent( content )
 	-- FIXME 待赋值
 	content["mac"]= misc.getimei()
 	content["imei"]=misc.getimei()
-	t = 0
+
 	if not Consts.LAST_REBOOT then
-		t = os.time()
-	else
-		t = Consts.LAST_REBOOT
+		Consts.LAST_REBOOT = os.time()
 	end
 
-	content["last_reboot"]=t
+	content["last_reboot"]=Consts.LAST_REBOOT
 	-- FIXME 待赋值
 	content["signal_strength"]=net.getRssi()
 	content["app_version"]="NIUQUMCS-01-".._G.VERSION
