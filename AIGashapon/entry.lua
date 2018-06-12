@@ -46,6 +46,7 @@ function allInfoCallback( ids )
 	--取消定时器 
 	if timerId and  sys.timer_is_active(timerId) then
 		sys.timer_stop(timerId)
+		LogUtil.d(TAG,"init slaves done")
 	end 
 
 	if not mqttStarted then
@@ -59,6 +60,7 @@ function entry.retryIdentify()
 	-- 超过了最大的重试次数
 	retryCount = retryCount + 1
 	if retryCount > MAX_RETRY_COUNT then
+		LogUtil.d(TAG,"init slaves ,reach retry count ="..MAX_RETRY_COUNT)
 		return
 	end
 
