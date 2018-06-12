@@ -4,7 +4,7 @@
 MODULE_TYPE = "Air202"
 PROJECT = "AIGashapon"
 
-VERSION = "1.1.89"
+VERSION = "1.1.91"
 
 
 --[[
@@ -26,6 +26,7 @@ require "Config"
 require "update"
 require "Task"
 
+local TAG = "TimeSync"
 
 LOG_LEVEL=log.LOGLEVEL_TRACE
 
@@ -36,6 +37,20 @@ end
 
 sys.subscribe("FOTA_DOWNLOAD_FINISH",restart)	--升级完成会发布FOTA_DOWNLOAD_FINISH消息
 sys.subscribe(Consts.REBOOT_DEVICE_CMD,restart)	--重启设备命令
+sys.subscribe("TIME_SYNC_FINISH",function()
+	LogUtil.d(TAG," timeSync finished by ntp")
+
+	Consts.timeSynced = true
+	Consts.LAST_REBOOT = timestampInSec
+
+	--时间同步完成，停止相关服务
+	if Consts.gTimerId and sys.timer_is_active(Consts.gTimerId) then
+        sys.timer_stop(Consts.gTimerId)
+    end
+end)
+
+require "ntp"
+ntp.timeSync()
 
 require "utils"
 -- 加载GSM

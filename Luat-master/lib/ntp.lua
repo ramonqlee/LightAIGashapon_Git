@@ -12,16 +12,18 @@ local sbyte, ssub = string.byte, string.sub
 module(..., package.seeall)
 -- NTP服务器域名集合
 local timeServer = {
-    "ntp1.aliyun.com",
-    "ntp2.aliyun.com",
-    "ntp3.aliyun.com",
-    "ntp4.aliyun.com",
-    "ntp5.aliyun.com",
-    "ntp7.aliyun.com",
-    "ntp6.aliyun.com",
+     "cn.pool.ntp.org",
+    "edu.ntp.org.cn",
+    "cn.ntp.org.cn",
     "s2c.time.edu.cn",
-    "194.109.22.18",
-    "210.72.145.44",
+    "time1.aliyun.com",
+    "tw.pool.ntp.org",
+    "0.cn.pool.ntp.org",
+    "0.tw.pool.ntp.org",
+    "1.cn.pool.ntp.org",
+    "1.tw.pool.ntp.org",
+    "3.cn.pool.ntp.org",
+    "3.tw.pool.ntp.org",
 }
 -- 同步超时等待时间
 local NTP_TIMEOUT = 8000
@@ -45,7 +47,9 @@ function timeSync()
             while not socket.isReady() do sys.wait(10000) end
             local c = socket.udp()
             while true do
-                for num = 1, NTP_RETRY do if c:connect(timeServer[i], "123") then break end sys.wait(NTP_TIMEOUT) end
+                local idx = rtos.tick() % #timeServer + 1
+                log.info("ntp.timeSync server: ",timeServer[idx])
+                for num = 1, NTP_RETRY do if c:connect(timeServer[idx], "123") then break end sys.wait(NTP_TIMEOUT) end
                 if not c:send(string.fromhex("E30006EC0000000000000000314E31340000000000000000000000000000000000000000000000000000000000000000")) then break end
                 local _, data = c:recv()
                 if #data ~= 48 then break end
@@ -58,6 +62,7 @@ function timeSync()
             local date = misc.getClock()
             log.info("ntp.timeSync is date:", date.year .. "/" .. date.month .. "/" .. date.day .. "," .. date.hour .. ":" .. date.min .. ":" .. date.sec)
             if ntpTime.year == date.year and ntpTime.day == date.day and ntpTime.min == date.min then
+                sys.publish('TIME_SYNC_FINISH')
                 ntpTime = {}
                 ntpend = true
                 break

@@ -52,7 +52,7 @@ function ReplyTimeHandler:handleContent( timestampInSec,content )
     r = true
 
     if Consts.timeSynced then
-        LogUtil.d(TAG," timeSynced but reply_time again")
+        LogUtil.d(TAG," timeSynced ignore reply_time")
         return true
     end
 
@@ -60,8 +60,6 @@ function ReplyTimeHandler:handleContent( timestampInSec,content )
 
     -- 设置系统时间
     ntpTime=os.date("*t",timestampInSec)
-    --比对下，如果时间没问题，则加长校对的周期
-    now = misc.getClock()
 
     -- 比对差多少秒
     local offset = os.time() - timestampInSec
@@ -71,7 +69,7 @@ function ReplyTimeHandler:handleContent( timestampInSec,content )
 
     if offset > Consts.MIN_TIME_SYNC_OFFSET then
         misc.setClock(ntpTime)
-        LogUtil.d(TAG," timeSync ntpTime="..jsonex.encode(ntpTime).." now ="..jsonex.encode(now))
+        LogUtil.d(TAG," timeSync ntpTime="..jsonex.encode(ntpTime).." now ="..jsonex.encode(os.date("*t",os.time())))
     else
         if Consts.gTimerId and sys.timer_is_active(Consts.gTimerId) then
             sys.timer_stop(Consts.gTimerId)
