@@ -331,9 +331,9 @@ function MQTTManager.startmqtt()
             local result = r and "true" or "false"
             LogUtil.d(TAG,".............................unsubscribe topic = "..unsubscribeTopic.." result = "..result)
         end
-
+        
+        LogUtil.d(TAG,".............................subscribe topic ="..jsonex.encode(topics))
         if mqttc.connected and mqttc:subscribe(topics) then
-            LogUtil.d(TAG,".............................subscribe topic ="..jsonex.encode(topics))
             mqttFailCount = 0
             -- 迁移到新的文件中，单独保存用户名和密码
             NodeIdConfig.saveValue(CloudConsts.NODE_ID,USERNAME)
@@ -350,63 +350,63 @@ function MQTTManager.startmqtt()
                     break
                 end
 
-            -- 发送待发送的消息，设定条数，防止出现多条带发送时，出现消息堆积
-            MQTTManager.publishMessageQueue(MAX_MSG_CNT_PER_REQ)
+                -- 发送待发送的消息，设定条数，防止出现多条带发送时，出现消息堆积
+                MQTTManager.publishMessageQueue(MAX_MSG_CNT_PER_REQ)
 
-            -- send get_time
-            if not timeUpdated then
-                local handle = GetTimeHandler:new()
-                handle:sendGetTime(os.time())
-                timeUpdated = true
-            end
-
-            -- mywd.feed()--等待返回数据，别忘了喂狗，否则会重启
-            local r, data = mqttc:receive(CLIENT_COMMAND_TIMEOUT)
-
-            if not data then
-                LogUtil.d(TAG," mqttc.receive error,break") 
-                break
-            end
-
-            MQTTManager.handleRequst()
-            mainLoopTime =os.time()
-
-            if Consts.LAST_REBOOT then
-                okCount = os.time()-Consts.LAST_REBOOT
-                if okCount > COUNT_MAX then
-                    okCount = 0
+                -- send get_time
+                if not timeUpdated then
+                    local handle = GetTimeHandler:new()
+                    handle:sendGetTime(os.time())
+                    timeUpdated = true
                 end
-            end
 
-            if r and data then
-                -- dataStr = jsonex.encode(data)
-                -- LogUtil.d(TAG,".............................receive str="..dataStr)
-                
-                -- 去除重复的sn消息
-                if msgcache.addMsg2Cache(data) then
-                    for k,v in pairs(mMqttProtocolHandlerPool) do
-                        --LogUtil.d(TAG,v:name())
-                        if v:handle(data) then
-                            --LogUtil.d(TAG,v:name())
-                            break
-                        end
+                -- mywd.feed()--等待返回数据，别忘了喂狗，否则会重启
+                local r, data = mqttc:receive(CLIENT_COMMAND_TIMEOUT)
+
+                if not data then
+                    LogUtil.d(TAG," mqttc.receive error,break") 
+                    break
+                end
+
+                MQTTManager.handleRequst()
+                mainLoopTime =os.time()
+
+                if Consts.LAST_REBOOT then
+                    okCount = os.time()-Consts.LAST_REBOOT
+                    if okCount > COUNT_MAX then
+                        okCount = 0
                     end
                 end
-            else
-                if data and okCount then
-                    log.info(TAG, "msg = "..data.." timeSinceBoot="..okCount.." reconnectCount="..reconnectCount.." ver=".._G.VERSION.." ostime="..os.time())
-                end
-                
-                -- collectgarbage("collect")
-                -- c = collectgarbage("count")
-                --LogUtil.d("Mem"," line:"..debug.getinfo(1).currentline.." memory count ="..c)
-            end
 
-            --oopse disconnect
-            if not mqttc.connected then
-                LogUtil.d(TAG," mqttc.disconnected,break")
-                break
-            end
+                if r and data then
+                    -- dataStr = jsonex.encode(data)
+                    -- LogUtil.d(TAG,".............................receive str="..dataStr)
+                    
+                    -- 去除重复的sn消息
+                    if msgcache.addMsg2Cache(data) then
+                        for k,v in pairs(mMqttProtocolHandlerPool) do
+                            --LogUtil.d(TAG,v:name())
+                            if v:handle(data) then
+                                --LogUtil.d(TAG,v:name())
+                                break
+                            end
+                        end
+                    end
+                else
+                    if data and okCount then
+                        log.info(TAG, "msg = "..data.." timeSinceBoot="..okCount.." reconnectCount="..reconnectCount.." ver=".._G.VERSION.." ostime="..os.time())
+                    end
+                    
+                    -- collectgarbage("collect")
+                    -- c = collectgarbage("count")
+                    --LogUtil.d("Mem"," line:"..debug.getinfo(1).currentline.." memory count ="..c)
+                end
+
+                --oopse disconnect
+                if not mqttc.connected then
+                    LogUtil.d(TAG," mqttc.disconnected,break")
+                    break
+                end
         end
     end
     mqttc:disconnect()
