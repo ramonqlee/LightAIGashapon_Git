@@ -12,18 +12,14 @@ local sbyte, ssub = string.byte, string.sub
 module(..., package.seeall)
 -- NTP服务器域名集合
 local timeServer = {
-     "cn.pool.ntp.org",
+    "cn.pool.ntp.org",
     "edu.ntp.org.cn",
     "cn.ntp.org.cn",
     "s2c.time.edu.cn",
     "time1.aliyun.com",
-    "tw.pool.ntp.org",
     "0.cn.pool.ntp.org",
-    "0.tw.pool.ntp.org",
     "1.cn.pool.ntp.org",
-    "1.tw.pool.ntp.org",
     "3.cn.pool.ntp.org",
-    "3.tw.pool.ntp.org",
 }
 -- 同步超时等待时间
 local NTP_TIMEOUT = 8000
