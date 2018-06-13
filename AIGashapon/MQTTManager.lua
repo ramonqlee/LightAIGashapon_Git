@@ -49,7 +49,6 @@ local fdTimerId = nil
 local TAG = "MQTTManager"
 local wd = nil
 local mqttFailCount=0
-local timeUpdated=false
 local mainLoopTime = 0--上次mqtt处理的时间，用于判断是否主循环正常进行
 
 -- MQTT request
@@ -62,7 +61,6 @@ local lastCheckTaskCount = 0
 
 local function timeSync()
     if Consts.timeSynced then
-        LogUtil.d(TAG," timeSynced")
         return
     end
 
@@ -367,13 +365,6 @@ function MQTTManager.startmqtt()
 
                 -- 发送待发送的消息，设定条数，防止出现多条带发送时，出现消息堆积
                 MQTTManager.publishMessageQueue(MAX_MSG_CNT_PER_REQ)
-
-                -- send get_time
-                if not timeUpdated then
-                    local handle = GetTimeHandler:new()
-                    handle:sendGetTime(os.time())
-                    timeUpdated = true
-                end
 
                 -- mywd.feed()--等待返回数据，别忘了喂狗，否则会重启
                 local r, data = mqttc:receive(CLIENT_COMMAND_TIMEOUT)
