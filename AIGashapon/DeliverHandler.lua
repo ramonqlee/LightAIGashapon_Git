@@ -177,6 +177,7 @@ function DeliverHandler:handleContent( content )
 
     local map={}
     map[CloudConsts.SN] = sn
+    map[CloudConsts.ONLINE_ORDER_ID]= orderId
     MqttReplyHandlerMgr.replyWith(ReplyDeliverHandler.MY_TOPIC,map)
     
     timeoutInSec = expired-osTime
