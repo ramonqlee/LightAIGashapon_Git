@@ -389,6 +389,8 @@ function TimerFunc(id)
 -- 接上条件，在定时中实现（所有如下都基于一个前提，location对应的订单，出货失败时，会自动上报超时，然后触发超时操作）
     -- 1. 订单对应的出货，超过了超时时间；
     --修改为下次同一弹仓出货时，移除这次的或者等待底层硬件上报出货成功后，移除
+    local toRemove = {}
+
     local systemTime = os.time()
     for key,saleTable in pairs(gBusyMap) do
         lastDeliverTime = systemTime
@@ -411,6 +413,8 @@ function TimerFunc(id)
                     local saleLogHandler = UploadSaleLogHandler:new()
                     saleLogHandler:setMap(saleTable)
                     saleLogHandler:send(CloudReplyBaseHandler.NOT_ROTATE)
+
+                    toRemove[key] = 1
                 end
 
                 end
@@ -418,4 +422,14 @@ function TimerFunc(id)
     end
 end
 
+--删除已经出货的订单,需要从最大到最小删除，
+    if getTableLen(toRemove)>0 then
+        lastDeliverTime = os.time()
+        LogUtil.d(TAG,TAG.." in TimerFunc to remove gBusyMap len="..getTableLen(gBusyMap))
+        for key,_ in pairs(toRemove) do
+            gBusyMap[key]=nil
+            LogUtil.d(TAG,TAG.." in TimerFunc  remove order with key = "..key)
+        end
+        LogUtil.d(TAG,TAG.." in TimerFunc after remove gBusyMap len="..getTableLen(gBusyMap))
+    end
 end     

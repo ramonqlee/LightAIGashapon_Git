@@ -218,6 +218,13 @@ function MQTTManager.startmqtt()
         fdTimerId = sys.timer_loop_start(function()
             -- 如果主玄循环停止超过一定时间，，则认为程序出问题了，重启
             if os.time()-mainLoopTime> Consts.MAX_LOOP_INTERVAL then
+
+                -- 如果在出货中，则不重启，防止出现数据丢失
+                if DeliverHandler.isDelivering() then
+                    LogUtil.d(TAG,TAG.." DeliverHandler.isDelivering,ignore reboot")
+                    return
+                end
+
                 sys.timer_stop(fdTimerId)--停止看门狗喂狗，等待重启
                 fdTimerId = nil
 
@@ -260,6 +267,13 @@ function MQTTManager.startmqtt()
             mainLoopTime =os.time()
 
             if netFailCount >= MAX_MQTT_FAIL_COUNT then
+
+                -- 如果在出货中，则不重启，防止出现数据丢失
+                if DeliverHandler.isDelivering() then
+                    LogUtil.d(TAG,TAG.." DeliverHandler.isDelivering,ignore mqtt reboot")
+                    return
+                end
+
                 -- 修改为看门狗和软重启交替进行的方式
                 if CloudConsts.SOFT_REBOOT == rebootMethod then
                     LogUtil.d(TAG,"............softReboot when not link.isReady")
@@ -300,6 +314,12 @@ function MQTTManager.startmqtt()
             mainLoopTime =os.time()
 
             if mqttFailCount >= MAX_MQTT_FAIL_COUNT then
+                -- 如果在出货中，则不重启，防止出现数据丢失
+                if DeliverHandler.isDelivering() then
+                    LogUtil.d(TAG,TAG.." DeliverHandler.isDelivering,ignore reboot")
+                    return
+                end
+                
                 -- 修改为看门狗和软重启交替进行的方式
                 if CloudConsts.SOFT_REBOOT == rebootMethod then
                     LogUtil.d(TAG,"............softReboot when not mqtt.connect")
