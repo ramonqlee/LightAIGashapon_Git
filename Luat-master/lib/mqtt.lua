@@ -180,6 +180,7 @@ function client(clientId, keepAlive, username, password, cleanSession, will)
     o.will = will
     o.commandTimeout = CLIENT_COMMAND_TIMEOUT
     o.cache = {} -- 接收到的mqtt数据包缓冲
+    o.failMsgCache={}--发送失败的消息
     o.inbuf = "" -- 未完成的数据缓冲
     o.connected = false
     o.getNextPacketId = function()
@@ -195,8 +196,33 @@ function client(clientId, keepAlive, username, password, cleanSession, will)
     return o
 end
 
+function mqttc:insertIntoFailCache(msg)
+    table.insert(self.failMsgCache, msg)
+    log.info("mqtt.client:insertIntoFailCache", "failMsgCache size = ",getTableLen(self.failMsgCache))
+end
+
+function mqttc:resendAll()
+    local len = getTableLen(self.failMsgCache)
+    if 0 == len then
+        return
+    end
+
+    log.info("mqtt.client:resendAll", "failMsgCache size = ",len)
+    for i=#self.failMsgCache,1,-1 do
+        local packData = self.failMsgCache[i]
+        if packData and self:write(packData) then
+            table.remove(self.failMsgCache, i)
+            log.info("mqtt.client:resendAll", "resend ok,index = ",i)
+        end
+    end
+end
+
+
 -- 检测是否需要发送心跳包
 function mqttc:checkKeepAlive()
+    -- TODO 发送心跳前，先检查是否有待发送的消息，如果有，则先尝试发送
+    self:resendAll()
+
     if self.keepAlive == 0 then return true end
     if os.time() - self.lastIOTime >= self.keepAlive then
         if not self:write(packZeroData(PINGREQ)) then
@@ -291,11 +317,15 @@ function mqttc:waitfor(id, timeout)
                 finishedMsg = true
             end
 
+            -- TODO:这些消息如果发送失败，可以考虑先把消息发到上层，然后缓存到本地，后续再发送
             if data.id == PUBLISH then
                 if data.qos > 0 then
-                    if not self:write(packACK(data.qos == 1 and PUBACK or PUBREC, 0, data.packetId)) then
+                    local packData = packACK(data.qos == 1 and PUBACK or PUBREC, 0, data.packetId)
+                    if not self:write(packData) then
                         log.info("mqtt.client:waitfor", "send publish ack failed", data.qos,"packetId=",packetId)
-                        return false
+                        -- return false
+                        self:insertIntoFailCache(packData)
+                        return true, data
                     else
                         if 1 == data.pos then
                             finishedMsg = true
@@ -305,9 +335,12 @@ function mqttc:waitfor(id, timeout)
                     end
                 end
             elseif data.id == PUBREC or data.id == PUBREL then
-                if not self:write(packACK(data.id == PUBREC and PUBREL or PUBCOMP, 0, data.packetId)) then
+                local packData = packACK(data.id == PUBREC and PUBREL or PUBCOMP, 0, data.packetId)
+                if not self:write(packData) then
                     log.info("mqtt.client:waitfor", "send ack fail", data.id == PUBREC and "PUBREL" or "PUBCOMP")
-                    return false
+                    -- return false
+                    self:insertIntoFailCache(packData)
+                    return true, data
                 else
                     log.info("mqtt.client:waitfor", "send ack ok,packetId = ", data.packetId, "data.id = ",data.id == PUBREC and "PUBREL" or "PUBCOMP")
                     if PUBREL == data.id then
