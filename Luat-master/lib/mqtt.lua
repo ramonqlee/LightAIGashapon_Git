@@ -220,11 +220,11 @@ end
 
 -- 检测是否需要发送心跳包
 function mqttc:checkKeepAlive()
-    -- TODO 发送心跳前，先检查是否有待发送的消息，如果有，则先尝试发送
-    self:resendAll()
-
     if self.keepAlive == 0 then return true end
     if os.time() - self.lastIOTime >= self.keepAlive then
+        -- 发送心跳前，先检查是否有待发送的消息，如果有，则先尝试发送
+        self:resendAll()
+
         if not self:write(packZeroData(PINGREQ)) then
             log.info("mqtt.client:checkKeepAlive", "pingreq send fail")
             self.connected = false
