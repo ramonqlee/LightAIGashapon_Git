@@ -298,14 +298,17 @@ function mqttc:removeFromCache(packetId)
     end
 end
 
+
 -- 等待接收指定的mqtt消息
 function mqttc:waitfor(id, timeout)
+    -- 先查看有没有缓存的消息，如果有，则返回
     for index, packet in pairs(self.cache) do
         if packet.id == id then
             log.info("mqtt.client:waitfor","id = ",id,"remove from cache ",jsonex.encode(packet))
             return true,table.remove(self.cache, index)
         end
     end
+
 
     while true do
         local r, data = self:read(timeout)
@@ -317,20 +320,18 @@ function mqttc:waitfor(id, timeout)
                 finishedMsg = true
             end
 
-            -- TODO:这些消息如果发送失败，可以考虑先把消息发到上层，然后缓存到本地，后续再发送
+            -- 这些消息如果发送失败，可以考虑先把消息发到上层，然后缓存到本地，后续再发送
             if data.id == PUBLISH then
                 if data.qos > 0 then
+                    -- 收到服务器publish的消息，如果发送成功，则继续后面的流程，否则，将消息放到失败的消息队列中，稍后发送，而消息则直接返回上层
                     local packData = packACK(data.qos == 1 and PUBACK or PUBREC, 0, data.packetId)
                     if not self:write(packData) then
                         log.info("mqtt.client:waitfor", "send publish ack failed", data.qos,"packetId=",packetId)
-                        -- return false
                         self:insertIntoFailCache(packData)
-                        return true, data
                     else
                         if 1 == data.pos then
                             finishedMsg = true
                         end
-
                         log.info("mqtt.client:waitfor", "send publish ack ok,packetId = ", data.packetId, "data.id = ",data.qos == 1 and "PUBACK" or "PUBREC")
                     end
                 end
@@ -338,9 +339,7 @@ function mqttc:waitfor(id, timeout)
                 local packData = packACK(data.id == PUBREC and PUBREL or PUBCOMP, 0, data.packetId)
                 if not self:write(packData) then
                     log.info("mqtt.client:waitfor", "send ack fail", data.id == PUBREC and "PUBREL" or "PUBCOMP")
-                    -- return false
                     self:insertIntoFailCache(packData)
-                    return true, data
                 else
                     log.info("mqtt.client:waitfor", "send ack ok,packetId = ", data.packetId, "data.id = ",data.id == PUBREC and "PUBREL" or "PUBCOMP")
                     if PUBREL == data.id then
@@ -384,46 +383,6 @@ function mqttc:waitfor(id, timeout)
     end
 end
 
--- function mqttc:waitfor(id, timeout)
---     for index, packet in ipairs(self.cache) do
---         if packet.id == id then
---             return true, table.remove(self.cache, index)
---         end
---     end
-
---     while true do
---         local r, data = self:read(timeout)
---         if r then
---             log.info("mqtt.client:waitfor", "read data =",jsonex.encode(data))
---             if data.id == PUBLISH then
---                 if data.qos > 0 then
---                     if not self:write(packACK(data.qos == 1 and PUBACK or PUBREC, 0, data.packetId)) then
---                         log.info("mqtt.client:waitfor", "send publish ack failed", data.qos)
---                         return false
---                     end
---                 end
---             elseif data.id == PUBREC or data.id == PUBREL then
---                 if not self:write(packACK(data.id == PUBREC and PUBREL or PUBCOMP, 0, data.packetId)) then
---                     log.info("mqtt.client:waitfor", "send ack fail", data.id == PUBREC and "PUBREC" or "PUBCOMP")
---                     return false
---                 end
---             end
-
---             if data.id == id then
---                 return true, data
---             end
-
---             --ignore PINGRESP
---             if PINGRESP ~= data.id then
---                 table.insert(self.cache, data)
---             end
---             log.info("mqtt.client:waitfor", "---------cache size =",#self.cache)
-
---         else
---             return false, data
---         end
---     end
--- end
 
 --- 连接mqtt服务器
 -- @param host 地址
@@ -576,15 +535,33 @@ end
 -- @usage
 -- true, packet = mqttc:receive()
 -- false, error_message = mqttc:receive()
-function mqttc:receive(timeout)
+function mqttc:receive(timeout)    
+    -- 先查看有没有缓存的消息，如果有，则返回
+    for index, packet in pairs(self.cache) do
+        if packet.id == id then
+            log.info("mqtt.client:receive","id = ",id,"remove from cache ",jsonex.encode(packet))
+            return true,table.remove(self.cache, index)
+        end
+    end
+
     if not self.connected then
-        log.info("mqtt.client:receive", "not connected")
+        log.info("mqtt.client:waitfor", "not connected")
         return false
     end
 
     return self:waitfor(PUBLISH, timeout)
 end
 
+function mqttc:hasMessage()
+    -- 先查看有没有缓存的消息，如果有，则返回
+    for index, packet in pairs(self.cache) do
+        if packet.id == PUBLISH then
+            log.info("mqtt.client:waitfor","id = ",id,"remove from cache ",jsonex.encode(packet))
+            return true
+        end
+    end
+    return false
+end
 --- mqtt disconnect
 -- @return result true - 成功，false - 失败
 -- @usage

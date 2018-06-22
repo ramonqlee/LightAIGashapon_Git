@@ -261,7 +261,6 @@ function MQTTManager.startmqtt()
     LogUtil.d(TAG,"rebootMethod ="..rebootMethod.." nextRebootMethod = "..nextRebootMethod)
 
     while true do
-
         while not link.isReady() do
             LogUtil.d(TAG,".............................socket not ready.............................")
             mainLoopTime =os.time()
@@ -378,8 +377,8 @@ function MQTTManager.startmqtt()
             local mqttReceiveErrCount=0
             
             while true do
-                if not mqttc.connected then
-                    LogUtil.d(TAG," mqttc.disconnected,break") 
+                if not mqttc.connected and not mqttc:hasMessage() then
+                    LogUtil.d(TAG," mqttc.disconnected and no message,break") 
                     break
                 end
 
@@ -429,8 +428,8 @@ function MQTTManager.startmqtt()
                 end
 
                 --oopse disconnect
-                if not mqttc.connected then
-                    LogUtil.d(TAG," mqttc.disconnected,break")
+                if not mqttc.connected and not mqttc:hasMessage()  then
+                    LogUtil.d(TAG," mqttc.disconnected and no message,break")
                     break
                 end
         end
