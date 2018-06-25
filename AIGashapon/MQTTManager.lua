@@ -48,7 +48,7 @@ local fdTimerId = nil
 
 local TAG = "MQTTManager"
 local wd = nil
-local mqttFailCount=0
+local mqttFailCount = 0
 local mainLoopTime = 0--上次mqtt处理的时间，用于判断是否主循环正常进行
 
 -- MQTT request
@@ -217,8 +217,12 @@ function MQTTManager.startmqtt()
     if not fdTimerId then
         fdTimerId = sys.timer_loop_start(function()
             -- 如果主玄循环停止超过一定时间，，则认为程序出问题了，重启
-            if os.time()-mainLoopTime> Consts.MAX_LOOP_INTERVAL then
+            local timeOffset = os.time()-mainLoopTime
+            if timeOffset < 0 then
+                timeOffset = -timeOffset
+            end
 
+            if Consts.timeSynced and timeOffset > Consts.MAX_LOOP_INTERVAL then
                 -- 如果在出货中，则不重启，防止出现数据丢失
                 if DeliverHandler.isDelivering() then
                     LogUtil.d(TAG,TAG.." DeliverHandler.isDelivering,ignore reboot")
@@ -228,7 +232,7 @@ function MQTTManager.startmqtt()
                 sys.timer_stop(fdTimerId)--停止看门狗喂狗，等待重启
                 fdTimerId = nil
 
-                LogUtil.d(TAG,"............softReboot when not mainloop stop")
+                LogUtil.d(TAG,"............softReboot when mainloop stop,timeOffset="..timeOffset.." os.time()="..os.time().." mainLoopTime="..mainLoopTime)
                 sys.restart("deadMainLoop")--重启更新包生效
                 return
             end
@@ -410,9 +414,9 @@ function MQTTManager.startmqtt()
                     -- 去除重复的sn消息
                     if msgcache.addMsg2Cache(data) then
                         for k,v in pairs(mMqttProtocolHandlerPool) do
-                            --LogUtil.d(TAG,v:name())
                             if v:handle(data) then
-                                --LogUtil.d(TAG,v:name())
+                                log.info(TAG, "reconnectCount="..reconnectCount.." ver=".._G.VERSION.." ostime="..os.time())
+                                mainLoopTime =os.time()
                                 break
                             end
                         end
