@@ -180,7 +180,7 @@ function client(clientId, keepAlive, username, password, cleanSession, will)
     o.will = will
     o.commandTimeout = CLIENT_COMMAND_TIMEOUT
     o.cache = {} -- 接收到的mqtt数据包缓冲
-    o.failMsgCache={}--发送失败的消息
+    o.sentFailMsgCache={}--发送失败的消息
     o.inbuf = "" -- 未完成的数据缓冲
     o.connected = false
     o.getNextPacketId = function()
@@ -196,34 +196,40 @@ function client(clientId, keepAlive, username, password, cleanSession, will)
     return o
 end
 
-function mqttc:insertIntoFailCache(msg)
-    table.insert(self.failMsgCache, msg)
-    log.info("mqtt.client:insertIntoFailCache", "failMsgCache size = ",getTableLen(self.failMsgCache))
-end
-
-function mqttc:resendAll()
-    local len = getTableLen(self.failMsgCache)
+function mqttc:resendFailMsg()
+    local len = getTableLen(self.sentFailMsgCache)
     if 0 == len then
         return
     end
 
-    log.info("mqtt.client:resendAll", "failMsgCache size = ",len)
-    for i=#self.failMsgCache,1,-1 do
-        local packData = self.failMsgCache[i]
+    log.info("mqtt.client:resendFailMsg", "sentFailMsgCache size = ",len)
+    for i=#self.sentFailMsgCache,1,-1 do
+        local packData = self.sentFailMsgCache[i]
         if packData and self:write(packData) then
-            table.remove(self.failMsgCache, i)
-            log.info("mqtt.client:resendAll", "resend ok,index = ",i)
+            table.remove(self.sentFailMsgCache, i)
+            log.info("mqtt.client:resendFailMsg", "resend ok,index = ",i)
         end
     end
 end
 
+function mqttc:removeReceiptCache(packetId,recursive)
+    log.info("mqtt.client:waitfor", "cache size = ",getTableLen(self.cache),"packetId = ",packetId)
+    for i=#self.cache,1,-1 do
+        local temp = self.cache[i]
+        log.info("mqtt.client:waitfor", "parse ",jsonex.encode(temp)," index = ",i)
+        if temp and temp.packetId==packetId then
+            log.info("mqtt.client:waitfor", "index = ",i)
+            table.remove(self.cache, i)
+        end
+    end
+end
 
 -- 检测是否需要发送心跳包
 function mqttc:checkKeepAlive()
     if self.keepAlive == 0 then return true end
     if os.time() - self.lastIOTime >= self.keepAlive then
         -- 发送心跳前，先检查是否有待发送的消息，如果有，则先尝试发送
-        self:resendAll()
+        self:resendFailMsg()
 
         if not self:write(packZeroData(PINGREQ)) then
             log.info("mqtt.client:checkKeepAlive", "pingreq send fail")
@@ -286,19 +292,6 @@ function mqttc:read(timeout)
 end
 
 
-function mqttc:removeFromCache(packetId)
-    log.info("mqtt.client:waitfor", "cache size = ",getTableLen(self.cache),"packetId = ",packetId)
-    for i=#self.cache,1,-1 do
-        local temp = self.cache[i]
-        log.info("mqtt.client:waitfor", "parse ",jsonex.encode(temp)," index = ",i)
-        if temp and temp.packetId==packetId then
-            log.info("mqtt.client:waitfor", "index = ",i)
-            table.remove(self.cache, i)
-        end
-    end
-end
-
-
 -- 等待接收指定的mqtt消息
 function mqttc:waitfor(id, timeout)
     -- 先查看有没有缓存的消息，如果有，则返回
@@ -327,7 +320,9 @@ function mqttc:waitfor(id, timeout)
                     local packData = packACK(data.qos == 1 and PUBACK or PUBREC, 0, data.packetId)
                     if not self:write(packData) then
                         log.info("mqtt.client:waitfor", "send publish ack failed", data.qos,"packetId=",packetId)
-                        self:insertIntoFailCache(packData)
+
+                        table.insert(self.sentFailMsgCache, packData)
+                        log.info("mqtt.client:pushSentFailMsg", "sentFailMsgCache size = ",getTableLen(self.sentFailMsgCache))
                     else
                         if 1 == data.pos then
                             finishedMsg = true
@@ -339,7 +334,9 @@ function mqttc:waitfor(id, timeout)
                 local packData = packACK(data.id == PUBREC and PUBREL or PUBCOMP, 0, data.packetId)
                 if not self:write(packData) then
                     log.info("mqtt.client:waitfor", "send ack fail", data.id == PUBREC and "PUBREL" or "PUBCOMP")
-                    self:insertIntoFailCache(packData)
+
+                    table.insert(self.sentFailMsgCache, packData)
+                    log.info("mqtt.client:pushSentFailMsg", "sentFailMsgCache size = ",getTableLen(self.sentFailMsgCache))
                 else
                     log.info("mqtt.client:waitfor", "send ack ok,packetId = ", data.packetId, "data.id = ",data.id == PUBREC and "PUBREL" or "PUBCOMP")
                     if PUBREL == data.id then
@@ -351,7 +348,7 @@ function mqttc:waitfor(id, timeout)
             if data.id == id then
                 -- TODO 删除相同packetid的消息
                 if finishedMsg then
-                    self:removeFromCache(data.packetId)
+                    self:removeReceiptCache(data.packetId)
                 end
                 log.info("mqtt.client:waitfor", "return ",jsonex.encode(data))
                 return true, data
