@@ -389,8 +389,11 @@ function MQTTManager.startmqtt()
                 -- 发送待发送的消息，设定条数，防止出现多条带发送时，出现消息堆积
                 MQTTManager.publishMessageQueue(MAX_MSG_CNT_PER_REQ)
 
-                -- mywd.feed()--等待返回数据，别忘了喂狗，否则会重启
-                local r, data = mqttc:receive(CLIENT_COMMAND_TIMEOUT)
+                local r, data = mqttc:receiveTypedMessage(DeliverHandler:name())--先尝试提取指定类型的消息
+                if not r then
+                    -- mywd.feed()--等待返回数据，别忘了喂狗，否则会重启
+                    r, data = mqttc:receive(CLIENT_COMMAND_TIMEOUT)
+                end
 
                 if not data then
                     LogUtil.d(TAG," mqttc.receive error,break") 

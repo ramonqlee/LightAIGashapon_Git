@@ -526,6 +526,30 @@ function mqttc:publish(topic, payload, qos, retain)
     return true
 end
 
+function mqttc:receiveTypedMessage(keyword)
+    if not keyword then
+        return false
+    end
+
+    for index, packet in pairs(self.cache) do
+        if packet.id == PUBLISH then
+            local msg = packet
+            if "table"==type(packet) then
+                msg = jsonex.encode(packet)
+            end
+
+            if "string"==type(msg) and nil ~= string.find(msg,keyword) then
+                log.info("mqtt.client:receiveTypedMessage ",msg)
+                return true,table.remove(self.cache, index)
+            end
+        end
+    end
+
+    log.info("mqtt.client:receiveTypedMessage,not match ",keyword)
+
+    return false
+end
+
 --- mqtt.client:receive([timeout])
 -- @return result true - 成功，false - 失败
 -- @return data 如果成功返回的时候接收到的服务器发过来的包，如果失败返回的是错误信息
@@ -535,8 +559,8 @@ end
 function mqttc:receive(timeout)    
     -- 先查看有没有缓存的消息，如果有，则返回
     for index, packet in pairs(self.cache) do
-        if packet.id == id then
-            log.info("mqtt.client:receive","id = ",id,"remove from cache ",jsonex.encode(packet))
+        if packet.id == PUBLISH then
+            log.info("mqtt.client:receive","index = ",index,"remove from cache ",jsonex.encode(packet))
             return true,table.remove(self.cache, index)
         end
     end
@@ -553,7 +577,7 @@ function mqttc:hasMessage()
     -- 先查看有没有缓存的消息，如果有，则返回
     for index, packet in pairs(self.cache) do
         if packet.id == PUBLISH then
-            log.info("mqtt.client:waitfor","id = ",id,"remove from cache ",jsonex.encode(packet))
+            log.info("mqtt.client:waitfor","index = ",index,"remove from cache ",jsonex.encode(packet))
             return true
         end
     end
