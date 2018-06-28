@@ -149,6 +149,11 @@ function DeliverHandler:handleContent( content )
     end
 
     local saleLogMap = {}
+
+    local arriveTime = content[CloudConsts.ARRIVE_TIME]
+    if arriveTime then
+        saleLogMap[CloudConsts.ARRIVE_TIME]= arriveTime    
+    end
     saleLogMap[CloudConsts.SN]= sn
     saleLogMap[CloudConsts.DEVICE_SEQ]= device_seq
     saleLogMap[CloudConsts.LOCATION]= location
@@ -178,6 +183,10 @@ function DeliverHandler:handleContent( content )
     local map={}
     map[CloudConsts.SN] = sn
     map[CloudConsts.ONLINE_ORDER_ID]= orderId
+
+    if arriveTime then
+        map[CloudConsts.ARRIVE_TIME]= arriveTime    
+    end
     MqttReplyHandlerMgr.replyWith(ReplyDeliverHandler.MY_TOPIC,map)
     
     timeoutInSec = expired-osTime

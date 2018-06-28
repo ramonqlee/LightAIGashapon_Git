@@ -49,7 +49,8 @@ APP_VERSION="version",
 DURATION = "duration",
 REBOOT_METHOD = "rebootM",
 SOFT_REBOOT="softReboot",
-WD_REBOOT="wdReboot"
+WD_REBOOT="wdReboot",
+ARRIVE_TIME="arriveTime"
 }
 
 

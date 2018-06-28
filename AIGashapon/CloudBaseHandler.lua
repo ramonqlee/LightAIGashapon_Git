@@ -65,6 +65,11 @@ function CloudBaseHandler:handle( obj )
 
   -- if ( string.upper(self:name()) == string.upper(ReplyTimeHandler.MY_TOPIC) ) then
   local mycontent=payloadJson[CloudConsts.CONTENT]
+  local arriveTime = tableObj[CloudConsts.ARRIVE_TIME]--指令到达的时间
+  if arriveTime then
+    mycontent[CloudConsts.ARRIVE_TIME] = arriveTime
+  end
+
   --LogUtil.d(TAG,TAG.." handle "..CloudConsts.CONTENT.." = "..type(mycontent).." at "..self.mTimestampInSec)
   if ( string.upper(self:name()) == string.upper("reply_time") ) then
     return self:handleContent(self.mTimestampInSec, mycontent)

@@ -212,13 +212,25 @@ function mqttc:resendFailMsg()
     end
 end
 
+function mqttc:insertReceiptCache(data)
+    for i=#self.cache,1,-1 do
+        local temp = self.cache[i]
+        if temp and temp.packetId==data.packetId and temp.id==data.id then--同一个packet，同一个阶段的包在缓存中只能缓存一次
+            log.info("mqtt.client:insertReceiptCache", "dup packet,ignore")
+            return
+        end
+    end
+
+    table.insert(self.cache, data)
+    log.info("mqtt.client:insertReceiptCache", "insert into cache = ",jsonex.encode(data),"cache size =",#self.cache)
+end
 function mqttc:removeReceiptCache(packetId,recursive)
     log.info("mqtt.client:waitfor", "cache size = ",getTableLen(self.cache),"packetId = ",packetId)
     for i=#self.cache,1,-1 do
         local temp = self.cache[i]
         log.info("mqtt.client:waitfor", "parse ",jsonex.encode(temp)," index = ",i)
         if temp and temp.packetId==packetId then
-            log.info("mqtt.client:waitfor", "index = ",i)
+            log.info("mqtt.client:waitfor", "remove index = ",i)
             table.remove(self.cache, i)
         end
     end
@@ -306,6 +318,11 @@ function mqttc:waitfor(id, timeout)
     while true do
         local r, data = self:read(timeout)
         if r then
+            if "table"==type(data) then
+                -- 加入指令收到的时间
+                data["arriveTime"]=os.time()
+            end
+
             log.info("mqtt.client:waitfor", "read data =",jsonex.encode(data),"waitfor id =",id)
 
             local finishedMsg = false
@@ -351,6 +368,7 @@ function mqttc:waitfor(id, timeout)
                     self:removeReceiptCache(data.packetId)
                 end
                 log.info("mqtt.client:waitfor", "return ",jsonex.encode(data))
+                
                 return true, data
             end
 
@@ -359,20 +377,7 @@ function mqttc:waitfor(id, timeout)
             end
 
             if not finishedMsg then
-                -- 防止id和packetId重复进入
-                local dupPacket = false
-                for _, packet in pairs(self.cache) do
-                    if packet.id == id and packet.packetId==data.packetId then
-                        log.info("mqtt.client:waitfor","duplicate id = ",id," packetId",data.packetId)
-                        dupPacket = true
-                        break
-                    end
-                end
-
-                if not dupPacket then
-                    table.insert(self.cache, data)
-                    log.info("mqtt.client:waitfor", "insert into cache = ",jsonex.encode(data),"cache size =",#self.cache)
-                end
+                self:insertReceiptCache(data)
             end
         else
             return false, data

@@ -77,6 +77,10 @@ function SetConfigHandler:handleContent( content )
  	map[CloudConsts.NODE_NAME]=content[CloudConsts.NODE_NAME]
  	map[CloudConsts.NODE_PRICE]=content[CloudConsts.NODE_PRICE]
  	map[CloudConsts.REBOOT_SCHEDULE]=content[CloudConsts.REBOOT_SCHEDULE]
+    local arriveTime = content[CloudConsts.ARRIVE_TIME]
+    if arriveTime then
+        map[CloudConsts.ARRIVE_TIME]= arriveTime    
+    end
 
  	-- print(ReplyConfigHandler.MY_TOPIC)
  	MqttReplyHandlerMgr.replyWith(ReplyConfigHandler.MY_TOPIC,map)

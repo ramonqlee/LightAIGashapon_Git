@@ -44,9 +44,14 @@ function GetMachineVars:handleContent( content )
  		return false
  	end
 
+
  	local map = {}
  	map[CloudConsts.SN]=content[CloudConsts.SN]
-
+	local arriveTime = content[CloudConsts.ARRIVE_TIME]
+    if arriveTime then
+        map[CloudConsts.ARRIVE_TIME]= arriveTime    
+    end
+    
  	-- --LogUtil.d(TAG,TAG.." handleContent ="..jsonex.encode(map))
  	MqttReplyHandlerMgr.replyWith(ReplyMachineVars.MY_TOPIC,map)
  	
