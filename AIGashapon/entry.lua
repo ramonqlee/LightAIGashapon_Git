@@ -146,7 +146,7 @@ function entry.twinkle( addrs,pos,times )
 	local nextColor = topNextColor
 	if TWINKLE_POS_1 == pos then
 		nextColor = topNextColor
-	else if TWINKLE_POS_2 == pos then
+	elseif TWINKLE_POS_2 == pos then
 		nextColor = middleNextColor
 	else
 		nextColor = bottomNextColor
@@ -179,7 +179,7 @@ function entry.twinkle( addrs,pos,times )
 	
 	if TWINKLE_POS_1 == pos then
 		topNextColor = nextColor
-	else if TWINKLE_POS_2 == pos then
+	elseif TWINKLE_POS_2 == pos then
 		middleNextColor = nextColor
 	else
 		bottomNextColor = nextColor
