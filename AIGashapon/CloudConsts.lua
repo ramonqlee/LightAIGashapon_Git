@@ -50,7 +50,8 @@ DURATION = "duration",
 REBOOT_METHOD = "rebootM",
 SOFT_REBOOT="softReboot",
 WD_REBOOT="wdReboot",
-ARRIVE_TIME="arriveTime"
+ARRIVE_TIME="arriveTime",
+THIRD_LEVEL_KEY = "thirdLevel"
 }
 
 

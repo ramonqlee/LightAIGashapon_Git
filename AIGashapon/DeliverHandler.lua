@@ -148,6 +148,11 @@ function DeliverHandler:handleContent( content )
         return
     end
 
+    -- 是否存在第三层
+    if "3"==location then
+        Config.saveValue(CloudConsts.THIRD_LEVEL_KEY,CloudConsts.THIRD_LEVEL_KEY)
+    end
+
     local saleLogMap = {}
 
     local arriveTime = content[CloudConsts.ARRIVE_TIME]

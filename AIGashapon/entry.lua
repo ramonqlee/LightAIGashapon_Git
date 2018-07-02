@@ -23,8 +23,8 @@ entry = {}
 local mqttStarted=false
 local TWINKLE_POS_1 = 1
 local TWINKLE_POS_2 = 2
-local TWINKLE_POS_3 = 3--not used now
-local MAX_TWINKLE	= TWINKLE_POS_2
+local TWINKLE_POS_3 = 3
+local MAX_TWINKLE	= TWINKLE_POS_3
 local nextTwinklePos=TWINKLE_POS_1
 
 local RED  = 0
@@ -32,7 +32,8 @@ local BLUE = 1
 local BOTH = 2
 local MAX_COLOR = BLUE
 local topNextColor = RED
-local bottomNextColor = BLUE
+local middleNextColor = BLUE
+local bottomNextColor = RED
 
 local MAX_RETRY_COUNT = 3
 local boardIdentified = false
@@ -145,7 +146,9 @@ function entry.twinkle( addrs,pos,times )
 	local nextColor = topNextColor
 	if TWINKLE_POS_1 == pos then
 		nextColor = topNextColor
-	else	
+	else if TWINKLE_POS_2 == pos then
+		nextColor = middleNextColor
+	else
 		nextColor = bottomNextColor
 	end
 
@@ -176,7 +179,9 @@ function entry.twinkle( addrs,pos,times )
 	
 	if TWINKLE_POS_1 == pos then
 		topNextColor = nextColor
-	else	
+	else if TWINKLE_POS_2 == pos then
+		middleNextColor = nextColor
+	else
 		bottomNextColor = nextColor
 	end
 end
@@ -209,6 +214,14 @@ function entry.startTwinkleTask( )
 
             --切换闪灯位置
             nextTwinklePos = nextTwinklePos + 1
+            
+            --是否有第三层，如果没有，直接跳到第一层
+            local thirdLevelKey = Config.getValue(CloudConsts.THIRD_LEVEL_KEY)
+            local thirdLevelExist = CloudConsts.THIRD_LEVEL_KEY==thirdLevelKey
+            if not thirdLevelExist and TWINKLE_POS_3 == nextTwinklePos then
+            	nextTwinklePos = TWINKLE_POS_1
+            end
+
 			if nextTwinklePos > MAX_TWINKLE then
 				nextTwinklePos = TWINKLE_POS_1
 			end
