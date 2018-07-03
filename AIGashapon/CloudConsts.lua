@@ -51,7 +51,8 @@ REBOOT_METHOD = "rebootM",
 SOFT_REBOOT="softReboot",
 WD_REBOOT="wdReboot",
 ARRIVE_TIME="arriveTime",
-THIRD_LEVEL_KEY = "thirdLevel"
+THIRD_LEVEL_KEY = "thirdLevel",
+RETRY_OPEN_LOCK="retryOpenLock"
 }
 
 

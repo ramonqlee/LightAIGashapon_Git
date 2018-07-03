@@ -29,7 +29,7 @@ DeliverHandler = CloudBaseHandler:new{
     PAY_ONLINE = "online",
     -- PAY_CASH = "cash",
     -- PAY_CARD = "card",
-    DEFAULT_EXPIRE_TIME_IN_SEC=60,
+    DEFAULT_EXPIRE_TIME_IN_SEC=10,
     LOOP_TIME_IN_MS = 5*1000,-- 检查是否超时的时间间隔
     -- FIXME TEMP CODE
     ORDER_EXTRA_TIMEOUT_IN_SEC = 0--一个location的订单，如果超过了这个时间，则认为订单周期结束了(真的超时了)
@@ -45,6 +45,7 @@ local UPLOAD_ARRIVAL_TRIGGER_TIMEOUT = "arrivalTriggerTimeout"--到达时，有�
 local UPLOAD_TIMER_TIMEOUT= "TimerTimeout"--定时器检测到超时
 local UPLOAD_DELIVER_AFTER_TIMEOUT= "DeliverAfterTimeout"--超时后出货
 local UPLOAD_LOCK_TIMEOUT= "LockTimeout"--锁超时
+local UPLOAD_INVALID_ARRIVAL= "invalidOrder"
 
 --发送出货指令后，锁的状态
 local LOCK_OPEN_STATE="s1state"
@@ -240,15 +241,22 @@ function DeliverHandler:handleContent( content )
 
 
     -- 开锁
+    local addr = nil
     if "string" == type(device_seq) then
         addr = string.fromhex(device_seq)--pack.pack("b3",0x00,0x00,0x06)  
-        elseif "number"==type(device_seq) then
-            addr = string.format("%2X",device_seq)
-        end
+    elseif "number"==type(device_seq) then
+        addr = string.format("%2X",device_seq)
+    end
 
-        if not addr then
-            return
-        end
+    if not addr then
+        LogUtil.d(TAG,TAG.." invalid orderId="..orderId)
+        saleLogMap[CloudConsts.CTS]=os.time()
+        saleLogMap[UPLOAD_POSITION]=UPLOAD_INVALID_ARRIVAL
+        saleLogHandler = UploadSaleLogHandler:new()
+        saleLogHandler:setMap(saleLogMap)
+        saleLogHandler:send(CloudReplyBaseHandler.TIMEOUT_WHEN_ARRIVE)--超时的话，直接上报失败状态
+        return
+    end
 
         UARTStatusReport.setCallback(openLockCallback)
         r = UARTControlInd.encode(addr,location,timeoutInSec)
@@ -263,21 +271,20 @@ function DeliverHandler:handleContent( content )
         -- LogUtil.d(TAG,TAG.." add to gBusyMap len="..getTableLen(gBusyMap))
 
         if Consts.DEVICE_ENV then
-        --start timer monitor already
-        if sys.timer_is_active(mTimerId) then
-            LogUtil.d(TAG,TAG.." timer_is_active id ="..mTimerId)
-        else
-            mTimerId = sys.timer_loop_start(TimerFunc,self.LOOP_TIME_IN_MS)
-            LogUtil.d(TAG,TAG.." timer_loop_start id ="..mTimerId)
+            --start timer monitor already
+            if sys.timer_is_active(mTimerId) then
+                LogUtil.d(TAG,TAG.." timer_is_active id ="..mTimerId)
+            else
+                mTimerId = sys.timer_loop_start(TimerFunc,self.LOOP_TIME_IN_MS)
+                LogUtil.d(TAG,TAG.." timer_loop_start id ="..mTimerId)
+            end
+            
+            -- 待增加最近一次出货的id
+            -- Config.saveValue(CloudConsts.LAST_ID,orderId)
+
+            audio.setVolume(7)
+            audio.play(Consts.LOCK_AUDIO)
         end
-        
-        -- 待增加最近一次出货的id
-        -- Config.saveValue(CloudConsts.LAST_ID,orderId)
-
-        audio.setVolume(7)
-        audio.play(Consts.LOCK_AUDIO)
-    end
-
 end 
 
 -- 开锁的回调
@@ -409,12 +416,37 @@ function TimerFunc(id)
     for key,saleTable in pairs(gBusyMap) do
         lastDeliverTime = systemTime
         if saleTable then
+            orderId = saleTable[CloudConsts.ONLINE_ORDER_ID]
+            seq = saleTable[CloudConsts.DEVICE_SEQ]
+            loc = saleTable[CloudConsts.LOCATION]
+
+            --TODO 是否已经发送过重试开锁指令
+            if Consts.RETRY_OPEN_LOCK then
+                local retried = saleTable[CloudConsts.RETRY_OPEN_LOCK]
+                if true~=retried then
+                    -- 开锁
+                    local addr = nil
+                    if "string" == type(seq) then
+                        addr = string.fromhex(seq)--pack.pack("b3",0x00,0x00,0x06)  
+                    elseif "number"==type(seq) then
+                        addr = string.format("%2X",seq)
+                    end
+
+                    if  addr then
+                        r = UARTControlInd.encode(addr,loc,DeliverHandler.DEFAULT_EXPIRE_TIME_IN_SEC)
+                        UartMgr.publishMessage(r)
+
+                        LogUtil.d(TAG,TAG.." Deliver reopenLock, orderId = "..orderId)
+                    end
+
+                    saleTable[CloudConsts.RETRY_OPEN_LOCK] = true
+                end
+            end
+
            -- 是否超时了
            orderTimeoutTime=saleTable[DeliverHandler.ORDER_TIMEOUT_TIME_IN_SEC]
            if orderTimeoutTime then
-               orderId = saleTable[CloudConsts.ONLINE_ORDER_ID]
-               seq = saleTable[CloudConsts.DEVICE_SEQ]
-               loc = saleTable[CloudConsts.LOCATION]
+               
                LogUtil.d(TAG,"TimeoutTable orderId = "..orderId.." seq = "..seq.." loc="..loc.." timeout at "..orderTimeoutTime.." nowTime = "..systemTime)
                if systemTime > orderTimeoutTime or orderTimeoutTime-systemTime>ORDER_EXPIRED_SPAN then
                 LogUtil.d(TAG,TAG.."in TimerFunc timeouted orderId ="..orderId)
