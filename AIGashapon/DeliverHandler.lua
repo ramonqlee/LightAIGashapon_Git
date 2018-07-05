@@ -30,6 +30,7 @@ DeliverHandler = CloudBaseHandler:new{
     -- PAY_CASH = "cash",
     -- PAY_CARD = "card",
     DEFAULT_EXPIRE_TIME_IN_SEC=10,
+    DEFAULT_CHECK_DELAY_TIME_IN_SEC=5,
     LOOP_TIME_IN_MS = 5*1000,-- 检查是否超时的时间间隔
     -- FIXME TEMP CODE
     ORDER_EXTRA_TIMEOUT_IN_SEC = 0--一个location的订单，如果超过了这个时间，则认为订单周期结束了(真的超时了)
@@ -46,6 +47,9 @@ local UPLOAD_TIMER_TIMEOUT= "TimerTimeout"--定时器检测到超时
 local UPLOAD_DELIVER_AFTER_TIMEOUT= "DeliverAfterTimeout"--超时后出货
 local UPLOAD_LOCK_TIMEOUT= "LockTimeout"--锁超时
 local UPLOAD_INVALID_ARRIVAL= "invalidOrder"
+
+--发送指令的时间
+local LOCK_OPEN_TIME="openTime"
 
 --发送出货指令后，锁的状态
 local LOCK_OPEN_STATE="s1state"
@@ -195,7 +199,7 @@ function DeliverHandler:handleContent( content )
     end
     MqttReplyHandlerMgr.replyWith(ReplyDeliverHandler.MY_TOPIC,map)
     
-    timeoutInSec = expired-osTime
+    timeoutInSec = DeliverHandler.DEFAULT_EXPIRE_TIME_IN_SEC--expired-osTime
     LogUtil.d(TAG," expired ="..expired.." orderId="..orderId.." device_seq="..device_seq.." location="..location.." sn="..sn.." timeoutInSec ="..timeoutInSec)
 
     -- 2. 同一location，产生了新的订单(新的订单id),之前较早是的location对应的订单就该删除了
@@ -257,7 +261,7 @@ function DeliverHandler:handleContent( content )
         saleLogHandler:send(CloudReplyBaseHandler.TIMEOUT_WHEN_ARRIVE)--超时的话，直接上报失败状态
         return
     end
-
+        saleLogMap[LOCK_OPEN_TIME]=os.time()
         UARTStatusReport.setCallback(openLockCallback)
         r = UARTControlInd.encode(addr,location,timeoutInSec)
 
@@ -421,7 +425,8 @@ function TimerFunc(id)
             loc = saleTable[CloudConsts.LOCATION]
 
             --TODO 是否已经发送过重试开锁指令
-            if Consts.RETRY_OPEN_LOCK then
+            local openTime = saleTable[LOCK_OPEN_TIME]
+            if Consts.RETRY_OPEN_LOCK and openTime and os.time()-openTime > DeliverHandler.DEFAULT_EXPIRE_TIME_IN_SEC + DeliverHandler.DEFAULT_CHECK_DELAY_TIME_IN_SEC and saleTable[LOCK_OPEN_STATE] ~= LOCK_STATE_OPEN then
                 local retried = saleTable[CloudConsts.RETRY_OPEN_LOCK]
                 if true~=retried then
                     -- 开锁
