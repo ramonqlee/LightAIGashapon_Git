@@ -30,6 +30,7 @@ DeliverHandler = CloudBaseHandler:new{
     -- PAY_CASH = "cash",
     -- PAY_CARD = "card",
     DEFAULT_EXPIRE_TIME_IN_SEC=10,
+    REOPEN_EXPIRE_TIME_IN_SEC=30,
     DEFAULT_CHECK_DELAY_TIME_IN_SEC=5,
     LOOP_TIME_IN_MS = 5*1000,-- 检查是否超时的时间间隔
     -- FIXME TEMP CODE
@@ -199,7 +200,7 @@ function DeliverHandler:handleContent( content )
     end
     MqttReplyHandlerMgr.replyWith(ReplyDeliverHandler.MY_TOPIC,map)
     
-    timeoutInSec = DeliverHandler.DEFAULT_EXPIRE_TIME_IN_SEC--expired-osTime
+    timeoutInSec = expired-osTime
     LogUtil.d(TAG," expired ="..expired.." orderId="..orderId.." device_seq="..device_seq.." location="..location.." sn="..sn.." timeoutInSec ="..timeoutInSec)
 
     -- 2. 同一location，产生了新的订单(新的订单id),之前较早是的location对应的订单就该删除了
@@ -438,7 +439,7 @@ function TimerFunc(id)
                     end
 
                     if  addr then
-                        r = UARTControlInd.encode(addr,loc,DeliverHandler.DEFAULT_EXPIRE_TIME_IN_SEC)
+                        r = UARTControlInd.encode(addr,loc,DeliverHandler.REOPEN_EXPIRE_TIME_IN_SEC)
                         UartMgr.publishMessage(r)
 
                         LogUtil.d(TAG,TAG.." Deliver reopenLock, orderId = "..orderId)
