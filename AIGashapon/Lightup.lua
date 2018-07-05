@@ -12,6 +12,7 @@ require "CloudConsts"
 require "UARTBroadcast"
 require "CloudBaseHandler"
 
+local lastLightUpTime = 0
 
 local TAG = "Lightup"
 Lightup = CloudBaseHandler:new{
@@ -29,6 +30,9 @@ function Lightup:name()
     return self.MY_TOPIC
 end
 
+function Lightup.isLightuping()
+    return (os.time()-lastLightUpTime<Consts.TWINKLE_TIME_DELAY)
+end
 
 -- testPushStr = [[
 -- {
@@ -96,4 +100,5 @@ function Lightup:handleContent( content )
 	r = UARTBroadcast.encode(msgArray)
 	UartMgr.publishMessage(r)
 
+	lastLightUpTime = os.time()
 end   

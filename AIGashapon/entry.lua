@@ -196,8 +196,8 @@ function entry.startTwinkleTask( )
 			end
 
 			--出货中，不集体闪灯
-			if DeliverHandler.isDelivering() then
-				LogUtil.d(TAG,TAG.." DeliverHandler.isDelivering")
+			if DeliverHandler.isDelivering() or Lightup.isLightuping() then
+				LogUtil.d(TAG,TAG.." DeliverHandler.isDelivering or Lightup.isLightuping")
 				return
 			end
 
