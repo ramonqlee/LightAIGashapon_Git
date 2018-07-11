@@ -115,21 +115,19 @@ function entry.run()
 	-- 启动一个延时定时器，防止没有回调时无法正常启动
 	sys.timer_start(function()
 		LogUtil.d(TAG,"start after timeout in retrieving slaves")
-		if not mqttStarted then
-			mqttStarted = true
-			sys.taskInit(MQTTManager.startmqtt)
-
+		if not boardIdentified then 
 			entry.retryIdentify()
 		end
 
-	end,Consts.TEST_MODE and 15*1000 or 180*1000)  
-
-	sys.timer_start(function()
+		if not mqttStarted then
+			mqttStarted = true
+			sys.taskInit(MQTTManager.startmqtt)
+		end
 
 		LogUtil.d(TAG,"start twinkle task")
 		entry.startTwinkleTask()
 
-	end,180*1000)  
+	end,Consts.TEST_MODE and 15*1000 or 180*1000)  
 
 end
 
