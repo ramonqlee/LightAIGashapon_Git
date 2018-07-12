@@ -36,12 +36,13 @@ local middleNextColor = BLUE
 local bottomNextColor = RED
 
 local MAX_RETRY_COUNT = 3
-local boardIdentified = false
+local RETRY_BOARD_COUNT = 2--识别的数量小于这个，就重试
+local boardIdentified = 0
 local retryCount = 0
 
 function allInfoCallback( ids )
 	if ids and #ids > 0 then
-		boardIdentified = true
+		boardIdentified = #ids
 	end
 
 	--取消定时器 
@@ -88,7 +89,7 @@ function entry.retryIdentify()
 			sys.timer_stop(timerId)
 		end
 
-		if not boardIdentified then
+		if boardIdentified < RETRY_BOARD_COUNT  then
 			entry.retryIdentify()
 		end
 
@@ -115,7 +116,7 @@ function entry.run()
 	-- 启动一个延时定时器，防止没有回调时无法正常启动
 	sys.timer_start(function()
 		LogUtil.d(TAG,"start after timeout in retrieving slaves")
-		if not boardIdentified then 
+		if  boardIdentified < RETRY_BOARD_COUNT then 
 			entry.retryIdentify()
 		end
 
