@@ -193,7 +193,6 @@ function UartMgr.init( devicePath, baudRate)
 	uart.setup(UartMgr.devicePath,baudRate,8,uart.PAR_NONE,uart.STOP_1)
 
 	-- 发送获取从板id的指令，初始化系统的一部分
-	-- UartMgr.initSlaves(nil)
 	LogUtil.d(TAG,"UartMgr.init done")
 end 
 
@@ -214,13 +213,15 @@ function UartMgr.close( devicePath )
 	-- uart.close(devicePath)
 end
 
-function UartMgr.initSlaves( callback )
+function UartMgr.initSlaves( callback ,retry)
 
-	ids = UARTAllInfoReport.getAllBoardIds(false)
-	if ids and #ids > 0 then
-		LogUtil.d(TAG,"UartMgr.initSlaves done,size = "..#ids)
-		return
-	end 
+	if not retry then
+		ids = UARTAllInfoReport.getAllBoardIds(false)
+		if ids and #ids > 0 then
+			LogUtil.d(TAG,"UartMgr.initSlaves done,size = "..#ids)
+			return
+		end 
+	end
 	LogUtil.d(TAG,"UartMgr.initSlaves")
 
 	r = UARTGetAllInfo.encode()--获取所有板子id

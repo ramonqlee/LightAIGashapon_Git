@@ -76,7 +76,7 @@ function entry.retryIdentify()
 			--首先初始化本地环境，然后成功后，启动mqtt
 			UartMgr.init(Consts.UART_ID,Consts.baudRate)
 			--获取所有板子id
-			UartMgr.initSlaves(allInfoCallback)    
+			UartMgr.initSlaves(allInfoCallback,true)    
 		end)
 
 	end,5*1000)
@@ -106,7 +106,7 @@ function entry.run()
 			--首先初始化本地环境，然后成功后，启动mqtt
 			UartMgr.init(Consts.UART_ID,Consts.baudRate)
 			--获取所有板子id
-			UartMgr.initSlaves(allInfoCallback)    
+			UartMgr.initSlaves(allInfoCallback,false)    
 		end)
 
 	end,10*1000)
