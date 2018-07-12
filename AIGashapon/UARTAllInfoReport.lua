@@ -157,6 +157,21 @@ function UARTAllInfoReport.getAllBoardIds(returnCacheIfEmpty)
 end
 
 function UARTAllInfoReport.notifiyCallback()
+	-- 是否保留之前获得的id
+	if Consts.EANBLE_MERGE_BOARD_ID then
+		tmp = Config.getValue(ALL_INFO_CACHE_KEY)
+		if tmp and "string"==type(tmp) and #tmp>0 then
+			local existAllBoardIds = jsonex.decode(tmp)
+			if existAllBoardIds and #existAllBoardIds >0 then
+				for _,addr in pairs(existAllBoardIds) do
+					if not UARTAllInfoReport.hasIds(addr) then
+						mAllBoardIds[#mAllBoardIds+1]=addr
+					end
+				end
+			end
+		end
+	end
+
 	-- 做缓存和更新
 	-- 如果获取了新的，则直接缓存
 	if mAllBoardIds and #mAllBoardIds>0 then
@@ -166,5 +181,19 @@ function UARTAllInfoReport.notifiyCallback()
 	if myCallback then
 		myCallback(mAllBoardIds)
 	end
+end
+
+-- 当前内存中返回的id是否已经包含
+function UARTAllInfoReport.hasIds(id)
+	if not mAllBoardIds or 0 == #mAllBoardIds then
+		return false
+	end
+
+	for _,addr in pairs(mAllBoardIds) do
+		if addr==id then
+			return true
+		end
+	end
+	return false
 end
 

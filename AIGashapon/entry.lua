@@ -36,7 +36,7 @@ local middleNextColor = BLUE
 local bottomNextColor = RED
 
 local MAX_RETRY_COUNT = 3
-local RETRY_BOARD_COUNT = 2--识别的数量小于这个，就重试
+local RETRY_BOARD_COUNT = 1--识别的数量小于这个，就重试
 local boardIdentified = 0
 local retryCount = 0
 
