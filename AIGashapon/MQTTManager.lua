@@ -519,7 +519,7 @@ function MQTTManager.handleRequst()
         return
     end
 
-    for _,req in ipairs(toHandleRequests) do
+    for _,req in pairs(toHandleRequests) do
         if MQTT_DISCONNECT_REQUEST == req then
             sys.wait(DISCONNECT_WAIT_TIME)
             LogUtil.d(TAG,"mqtt MQTT_DISCONNECT_REQUEST")

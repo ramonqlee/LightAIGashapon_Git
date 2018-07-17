@@ -20,7 +20,7 @@ function UARTBroadcastLightup.encode( msgArray )
  	data = pack.pack("b",1)--msgType=1
  	data = data..pack.pack("b",#msgArray)--Length
 
- 	for i,v in ipairs(msgArray) do
+ 	for i,v in pairs(msgArray) do
  		boardId = v["id"]--3 bytes
  		group = v["group"]--1byte
  		color = v["color"]--1bye

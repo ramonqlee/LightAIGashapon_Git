@@ -56,7 +56,7 @@ function ReplyMachineVars:addExtraPayloadContent( content )
 	local CATEGORY = "sem"
 	bds = UARTAllInfoReport.getAllBoardIds(true)
 	if bds and #bds >0 then
-		for _,v in ipairs(bds) do
+		for _,v in pairs(bds) do
 			local device ={}
 			device["category"]=CATEGORY
 			device["seq"]=v

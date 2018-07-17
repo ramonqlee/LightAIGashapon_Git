@@ -10,7 +10,6 @@ require "jsonex"
 local MAX_MQTT_CACHE_COUNT = 30--缓存的最大数量
 local DECR_MQTT_CACHE_COUNT = 15--超过条数后，每次删除的数量
 local SN_SET_PERSISTENCE_KEY="msg_sn_set"
-local TIMEOUT_CMD = 120--指令超时的时间
 
 local TAG = "MSGCACHE"
 
@@ -72,7 +71,7 @@ function msgcache.addMsg2Cache(msg)
     LogUtil.d(TAG,sn.." checking if new sn is in queue,queue size = "..#mqttMsgSet)
 
     local existed = false
-    for _,value in ipairs(mqttMsgSet) do
+    for _,value in pairs(mqttMsgSet) do
         if value == sn then
          LogUtil.d(TAG,sn.." duplicate sn in queue,sn="..sn)
          existed = true

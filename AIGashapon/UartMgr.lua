@@ -251,7 +251,7 @@ sys.taskInit(function()
 	while true do
 		UartMgr.init(Consts.UART_ID,Consts.baudRate)
 		-- 发送消息
-		for _,msg in ipairs(UartMgr.toWriteMessages) do
+		for _,msg in pairs(UartMgr.toWriteMessages) do
 			uart_write(msg)
 		end
 		UartMgr.toWriteMessages = {}
