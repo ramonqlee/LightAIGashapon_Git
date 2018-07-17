@@ -32,10 +32,10 @@ require "GetLatestSaleLog"
 local jsonex = require "jsonex"
 
 -- FIXME username and password to be retrieved from server
-local MAX_MQTT_FAIL_COUNT = 20
-local RETRY_TIME=10000
+local MAX_MQTT_FAIL_COUNT = 12
+local RETRY_TIME=15000
 local DISCONNECT_WAIT_TIME=5000
-local KEEPALIVE,CLEANSESSION=30,0
+local KEEPALIVE,CLEANSESSION=15,0
 local PROT,ADDR,PORT =Consts.PROTOCOL,Consts.MQTT_ADDR,Consts.MQTT_PORT
 local QOS,RETAIN=2,1
 local CLIENT_COMMAND_TIMEOUT = 5000
