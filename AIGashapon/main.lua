@@ -4,7 +4,7 @@
 MODULE_TYPE = "Air202"
 PROJECT = "AIGashapon"
 
-VERSION = "1.1.111"
+VERSION = "1.1.113"
 
 --[[
 使用Luat物联云平台固件升级的功能，必须按照以下步骤操作：
@@ -37,15 +37,7 @@ end
 sys.subscribe("FOTA_DOWNLOAD_FINISH",restart)	--升级完成会发布FOTA_DOWNLOAD_FINISH消息
 sys.subscribe(Consts.REBOOT_DEVICE_CMD,restart)	--重启设备命令
 sys.subscribe("TIME_SYNC_FINISH",function()
-	LogUtil.d(TAG," timeSync finished by ntp")
-
-	Consts.timeSynced = true
-	Consts.LAST_REBOOT = timestampInSec
-
-	--时间同步完成，停止相关服务
-	if Consts.gTimerId and sys.timer_is_active(Consts.gTimerId) then
-        sys.timer_stop(Consts.gTimerId)
-    end
+	LogUtil.d(TAG," timeSynced by ntp".." now ="..jsonex.encode(os.date("*t",os.time())))--只设置时间，不更改标识，用自有服务器的时间，进行校准一次
 end)
 
 require "ntp"

@@ -69,7 +69,7 @@ function ReplyTimeHandler:handleContent( timestampInSec,content )
 
     if offset > Consts.MIN_TIME_SYNC_OFFSET then
         misc.setClock(ntpTime)
-        LogUtil.d(TAG," timeSync ntpTime="..jsonex.encode(ntpTime).." now ="..jsonex.encode(os.date("*t",os.time())))
+        LogUtil.d(TAG," timeSync ntpTime="..jsonex.encode(ntpTime).." changed to now ="..jsonex.encode(os.date("*t",os.time())))
     else
         if Consts.gTimerId and sys.timer_is_active(Consts.gTimerId) then
             sys.timer_stop(Consts.gTimerId)

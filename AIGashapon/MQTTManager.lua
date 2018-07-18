@@ -85,7 +85,7 @@ local function timeSync()
             local handle = GetTimeHandler:new()
             handle:sendGetTime(os.time())
 
-            LogUtil.d(TAG,"timeSync now =="..Consts.timeSyncCount)
+            LogUtil.d(TAG,"timeSync count =="..Consts.timeSyncCount)
 
         end,Consts.TIME_SYNC_INTERVAL_MS)
 end
