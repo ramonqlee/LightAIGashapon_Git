@@ -47,6 +47,7 @@ local fdTimerId = nil
 
 local TAG = "MQTTManager"
 local wd = nil
+local reconnectCount = 0
 local mqttFailCount = 0
 local mainLoopTime = 0--上次mqtt处理的时间，用于判断是否主循环正常进行
 
@@ -314,17 +315,11 @@ function MQTTManager.startmqtt()
     end
 
     mainLoopTime =os.time()
+    reconnectCount = 0
+    netFailCount = 0
 
     -- 定时喂狗
     MQTTManager.loopFeedDog()
-
-    local count = 0
-    local okCount = 0
-    local COUNT_MAX = 60*60*24--一天
-    local reconnectCount = 0
-
-    netFailCount = 0
-
     LogUtil.d(TAG,"prepare to switch reboot mode")
     -- 切换下次的重启方式
     local rebootMethod = Config.getValue(CloudConsts.REBOOT_METHOD)
@@ -339,24 +334,25 @@ function MQTTManager.startmqtt()
     Config.saveValue(CloudConsts.REBOOT_METHOD,nextRebootMethod)
     LogUtil.d(TAG,"rebootMethod ="..rebootMethod.." nextRebootMethod = "..nextRebootMethod)
 
-    local mMqttProtocolHandlerPool={}
-    mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=ReplyTimeHandler:new(nil)
-    mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=SetConfigHandler:new(nil)
-    mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=GetMachineVars:new(nil)
-    mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=GetLatestSaleLog:new(nil)
-    mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=DeliverHandler:new(nil)
-    mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=Lightup:new(nil)
-    mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=ScanQrCode:new(nil)
-    local topics = {}
-    for _,v in pairs(mMqttProtocolHandlerPool) do
-        topics[string.format("%s/%s", USERNAME,v:name())]=QOS
-    end
 
     while true do
         --检查网络，网络不可用时，会重启机器
         MQTTManager.checkNetwork()
         netFailCount = 0
         USERNAME,PASSWORD = MQTTManager.checkMQTTUser()
+        
+        local mMqttProtocolHandlerPool={}
+        mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=ReplyTimeHandler:new(nil)
+        mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=SetConfigHandler:new(nil)
+        mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=GetMachineVars:new(nil)
+        mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=GetLatestSaleLog:new(nil)
+        mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=DeliverHandler:new(nil)
+        mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=Lightup:new(nil)
+        mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=ScanQrCode:new(nil)
+        local topics = {}
+        for _,v in pairs(mMqttProtocolHandlerPool) do
+            topics[string.format("%s/%s", USERNAME,v:name())]=QOS
+        end
 
         LogUtil.d(TAG,".............................startmqtt username="..USERNAME.." PASSWORD="..PASSWORD)
         if not mqttc then
@@ -390,7 +386,7 @@ function MQTTManager.startmqtt()
             Config.saveValue(CloudConsts.NODE_ID,USERNAME)
             Config.saveValue(CloudConsts.PASSWORD,PASSWORD)
 
-            MQTTManager.loopMessage()
+            MQTTManager.loopMessage(mMqttProtocolHandlerPool)
         end
 
         mqttc:disconnect()
@@ -398,7 +394,7 @@ function MQTTManager.startmqtt()
     end
 end
 
-function MQTTManager.loopMessage()
+function MQTTManager.loopMessage(mqttProtocolHandlerPool)
     while true do
         if not mqttc.connected and not mqttc:hasMessage() then
             LogUtil.d(TAG," mqttc.disconnected and no message,break") 
@@ -422,20 +418,13 @@ function MQTTManager.loopMessage()
         MQTTManager.handleRequst()
         mainLoopTime =os.time()
 
-        if Consts.LAST_REBOOT then
-            okCount = os.time()-Consts.LAST_REBOOT
-            if okCount > COUNT_MAX then
-                okCount = 0
-            end
-        end
-
         if r and data then
             -- dataStr = jsonex.encode(data)
             -- LogUtil.d(TAG,".............................receive str="..dataStr)
                     
             -- 去除重复的sn消息
             if msgcache.addMsg2Cache(data) then
-                for k,v in pairs(mMqttProtocolHandlerPool) do
+                for k,v in pairs(mqttProtocolHandlerPool) do
                     if v:handle(data) then
                         log.info(TAG, "reconnectCount="..reconnectCount.." ver=".._G.VERSION.." ostime="..os.time())
                         mainLoopTime =os.time()
@@ -445,7 +434,7 @@ function MQTTManager.loopMessage()
             end
         else
             if data and okCount then
-                log.info(TAG, "msg = "..data.." timeSinceBoot="..okCount.." reconnectCount="..reconnectCount.." ver=".._G.VERSION.." ostime="..os.time())
+                log.info(TAG, "msg = "..data.." reconnectCount="..reconnectCount.." ver=".._G.VERSION.." ostime="..os.time())
             end
             -- collectgarbage("collect")
             -- c = collectgarbage("count")
