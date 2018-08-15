@@ -46,8 +46,10 @@ ntp.timeSync()
 require "utils"
 -- 加载GSM
 require "net"
---5秒后查询第一次csq
--- net.startQueryAll(5 * 1000, 600 * 1000)
+--每1分钟查询一次GSM信号强度
+--每1分钟查询一次基站信息
+net.startQueryAll(60000, 60000)
+
 -- 控制台
 require "console"
 local CONSOLE_UART_ID = 2
