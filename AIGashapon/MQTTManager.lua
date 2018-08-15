@@ -280,30 +280,30 @@ end
 
 function MQTTManager.checkMQTTConnectivity()
     while not mqttc:connect(ADDR,PORT) do
-            -- mywd.feed()--获取配置中，别忘了喂狗，否则会重启
-            LogUtil.d(TAG,"fail to connect mqtt,try after 10s")
-            mainLoopTime =os.time()
+        -- mywd.feed()--获取配置中，别忘了喂狗，否则会重启
+        LogUtil.d(TAG,"fail to connect mqtt,try after 10s")
+        mainLoopTime =os.time()
 
-            if mqttFailCount >= MAX_MQTT_FAIL_COUNT then
-                -- 如果在出货中，则不重启，防止出现数据丢失
-                if DeliverHandler.isDelivering() then
-                    LogUtil.d(TAG,TAG.." DeliverHandler.isDelivering,ignore reboot")
-                    return
-                end
-                
-                -- 修改为看门狗和软重启交替进行的方式
-                if CloudConsts.SOFT_REBOOT == rebootMethod then
-                    LogUtil.d(TAG,"............softReboot when not mqtt.connect")
-                   sys.restart("netFailTooLong")--重启更新包生效
-                elseif fdTimerId then
-                    LogUtil.d(TAG,"............wdReboot when not mqtt.connect")
-                    sys.timer_stop(fdTimerId)--停止看门狗喂狗，等待重启
-                    fdTimerId = nil
-                end
+        if mqttFailCount >= MAX_MQTT_FAIL_COUNT then
+            -- 如果在出货中，则不重启，防止出现数据丢失
+            if DeliverHandler.isDelivering() then
+                LogUtil.d(TAG,TAG.." DeliverHandler.isDelivering,ignore reboot")
+                return
             end
+                
+            -- 修改为看门狗和软重启交替进行的方式
+            if CloudConsts.SOFT_REBOOT == rebootMethod then
+                LogUtil.d(TAG,"............softReboot when not mqtt.connect")
+                sys.restart("netFailTooLong")--重启更新包生效
+            elseif fdTimerId then
+                LogUtil.d(TAG,"............wdReboot when not mqtt.connect")
+                sys.timer_stop(fdTimerId)--停止看门狗喂狗，等待重启
+                fdTimerId = nil
+            end
+        end
 
-            mqttFailCount = mqttFailCount+1
-            sys.wait(RETRY_TIME)
+        mqttFailCount = mqttFailCount+1
+        sys.wait(RETRY_TIME)
     end
 end
 
