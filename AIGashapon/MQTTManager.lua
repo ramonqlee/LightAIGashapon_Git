@@ -33,9 +33,9 @@ local jsonex = require "jsonex"
 
 -- FIXME username and password to be retrieved from server
 local MAX_MQTT_FAIL_COUNT = 12
-local RETRY_TIME=15000
+local RETRY_TIME=30000
 local DISCONNECT_WAIT_TIME=5000
-local KEEPALIVE,CLEANSESSION=15,0
+local KEEPALIVE,CLEANSESSION=10,0
 local PROT,ADDR,PORT =Consts.PROTOCOL,Consts.MQTT_ADDR,Consts.MQTT_PORT
 local QOS,RETAIN=2,1
 local CLIENT_COMMAND_TIMEOUT = 5000
@@ -44,7 +44,6 @@ local MAX_MSG_CNT_PER_REQ = 1--每次最多发送的消息数
 local mqttc
 local toPublishMessages={}
 local fdTimerId = nil
-
 
 local TAG = "MQTTManager"
 local wd = nil
@@ -205,17 +204,12 @@ function MQTTManager.getNodeIdAndPasswordFromServer()
     return nodeId,password
 end
 
-function MQTTManager.startmqtt()
-    LogUtil.d(TAG,"MQTTManager.startmqtt")
-    if not Consts.DEVICE_ENV then
-        return
-    end
-
-    mainLoopTime =os.time()
-
-    -- 定时喂狗
+function MQTTManager.loopFeedDog()
     if not fdTimerId then
         fdTimerId = sys.timer_loop_start(function()
+
+            LogUtil.d(TAG,"feeddog started")
+
             -- 如果主玄循环停止超过一定时间，，则认为程序出问题了，重启
             local timeOffset = os.time()-mainLoopTime
             if timeOffset < 0 then
@@ -240,78 +234,52 @@ function MQTTManager.startmqtt()
             mywd.feed()--断网了，别忘了喂狗，否则会重启
         end,Consts.FEEDDOG_PERIOD)
     end
+end
 
-    LogUtil.d(TAG,"feeddog started")
+function MQTTManager.checkNetwork()
+    while not link.isReady() do
+        LogUtil.d(TAG,".............................socket not ready.............................")
+        mainLoopTime =os.time()
 
-    local count = 0
-    local okCount = 0
-    local COUNT_MAX = 60*60*24--一天
-    local reconnectCount = 0
-
-    netFailCount = 0
-
-    LogUtil.d(TAG,"prepare to switch reboot mode")
-    -- 切换下次的重启方式
-    local rebootMethod = Config.getValue(CloudConsts.REBOOT_METHOD)
-    if not rebootMethod or #rebootMethod <=0 then
-        rebootMethod = CloudConsts.SOFT_REBOOT
-    end
-
-    local nextRebootMethod = CloudConsts.WD_REBOOT--代表其他重启方式，目前为通过看门狗重启
-    if CloudConsts.WD_REBOOT == rebootMethod then
-        nextRebootMethod = CloudConsts.SOFT_REBOOT
-    end
-    Config.saveValue(CloudConsts.REBOOT_METHOD,nextRebootMethod)
-    LogUtil.d(TAG,"rebootMethod ="..rebootMethod.." nextRebootMethod = "..nextRebootMethod)
-
-    while true do
-        while not link.isReady() do
-            LogUtil.d(TAG,".............................socket not ready.............................")
-            mainLoopTime =os.time()
-
-            if netFailCount >= MAX_MQTT_FAIL_COUNT then
-
-                -- 如果在出货中，则不重启，防止出现数据丢失
-                if DeliverHandler.isDelivering() then
-                    LogUtil.d(TAG,TAG.." DeliverHandler.isDelivering,ignore mqtt reboot")
-                    return
-                end
-
-                -- 修改为看门狗和软重启交替进行的方式
-                if CloudConsts.SOFT_REBOOT == rebootMethod then
-                    LogUtil.d(TAG,"............softReboot when not link.isReady")
-                    sys.restart("netFailTooLong")--重启更新包生效
-                elseif fdTimerId then
-                    LogUtil.d(TAG,"............wdReboot when not link.isReady")
-                    sys.timer_stop(fdTimerId)--停止看门狗喂狗，等待重启
-                    fdTimerId = nil
-                end
+        if netFailCount >= MAX_MQTT_FAIL_COUNT then
+            -- 如果在出货中，则不重启，防止出现数据丢失
+            if DeliverHandler.isDelivering() then
+                LogUtil.d(TAG,TAG.." DeliverHandler.isDelivering,ignore mqtt reboot")
+                return
             end
-
-            netFailCount = netFailCount+1
-            sys.wait(RETRY_TIME)
-         end
-
-         netFailCount = 0
-
-         mqttFailCount = 0
-         USERNAME = Consts.getUserName(false)
-         PASSWORD = Consts.getPassword(false)
-         while not USERNAME or 0==#USERNAME or not PASSWORD or 0==#PASSWORD do
-            mainLoopTime =os.time()
-            -- mywd.feed()--获取配置中，别忘了喂狗，否则会重启
-            USERNAME,PASSWORD = MQTTManager.getNodeIdAndPasswordFromServer()
-            -- mywd.feed()--获取配置中，别忘了喂狗，否则会重启
-            LogUtil.d(TAG,".............................startmqtt retry to USERNAME="..USERNAME.." and ver=".._G.VERSION)
-            sys.wait(RETRY_TIME)
-        end   
-
-        LogUtil.d(TAG,".............................startmqtt username="..USERNAME.." PASSWORD="..PASSWORD)
-        if not mqttc then
-            mqttc = mqtt.client(USERNAME,KEEPALIVE,USERNAME,PASSWORD,CLEANSESSION)
+            
+            -- 修改为看门狗和软重启交替进行的方式
+            if CloudConsts.SOFT_REBOOT == rebootMethod then
+                LogUtil.d(TAG,"............softReboot when not link.isReady")
+                sys.restart("netFailTooLong")--重启更新包生效
+            elseif fdTimerId then
+                LogUtil.d(TAG,"............wdReboot when not link.isReady")
+                sys.timer_stop(fdTimerId)--停止看门狗喂狗，等待重启
+                fdTimerId = nil
+            end
         end
-        
-        while not mqttc:connect(ADDR,PORT) do
+
+        netFailCount = netFailCount+1
+        sys.wait(RETRY_TIME)
+    end
+end
+
+function MQTTManager.checkMQTTUser()
+    USERNAME = Consts.getUserName(false)
+    PASSWORD = Consts.getPassword(false)
+    while not USERNAME or 0==#USERNAME or not PASSWORD or 0==#PASSWORD do
+        mainLoopTime =os.time()
+         -- mywd.feed()--获取配置中，别忘了喂狗，否则会重启
+        USERNAME,PASSWORD = MQTTManager.getNodeIdAndPasswordFromServer()
+         -- mywd.feed()--获取配置中，别忘了喂狗，否则会重启
+        LogUtil.d(TAG,".............................startmqtt retry to USERNAME="..USERNAME.." and ver=".._G.VERSION)
+        sys.wait(RETRY_TIME)
+    end
+    return USERNAME,PASSWORD
+end
+
+function MQTTManager.checkMQTTConnectivity()
+    while not mqttc:connect(ADDR,PORT) do
             -- mywd.feed()--获取配置中，别忘了喂狗，否则会重启
             LogUtil.d(TAG,"fail to connect mqtt,try after 10s")
             mainLoopTime =os.time()
@@ -336,25 +304,69 @@ function MQTTManager.startmqtt()
 
             mqttFailCount = mqttFailCount+1
             sys.wait(RETRY_TIME)
+    end
+end
+
+function MQTTManager.startmqtt()
+    LogUtil.d(TAG,"MQTTManager.startmqtt")
+    if not Consts.DEVICE_ENV then
+        return
+    end
+
+    mainLoopTime =os.time()
+
+    -- 定时喂狗
+    MQTTManager.loopFeedDog()
+
+    local count = 0
+    local okCount = 0
+    local COUNT_MAX = 60*60*24--一天
+    local reconnectCount = 0
+
+    netFailCount = 0
+
+    LogUtil.d(TAG,"prepare to switch reboot mode")
+    -- 切换下次的重启方式
+    local rebootMethod = Config.getValue(CloudConsts.REBOOT_METHOD)
+    if not rebootMethod or #rebootMethod <=0 then
+        rebootMethod = CloudConsts.SOFT_REBOOT
+    end
+
+    local nextRebootMethod = CloudConsts.WD_REBOOT--代表其他重启方式，目前为通过看门狗重启
+    if CloudConsts.WD_REBOOT == rebootMethod then
+        nextRebootMethod = CloudConsts.SOFT_REBOOT
+    end
+    Config.saveValue(CloudConsts.REBOOT_METHOD,nextRebootMethod)
+    LogUtil.d(TAG,"rebootMethod ="..rebootMethod.." nextRebootMethod = "..nextRebootMethod)
+
+    local mMqttProtocolHandlerPool={}
+    mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=ReplyTimeHandler:new(nil)
+    mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=SetConfigHandler:new(nil)
+    mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=GetMachineVars:new(nil)
+    mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=GetLatestSaleLog:new(nil)
+    mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=DeliverHandler:new(nil)
+    mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=Lightup:new(nil)
+    mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=ScanQrCode:new(nil)
+    local topics = {}
+    for _,v in pairs(mMqttProtocolHandlerPool) do
+        topics[string.format("%s/%s", USERNAME,v:name())]=QOS
+    end
+
+    while true do
+        --检查网络，网络不可用时，会重启机器
+        MQTTManager.checkNetwork()
+        netFailCount = 0
+        USERNAME,PASSWORD = MQTTManager.checkMQTTUser()
+
+        LogUtil.d(TAG,".............................startmqtt username="..USERNAME.." PASSWORD="..PASSWORD)
+        if not mqttc then
+            mqttc = mqtt.client(USERNAME,KEEPALIVE,USERNAME,PASSWORD,CLEANSESSION)
         end
+        MQTTManager.checkMQTTConnectivity()
 
         LogUtil.d(TAG,"subscribe mqtt now")
         -- local topic=string.format("%s/#", USERNAME)
         reconnectCount = reconnectCount + 1
-
-        local mMqttProtocolHandlerPool={}
-        mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=ReplyTimeHandler:new(nil)
-        mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=SetConfigHandler:new(nil)
-        mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=GetMachineVars:new(nil)
-        mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=GetLatestSaleLog:new(nil)
-        mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=DeliverHandler:new(nil)
-        mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=Lightup:new(nil)
-        mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=ScanQrCode:new(nil)
-
-        local topics = {}
-        for _,v in pairs(mMqttProtocolHandlerPool) do
-            topics[string.format("%s/%s", USERNAME,v:name())]=QOS
-        end
 
         --先取消之前的订阅
         unsubscribe = Config.getValue(Consts.UNSUBSCRIBE_KEY)
@@ -378,72 +390,74 @@ function MQTTManager.startmqtt()
             Config.saveValue(CloudConsts.NODE_ID,USERNAME)
             Config.saveValue(CloudConsts.PASSWORD,PASSWORD)
 
-            local mqttReceiveErrCount=0
-            
-            while true do
-                if not mqttc.connected and not mqttc:hasMessage() then
-                    LogUtil.d(TAG," mqttc.disconnected and no message,break") 
-                    break
-                end
+            MQTTManager.loopMessage()
+        end
 
-                -- 发送待发送的消息，设定条数，防止出现多条带发送时，出现消息堆积
-                MQTTManager.publishMessageQueue(MAX_MSG_CNT_PER_REQ)
+        mqttc:disconnect()
+        LogUtil.d(TAG," mqttc.disconnected")
+    end
+end
 
-                local r, data = mqttc:receiveTypedMessage(DeliverHandler:name())--先尝试提取指定类型的消息
-                if not r then
-                    -- mywd.feed()--等待返回数据，别忘了喂狗，否则会重启
-                    r, data = mqttc:receive(CLIENT_COMMAND_TIMEOUT)
-                end
+function MQTTManager.loopMessage()
+    while true do
+        if not mqttc.connected and not mqttc:hasMessage() then
+            LogUtil.d(TAG," mqttc.disconnected and no message,break") 
+            break
+        end
 
-                if not data then
-                    LogUtil.d(TAG," mqttc.receive error,break") 
-                    break
-                end
+        -- 发送待发送的消息，设定条数，防止出现多条带发送时，出现消息堆积
+        MQTTManager.publishMessageQueue(MAX_MSG_CNT_PER_REQ)
 
-                MQTTManager.handleRequst()
-                mainLoopTime =os.time()
+        local r, data = mqttc:receiveTypedMessage(DeliverHandler:name())--先尝试提取指定类型的消息
+        if not r then
+            -- mywd.feed()--等待返回数据，别忘了喂狗，否则会重启
+            r, data = mqttc:receive(CLIENT_COMMAND_TIMEOUT)
+        end
 
-                if Consts.LAST_REBOOT then
-                    okCount = os.time()-Consts.LAST_REBOOT
-                    if okCount > COUNT_MAX then
-                        okCount = 0
-                    end
-                end
+        if not data then
+            LogUtil.d(TAG," mqttc.receive error,break") 
+            break
+        end
 
-                if r and data then
-                    -- dataStr = jsonex.encode(data)
-                    -- LogUtil.d(TAG,".............................receive str="..dataStr)
+        MQTTManager.handleRequst()
+        mainLoopTime =os.time()
+
+        if Consts.LAST_REBOOT then
+            okCount = os.time()-Consts.LAST_REBOOT
+            if okCount > COUNT_MAX then
+                okCount = 0
+            end
+        end
+
+        if r and data then
+            -- dataStr = jsonex.encode(data)
+            -- LogUtil.d(TAG,".............................receive str="..dataStr)
                     
-                    -- 去除重复的sn消息
-                    if msgcache.addMsg2Cache(data) then
-                        for k,v in pairs(mMqttProtocolHandlerPool) do
-                            if v:handle(data) then
-                                log.info(TAG, "reconnectCount="..reconnectCount.." ver=".._G.VERSION.." ostime="..os.time())
-                                mainLoopTime =os.time()
-                                break
-                            end
-                        end
+            -- 去除重复的sn消息
+            if msgcache.addMsg2Cache(data) then
+                for k,v in pairs(mMqttProtocolHandlerPool) do
+                    if v:handle(data) then
+                        log.info(TAG, "reconnectCount="..reconnectCount.." ver=".._G.VERSION.." ostime="..os.time())
+                        mainLoopTime =os.time()
+                        break
                     end
-                else
-                    if data and okCount then
-                        log.info(TAG, "msg = "..data.." timeSinceBoot="..okCount.." reconnectCount="..reconnectCount.." ver=".._G.VERSION.." ostime="..os.time())
-                    end
-                    
-                    -- collectgarbage("collect")
-                    -- c = collectgarbage("count")
-                    --LogUtil.d("Mem"," line:"..debug.getinfo(1).currentline.." memory count ="..c)
                 end
+            end
+        else
+            if data and okCount then
+                log.info(TAG, "msg = "..data.." timeSinceBoot="..okCount.." reconnectCount="..reconnectCount.." ver=".._G.VERSION.." ostime="..os.time())
+            end
+            -- collectgarbage("collect")
+            -- c = collectgarbage("count")
+            --LogUtil.d("Mem"," line:"..debug.getinfo(1).currentline.." memory count ="..c)
+        end
 
-                --oopse disconnect
-                if not mqttc.connected and not mqttc:hasMessage()  then
-                    LogUtil.d(TAG," mqttc.disconnected and no message,break")
-                    break
-                end
+        --oopse disconnect
+        if not mqttc.connected and not mqttc:hasMessage()  then
+            LogUtil.d(TAG," mqttc.disconnected and no message,break")
+            break
         end
     end
-    mqttc:disconnect()
-    LogUtil.d(TAG," mqttc.disconnected")
-end
 end
 
 --控制每次调用，发送的消息数，防止发送消息，影响了收取消息
