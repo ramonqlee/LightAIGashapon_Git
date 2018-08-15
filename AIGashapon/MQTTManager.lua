@@ -401,21 +401,17 @@ function MQTTManager.loopMessage(mqttProtocolHandlerPool)
             break
         end
 
-        -- 发送待发送的消息，设定条数，防止出现多条带发送时，出现消息堆积
-        MQTTManager.publishMessageQueue(MAX_MSG_CNT_PER_REQ)
-
         local r, data = mqttc:receiveTypedMessage(DeliverHandler:name())--先尝试提取指定类型的消息
         if not r then
             -- mywd.feed()--等待返回数据，别忘了喂狗，否则会重启
             r, data = mqttc:receive(CLIENT_COMMAND_TIMEOUT)
         end
 
-        if not data then
-            LogUtil.d(TAG," mqttc.receive error,break") 
-            break
-        end
+        -- if not data then
+        --     LogUtil.d(TAG," mqttc.receive error,break") 
+        --     break
+        -- end
 
-        MQTTManager.handleRequst()
         mainLoopTime =os.time()
 
         if r and data then
@@ -433,9 +429,12 @@ function MQTTManager.loopMessage(mqttProtocolHandlerPool)
                 end
             end
         else
-            if data and okCount then
+            if data then
                 log.info(TAG, "msg = "..data.." reconnectCount="..reconnectCount.." ver=".._G.VERSION.." ostime="..os.time())
             end
+            -- 发送待发送的消息，设定条数，防止出现多条带发送时，出现消息堆积
+            MQTTManager.publishMessageQueue(MAX_MSG_CNT_PER_REQ)
+            MQTTManager.handleRequst()
             -- collectgarbage("collect")
             -- c = collectgarbage("count")
             --LogUtil.d("Mem"," line:"..debug.getinfo(1).currentline.." memory count ="..c)
