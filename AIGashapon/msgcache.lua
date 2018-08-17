@@ -7,8 +7,8 @@ require "LogUtil"
 require "Config"
 require "jsonex"
 
-local MAX_MQTT_CACHE_COUNT = 30--缓存的最大数量
-local DECR_MQTT_CACHE_COUNT = 15--超过条数后，每次删除的数量
+local MAX_MQTT_CACHE_COUNT = 15--缓存的最大数量
+local DECR_MQTT_CACHE_COUNT = 5--超过条数后，每次删除的数量
 local SN_SET_PERSISTENCE_KEY="msg_sn_set"
 
 local TAG = "MSGCACHE"
