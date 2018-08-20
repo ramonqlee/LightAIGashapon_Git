@@ -544,13 +544,13 @@ function mqttc:receiveTypedMessage(keyword)
             end
 
             if "string"==type(msg) and nil ~= string.find(msg,keyword) then
-                log.info("mqtt.client:receiveTypedMessage ",msg)
+                --log.info("mqtt.client:receiveTypedMessage ",msg)
                 return true,table.remove(self.cache, index)
             end
         end
     end
 
-    log.info("mqtt.client:receiveTypedMessage,not match ",keyword)
+    --log.info("mqtt.client:receiveTypedMessage,not match ",keyword)
 
     return false
 end

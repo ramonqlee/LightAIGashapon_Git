@@ -91,6 +91,7 @@ local function timeSync()
 end
 
 -- 自动升级检测
+-- FIXME 待修复检测过于频繁的问题
 function checkUpdate()
     --避免出现升级失败时，多次升级
     lastUpdateCheckCount = lastUpdateCheckCount+1
@@ -407,10 +408,10 @@ function MQTTManager.loopMessage(mqttProtocolHandlerPool)
             r, data = mqttc:receive(CLIENT_COMMAND_TIMEOUT)
         end
 
-        -- if not data then
-        --     LogUtil.d(TAG," mqttc.receive error,break") 
-        --     break
-        -- end
+        if not data then
+            LogUtil.d(TAG," mqttc.receive error,break") 
+            break
+        end
 
         mainLoopTime =os.time()
 
