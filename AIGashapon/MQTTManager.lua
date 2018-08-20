@@ -34,7 +34,7 @@ local jsonex = require "jsonex"
 local MAX_MQTT_FAIL_COUNT = 12
 local RETRY_TIME=30000
 local DISCONNECT_WAIT_TIME=5000
-local KEEPALIVE,CLEANSESSION=10,0
+local KEEPALIVE,CLEANSESSION=60,0
 local PROT,ADDR,PORT =Consts.PROTOCOL,Consts.MQTT_ADDR,Consts.MQTT_PORT
 local QOS,RETAIN=2,1
 local CLIENT_COMMAND_TIMEOUT = 5000
@@ -401,11 +401,7 @@ function MQTTManager.loopMessage(mqttProtocolHandlerPool)
             break
         end
 
-        local r, data = mqttc:receiveTypedMessage(DeliverHandler:name())--先尝试提取指定类型的消息
-        if not r then
-            -- mywd.feed()--等待返回数据，别忘了喂狗，否则会重启
-            r, data = mqttc:receive(CLIENT_COMMAND_TIMEOUT)
-        end
+        local r, data = mqttc:receive(CLIENT_COMMAND_TIMEOUT)
 
         if not data then
             LogUtil.d(TAG," mqttc.receive error,break") 
