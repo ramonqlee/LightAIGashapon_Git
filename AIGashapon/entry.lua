@@ -13,7 +13,6 @@ require"utils"
 require "LogUtil"
 require "UartMgr"
 require "MQTTManager"
-require "ScanQrCode"
 require "UARTBroadcastLightup"
 
 local TAG="Entry"
@@ -188,12 +187,6 @@ end
 function entry.startTwinkleTask( )
 	-- 启动一个定时器，负责闪灯，当出货时停止闪灯
 	sys.timer_loop_start(function()
-			-- 如果用户扫码了，并且在一分钟之内
-			if os.time()-ScanQrCode.lastPurchaseTime()<Consts.TWINKLE_TIME_DELAY then
-				LogUtil.d(TAG,TAG.." ScanQrCode.lastPurchaseTime less then 1 min")
-				return
-			end
-
 			--出货中，不集体闪灯
 			if DeliverHandler.isDelivering() or Lightup.isLightuping() then
 				LogUtil.d(TAG,TAG.." DeliverHandler.isDelivering or Lightup.isLightuping")

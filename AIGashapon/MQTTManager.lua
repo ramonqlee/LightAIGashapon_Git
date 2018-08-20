@@ -18,7 +18,6 @@ require "Consts"
 require "LogUtil"
 require "UartMgr"
 require "Lightup"
-require "ScanQrCode"
 require "CloudConsts"
 require "NodeIdConfig"
 require "GetMachineVars"
@@ -35,7 +34,7 @@ local jsonex = require "jsonex"
 local MAX_MQTT_FAIL_COUNT = 12
 local RETRY_TIME=30000
 local DISCONNECT_WAIT_TIME=5000
-local KEEPALIVE,CLEANSESSION=0,0
+local KEEPALIVE,CLEANSESSION=10,0
 local PROT,ADDR,PORT =Consts.PROTOCOL,Consts.MQTT_ADDR,Consts.MQTT_PORT
 local QOS,RETAIN=2,1
 local CLIENT_COMMAND_TIMEOUT = 5000
@@ -98,7 +97,7 @@ function checkUpdate()
 
     if  lastUpdateCheckCount<Consts.MIN_UPDATE_INTERVAL then
         local left = Consts.MIN_TASK_INTERVAL - lastUpdateCheckCount
-        LogUtil.d(TAG,"checkUpdate left count= "..left)
+        --LogUtil.d(TAG,"checkUpdate left count= "..left)
         return
     end
 
@@ -132,7 +131,7 @@ function checkTask()
 
     if lastCheckTaskCount<Consts.MIN_TASK_INTERVAL then
         local left = Consts.MIN_TASK_INTERVAL -lastCheckTaskCount
-        LogUtil.d(TAG,"checkTask left count ="..left)
+        --LogUtil.d(TAG,"checkTask left count ="..left)
         return
     end
 
@@ -349,7 +348,7 @@ function MQTTManager.startmqtt()
         mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=GetLatestSaleLog:new(nil)
         mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=DeliverHandler:new(nil)
         mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=Lightup:new(nil)
-        mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=ScanQrCode:new(nil)
+
         local topics = {}
         for _,v in pairs(mMqttProtocolHandlerPool) do
             topics[string.format("%s/%s", USERNAME,v:name())]=QOS
@@ -513,7 +512,6 @@ end
 function MQTTManager.handleRequst()
     timeSync()
 
-    LogUtil.d(TAG,"mqtt handleRequst")
     if not toHandleRequests or 0 == #toHandleRequests then
         return
     end
@@ -522,6 +520,7 @@ function MQTTManager.handleRequst()
         return
     end
 
+    LogUtil.d(TAG,"mqtt handleRequst")
     for _,req in pairs(toHandleRequests) do
         if MQTT_DISCONNECT_REQUEST == req then
             sys.wait(DISCONNECT_WAIT_TIME)
