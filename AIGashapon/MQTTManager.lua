@@ -30,7 +30,7 @@ require "GetLatestSaleLog"
 local jsonex = require "jsonex"
 
 -- FIXME username and password to be retrieved from server
-local MAX_MQTT_FAIL_COUNT = 36
+local MAX_MQTT_FAIL_COUNT = 6*10--断网10分钟，会重启
 local RETRY_TIME=10000
 local DISCONNECT_WAIT_TIME=5000
 local KEEPALIVE,CLEANSESSION=60,0
@@ -91,7 +91,7 @@ end
 -- 自动升级检测
 -- FIXME 待修复检测过于频繁的问题
 function checkUpdate()
-    if DeliverHandler.isDelivering() or Lightup.isLightuping() then
+    if DeliverHandler.isDelivering() then
         LogUtil.d(TAG,TAG.." DeliverHandler.isDelivering or Lightup.isLightuping,delay update")
         return
     end
@@ -130,7 +130,7 @@ end
 
 --任务检测
 function checkTask()
-    if DeliverHandler.isDelivering() or Lightup.isLightuping() then
+    if DeliverHandler.isDelivering() then
         LogUtil.d(TAG,TAG.." DeliverHandler.isDelivering or Lightup.isLightuping,delay taskCheck")
         return
     end
