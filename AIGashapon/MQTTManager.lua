@@ -27,12 +27,11 @@ require "ReplyTimeHandler"
 require "SetConfigHandler"
 require "GetLatestSaleLog"
 
-
 local jsonex = require "jsonex"
 
 -- FIXME username and password to be retrieved from server
-local MAX_MQTT_FAIL_COUNT = 12
-local RETRY_TIME=30000
+local MAX_MQTT_FAIL_COUNT = 36
+local RETRY_TIME=10000
 local DISCONNECT_WAIT_TIME=5000
 local KEEPALIVE,CLEANSESSION=60,0
 local PROT,ADDR,PORT =Consts.PROTOCOL,Consts.MQTT_ADDR,Consts.MQTT_PORT
@@ -92,6 +91,11 @@ end
 -- 自动升级检测
 -- FIXME 待修复检测过于频繁的问题
 function checkUpdate()
+    if DeliverHandler.isDelivering() or Lightup.isLightuping() then
+        LogUtil.d(TAG,TAG.." DeliverHandler.isDelivering or Lightup.isLightuping,delay update")
+        return
+    end
+
     --避免出现升级失败时，多次升级
     lastUpdateCheckCount = lastUpdateCheckCount+1
 
@@ -126,6 +130,11 @@ end
 
 --任务检测
 function checkTask()
+    if DeliverHandler.isDelivering() or Lightup.isLightuping() then
+        LogUtil.d(TAG,TAG.." DeliverHandler.isDelivering or Lightup.isLightuping,delay taskCheck")
+        return
+    end
+
    --避免出现升级失败时，多次升级
     lastCheckTaskCount = lastCheckTaskCount+1
 
@@ -480,7 +489,6 @@ function MQTTManager.publishMessageQueue(maxMsgPerRequest)
 
         if topic and payload  then
             LogUtil.d(TAG,"publish topic="..topic.." payload="..payload)
-            -- mywd.feed()--等待返回数据，别忘了喂狗，否则会重启
             local r = mqttc:publish(topic,payload,QOS,RETAIN)
             
             -- 添加到待删除队列

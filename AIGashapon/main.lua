@@ -4,7 +4,7 @@
 MODULE_TYPE = "Air202"
 PROJECT = "AIGashapon"
 
-VERSION = "1.1.118"
+VERSION = "1.1.121"
 
 --[[
 使用Luat物联云平台固件升级的功能，必须按照以下步骤操作：
@@ -57,8 +57,8 @@ console.setup(CONSOLE_UART_ID, 115200)--默认为1，和现有app冲突，修改
 -- 系统工具
 require "misc"
 -- 看门狗
--- require "wdt"
--- wdt.setup(pio.P0_31, pio.P0_29)
+require "wdt"
+wdt.setup(pio.P0_31, pio.P0_29)
 
 require "http"
 require "audio"
