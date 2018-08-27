@@ -309,16 +309,6 @@ function MQTTManager.checkMQTTConnectivity()
         mainLoopTime =os.time()
 
         if mqttFailCount >= MAX_MQTT_FAIL_COUNT then
-            --网络OK的话，重新初始化下网络吧
-            if link.isReady() then
-                --进入飞行模式，20秒之后，退出飞行模式
-                LogUtil.d(TAG,".............................socket restarting.............................")
-                net.switchFly(true)
-                sys.wait(20000)
-                net.switchFly(false)
-                LogUtil.d(TAG,".............................socket restarted.............................")
-            end
-
             break
         end
 
