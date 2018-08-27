@@ -30,7 +30,6 @@ require "GetLatestSaleLog"
 
 local jsonex = require "jsonex"
 
--- FIXME username and password to be retrieved from server
 local MAX_MQTT_FAIL_COUNT = 2--mqtt连接失败2次
 local MAX_NET_FAIL_COUNT = 6*10--断网10分钟，会重启
 local RETRY_TIME=10000
@@ -40,7 +39,6 @@ local PROT,ADDR,PORT =Consts.PROTOCOL,Consts.MQTT_ADDR,Consts.MQTT_PORT
 local QOS,RETAIN=2,1
 local CLIENT_COMMAND_TIMEOUT = 5000
 local MAX_MSG_CNT_PER_REQ = 1--每次最多发送的消息数
--- local RETRY_COUNT = 3
 local mqttc
 local toPublishMessages={}
 local fdTimerId = nil
@@ -248,40 +246,52 @@ function MQTTManager.loopFeedDog()
 end
 
 function MQTTManager.checkMQTTUser()
-    USERNAME = Consts.getUserName(false)
-    PASSWORD = Consts.getPassword(false)
-    while not USERNAME or 0==#USERNAME or not PASSWORD or 0==#PASSWORD do
+    username = Consts.getUserName(false)
+    password = Consts.getPassword(false)
+    while not username or 0==#username or not password or 0==#password do
         mainLoopTime =os.time()
          -- mywd.feed()--获取配置中，别忘了喂狗，否则会重启
-        USERNAME,PASSWORD = MQTTManager.getNodeIdAndPasswordFromServer()
+        username,password = MQTTManager.getNodeIdAndPasswordFromServer()
          -- mywd.feed()--获取配置中，别忘了喂狗，否则会重启
-        LogUtil.d(TAG,".............................startmqtt retry to USERNAME="..USERNAME.." and ver=".._G.VERSION)
+        LogUtil.d(TAG,".............................startmqtt retry to username="..username.." and ver=".._G.VERSION)
         sys.wait(RETRY_TIME)
     end
-    return USERNAME,PASSWORD
+    return username,password
 end
 
 function MQTTManager.checkNetwork()
+    LogUtil.d(TAG,"prepare to switch reboot mode")
+    -- 切换下次的重启方式
+    local rebootMethod = Config.getValue(CloudConsts.REBOOT_METHOD)
+    if not rebootMethod or #rebootMethod <=0 then
+        rebootMethod = CloudConsts.SOFT_REBOOT
+    end
+
+    local nextRebootMethod = CloudConsts.WD_REBOOT--代表其他重启方式，目前为通过看门狗重启
+    if CloudConsts.WD_REBOOT == rebootMethod then
+        nextRebootMethod = CloudConsts.SOFT_REBOOT
+    end
+    Config.saveValue(CloudConsts.REBOOT_METHOD,nextRebootMethod)
+    LogUtil.d(TAG,"rebootMethod ="..rebootMethod.." nextRebootMethod = "..nextRebootMethod)
+
     local netFailCount = 0
     while not link.isReady() do
         LogUtil.d(TAG,".............................socket not ready.............................")
         mainLoopTime =os.time()
 
         if netFailCount >= MAX_NET_FAIL_COUNT then
-            -- 如果在出货中，则不重启，防止出现数据丢失
-            if DeliverHandler.isDelivering() then
-                LogUtil.d(TAG,TAG.." DeliverHandler.isDelivering,ignore mqtt reboot")
-                return
-            end
-            
             -- 修改为看门狗和软重启交替进行的方式
             if CloudConsts.SOFT_REBOOT == rebootMethod then
                 LogUtil.d(TAG,"............softReboot when not link.isReady")
                 sys.restart("netFailTooLong")--重启更新包生效
-            elseif fdTimerId then
+                break
+            end
+
+            if nil ~= fdTimerId then
                 LogUtil.d(TAG,"............wdReboot when not link.isReady")
                 sys.timer_stop(fdTimerId)--停止看门狗喂狗，等待重启
                 fdTimerId = nil
+                break
             end
         end
 
@@ -328,25 +338,11 @@ function MQTTManager.startmqtt()
 
     -- 定时喂狗
     MQTTManager.loopFeedDog()
-    LogUtil.d(TAG,"prepare to switch reboot mode")
-    -- 切换下次的重启方式
-    local rebootMethod = Config.getValue(CloudConsts.REBOOT_METHOD)
-    if not rebootMethod or #rebootMethod <=0 then
-        rebootMethod = CloudConsts.SOFT_REBOOT
-    end
-
-    local nextRebootMethod = CloudConsts.WD_REBOOT--代表其他重启方式，目前为通过看门狗重启
-    if CloudConsts.WD_REBOOT == rebootMethod then
-        nextRebootMethod = CloudConsts.SOFT_REBOOT
-    end
-    Config.saveValue(CloudConsts.REBOOT_METHOD,nextRebootMethod)
-    LogUtil.d(TAG,"rebootMethod ="..rebootMethod.." nextRebootMethod = "..nextRebootMethod)
-
 
     while true do
         --检查网络，网络不可用时，会重启机器
         MQTTManager.checkNetwork()
-        USERNAME,PASSWORD = MQTTManager.checkMQTTUser()
+        local USERNAME,PASSWORD = MQTTManager.checkMQTTUser()
         
         local mMqttProtocolHandlerPool={}
         mMqttProtocolHandlerPool[#mMqttProtocolHandlerPool+1]=ReplyTimeHandler:new(nil)
