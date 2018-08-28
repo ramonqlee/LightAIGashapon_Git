@@ -31,7 +31,7 @@ require "GetLatestSaleLog"
 local jsonex = require "jsonex"
 
 local MAX_MQTT_FAIL_COUNT = 2--mqtt连接失败2次
-local MAX_NET_FAIL_COUNT = 6*5--断网10分钟，会重启
+local MAX_NET_FAIL_COUNT = 6*5--断网5分钟，会重启
 local RETRY_TIME=10000
 local DISCONNECT_WAIT_TIME=5000
 local KEEPALIVE,CLEANSESSION=60,0
