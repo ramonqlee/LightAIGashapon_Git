@@ -47,14 +47,13 @@ local TAG = "MQTTManager"
 local wd = nil
 local reconnectCount = 0
 local mainLoopTime = 0--上次mqtt处理的时间，用于判断是否主循环正常进行
+local timedTaskId
 
 -- MQTT request
 local MQTT_DISCONNECT_REQUEST ="disconnect"
 local MAX_MQTT_RECEIVE_COUNT = 2
 
 local toHandleRequests={}
-local lastUpdateCheckCount = 0
-local lastCheckTaskCount = 0
 
 local function timeSync()
     if Consts.timeSynced then
@@ -86,80 +85,6 @@ local function timeSync()
 
         end,Consts.TIME_SYNC_INTERVAL_MS)
 end
-
--- 自动升级检测
--- FIXME 待修复检测过于频繁的问题
-function checkUpdate()
-    if DeliverHandler.isDelivering() then
-        LogUtil.d(TAG,TAG.." DeliverHandler.isDelivering or Lightup.isLightuping,delay update")
-        return
-    end
-
-    --避免出现升级失败时，多次升级
-    lastUpdateCheckCount = lastUpdateCheckCount+1
-
-    if  lastUpdateCheckCount<Consts.MIN_UPDATE_INTERVAL then
-        local left = Consts.MIN_TASK_INTERVAL - lastUpdateCheckCount
-        --LogUtil.d(TAG,"checkUpdate left count= "..left)
-        return
-    end
-
-    if update.isDownloading() then
-        LogUtil.d(TAG,"checkUpdating,return")
-        return 
-    end
-
-    update.run() -- 检测是否有更新包
-    lastUpdateCheckCount = 0--reset count
-    LogUtil.d(TAG,"start checkUpdate now")
-
-    sys.wait(Consts.TASK_WAIT_IN_MS)--强制延时,等待完成
-    local cnt=1
-    local max_cnt = 5
-    while update.isDownloading() do
-        sys.wait(Consts.TASK_WAIT_IN_MS)--强制延时
-
-        cnt = cnt+1
-        if cnt > max_cnt then
-            break
-        end
-    end
-end
-
-
---任务检测
-function checkTask()
-    if DeliverHandler.isDelivering() then
-        LogUtil.d(TAG,TAG.." DeliverHandler.isDelivering or Lightup.isLightuping,delay taskCheck")
-        return
-    end
-
-   --避免出现升级失败时，多次升级
-    lastCheckTaskCount = lastCheckTaskCount+1
-
-    if lastCheckTaskCount<Consts.MIN_TASK_INTERVAL then
-        local left = Consts.MIN_TASK_INTERVAL -lastCheckTaskCount
-        --LogUtil.d(TAG,"checkTask left count ="..left)
-        return
-    end
-
-    LogUtil.d(TAG,"start checkTask now")
-    Task.getTask()               -- 检测是否有新任务 
-    lastCheckTaskCount = 0
-
-    sys.wait(Consts.TASK_WAIT_IN_MS)--强制延时,等待完成
-    local cnt=1
-    local max_cnt = 5
-    while Task.isRunning() do
-        sys.wait(Consts.TASK_WAIT_IN_MS)--强制延时
-
-        cnt = cnt+1
-        if cnt > max_cnt then
-            break
-        end
-    end
-end
-
 
 local function getTableLen( tab )
     local count = 0  
@@ -434,6 +359,9 @@ function MQTTManager.loopMessage(mqttProtocolHandlerPool)
     end
 end
 
+function MQTTManager.hasMessage()
+    return toPublishMessages and  0~= getTableLen(toPublishMessages)
+end
 --控制每次调用，发送的消息数，防止发送消息，影响了收取消息
 function MQTTManager.publishMessageQueue(maxMsgPerRequest)
     -- 在此发送消息,避免在不同coroutine中发送的bug
@@ -519,8 +447,6 @@ end
 
 -- 检查后台配置的任务和升级,防止和mqtt的联网出现冲突
 function MQTTManager.handleExtraRequest()
-    checkTask()
-    checkUpdate()
 end
 
 function MQTTManager.publish(topic, payload)

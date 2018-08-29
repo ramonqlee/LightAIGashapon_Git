@@ -39,6 +39,64 @@ local RETRY_BOARD_COUNT = 1--识别的数量小于这个，就重试
 local boardIdentified = 0
 local retryCount = 0
 
+function startTimedTask()
+    if timedTaskId and sys.timer_is_active(timedTaskId) then
+        LogUtil.d(TAG," startTimedTask running,return")
+        return
+    end
+
+    timedTaskId = sys.timer_loop_start(function()
+            if MQTTManager.hasMessage() then
+            	return
+            end
+
+            sys.taskInit(function()
+				checkTask()
+				--wait until task finished
+				while Task.isRunning() do
+					sys.wait(Consts.TASK_WAIT_IN_MS)
+				end
+
+            	checkUpdate()
+			end)
+            
+            LogUtil.d(TAG,"publish message queue is empty,startTimedTask")
+        end,Consts.TIMED_TASK_INTERVAL_MS)
+end
+
+-- 自动升级检测
+function checkUpdate()
+    if DeliverHandler.isDelivering() then
+        LogUtil.d(TAG,TAG.." DeliverHandler.isDelivering or Lightup.isLightuping,delay update")
+        return
+    end
+
+    if update.isDownloading() then
+        LogUtil.d(TAG,"checkUpdating,return")
+        return 
+    end
+
+    update.run() -- 检测是否有更新包
+    LogUtil.d(TAG,"start checkUpdate now")
+end
+
+
+--任务检测
+function checkTask()
+    if DeliverHandler.isDelivering() then
+        LogUtil.d(TAG,TAG.." DeliverHandler.isDelivering or Lightup.isLightuping,delay taskCheck")
+        return
+    end
+    
+    if Task.isRunning() then 
+		LogUtil.d(TAG,"Task.isRunning,return")
+		return
+    end
+
+    Task.getTask()               -- 检测是否有新任务 
+    LogUtil.d(TAG,"start checkTask now")
+end
+
 function allInfoCallback( ids )
 	if ids and #ids > 0 then
 		boardIdentified = #ids
@@ -97,8 +155,8 @@ function entry.retryIdentify()
 end
 
 
-
 function entry.run()
+	startTimedTask()
 	-- 启动一个延时定时器, 获取板子id
 	timerId=sys.timer_start(function()
 		LogUtil.d(TAG,"start to retrieve slaves")
