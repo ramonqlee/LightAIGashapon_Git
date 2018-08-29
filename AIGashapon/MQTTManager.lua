@@ -305,7 +305,8 @@ function MQTTManager.checkMQTTConnectivity()
     local mqttFailCount = 0
     while not mqttc:connect(ADDR,PORT) do
         -- mywd.feed()--获取配置中，别忘了喂狗，否则会重启
-        LogUtil.d(TAG,"fail to connect mqtt,try after 10s")
+        LogUtil.d(TAG,"fail to connect mqtt,mqttc:disconnect,try after 10s")
+        mqttc:disconnect()
         mainLoopTime =os.time()
 
         if mqttFailCount >= MAX_MQTT_FAIL_COUNT then
@@ -348,9 +349,11 @@ function MQTTManager.startmqtt()
         end
 
         LogUtil.d(TAG,".............................startmqtt username="..USERNAME.." PASSWORD="..PASSWORD)
-        if not mqttc then
-            mqttc = mqtt.client(USERNAME,KEEPALIVE,USERNAME,PASSWORD,CLEANSESSION)
+        if mqttc then
+            mqttc:disconnect()
         end
+        mqttc = mqtt.client(USERNAME,KEEPALIVE,USERNAME,PASSWORD,CLEANSESSION)
+
         MQTTManager.checkMQTTConnectivity()
 
         --先取消之前的订阅
