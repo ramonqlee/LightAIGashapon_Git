@@ -15,7 +15,6 @@ require "CloudBaseHandler"
 require "ReplyDeliverHandler"
 require "UploadSaleLogHandler"
 require "CloudReplyBaseHandler"
-require "UARTControlIndClose"
 require "UploadDetection"
 
 local TAG = "DeliverHandler"
