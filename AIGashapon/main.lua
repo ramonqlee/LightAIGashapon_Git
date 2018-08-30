@@ -4,7 +4,7 @@
 MODULE_TYPE = "Air202"
 PROJECT = "AIGashapon"
 
-VERSION = "1.1.131"
+VERSION = "1.1.132"
 
 --[[
 使用Luat物联云平台固件升级的功能，必须按照以下步骤操作：
