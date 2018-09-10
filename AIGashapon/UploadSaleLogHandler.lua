@@ -43,4 +43,10 @@ function UploadSaleLogHandler:send( state )
  	myPayload[CloudConsts.TIMESTAMP]=os.time()
  	myPayload[CloudConsts.CONTENT]=myContent
  	MQTTManager.publish(self:getTopic(),jsonex.encode(myPayload))
+
+ 	-- 如果收到超时的消息，则在没有消息的时候，尝试重启下
+ 	if CloudReplyBaseHandler.TIMEOUT_WHEN_ARRIVE == state then
+ 		MQTTManager.restart()
+ 	end
+
 end         

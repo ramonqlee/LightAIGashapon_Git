@@ -50,6 +50,7 @@ local timedTaskId
 
 -- MQTT request
 local MQTT_DISCONNECT_REQUEST ="disconnect"
+local RESTART_REQUEST = "restart"
 local MAX_MQTT_RECEIVE_COUNT = 2
 
 local toHandleRequests={}
@@ -423,6 +424,10 @@ end
 function MQTTManager.handleRequst()
     timeSync()
 
+    if MQTTManager.hasMessage() then
+        return
+    end
+
     if not toHandleRequests or 0 == #toHandleRequests then
         return
     end
@@ -437,6 +442,11 @@ function MQTTManager.handleRequst()
             sys.wait(DISCONNECT_WAIT_TIME)
             LogUtil.d(TAG,"mqtt MQTT_DISCONNECT_REQUEST")
             mqttc:disconnect()
+        end
+
+        if RESTART_REQUEST == req then
+            LogUtil.d(TAG,"............softReboot when timeout order arrive")
+            sys.restart("netFailTooLong")--重启更新包生效
         end
     end
 
@@ -472,7 +482,15 @@ function MQTTManager.disconnect()
 
     toHandleRequests[#toHandleRequests+1] = MQTT_DISCONNECT_REQUEST
     LogUtil.d(TAG,"add to request queur,request="..MQTT_DISCONNECT_REQUEST.." #toHandleRequests="..#toHandleRequests)
-end    
+end   
+
+function MQTTManager.restart()
+     if not toHandleRequests then
+        toHandleRequests = {}
+    end
+
+    toHandleRequests[#toHandleRequests+1] = RESTART_REQUEST
+ end 
 
 
 
