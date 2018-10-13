@@ -29,7 +29,7 @@ require "SetConfigHandler"
 
 local jsonex = require "jsonex"
 
-local MAX_MQTT_FAIL_COUNT = 2--mqtt连接失败2次
+local MAX_MQTT_FAIL_COUNT = 1--mqtt连接失败2次
 local MAX_NET_FAIL_COUNT = 6*5--断网5分钟，会重启
 local RETRY_TIME=10000
 local DISCONNECT_WAIT_TIME=5000
@@ -234,16 +234,25 @@ function MQTTManager.checkMQTTConnectivity()
         mqttc:disconnect()
         mainLoopTime =os.time()
 
+        mqttFailCount = mqttFailCount+1
+
         if mqttFailCount >= MAX_MQTT_FAIL_COUNT then
             break
         end
 
-        mqttFailCount = mqttFailCount+1
         sys.wait(RETRY_TIME)
     end
 end
 
+local startmqtted = false
+
 function MQTTManager.startmqtt()
+    --prevent re-entry
+    if startmqtt then
+        return
+    end
+    startmqtt = true
+
     LogUtil.d(TAG,"MQTTManager.startmqtt")
     if not Consts.DEVICE_ENV then
         return
