@@ -63,11 +63,6 @@ local function timeSync()
     -- 如果超时过了重试次数，则停止，防止消息过多导致服务端消息堵塞
     if Consts.timeSyncCount > Consts.MAX_TIME_SYNC_COUNT then
         LogUtil.d(TAG," timeSync abort because count exceed,ignore this request")
-
-        if Consts.gTimerId and sys.timer_is_active(Consts.gTimerId) then
-            sys.timer_stop(Consts.gTimerId)
-        end
-        
         return
     end
 
@@ -302,7 +297,7 @@ function MQTTManager.startmqtt()
         MQTTManager.checkMQTTConnectivity()
 
         -- 先处理下之前的累计的消息
-        MQTTManager.loopPreviousMessage(mMqttProtocolHandlerPool)
+        -- MQTTManager.loopPreviousMessage(mMqttProtocolHandlerPool)
 
         --先取消之前的订阅
         unsubscribe = Config.getValue(Consts.UNSUBSCRIBE_KEY)
