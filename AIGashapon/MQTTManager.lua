@@ -178,7 +178,9 @@ function MQTTManager.checkMQTTUser()
          -- mywd.feed()--获取配置中，别忘了喂狗，否则会重启
         username,password = MQTTManager.getNodeIdAndPasswordFromServer()
          -- mywd.feed()--获取配置中，别忘了喂狗，否则会重启
-        LogUtil.d(TAG,".............................startmqtt retry to username="..username.." and ver=".._G.VERSION)
+        if  username then
+            LogUtil.d(TAG,".............................startmqtt retry to username="..username.." and ver=".._G.VERSION)
+        end
         sys.wait(RETRY_TIME)
     end
     return username,password
