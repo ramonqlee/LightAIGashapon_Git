@@ -253,7 +253,7 @@ function MQTTManager.startmqtt()
     end
     startmqtt = true
 
-    LogUtil.d(TAG,"MQTTManager.startmqtt")
+    LogUtil.d(TAG,"MQTTManager.startmqtt ver=".._G.VERSION)
     if not Consts.DEVICE_ENV then
         return
     end
@@ -281,13 +281,17 @@ function MQTTManager.startmqtt()
             topics[string.format("%s/%s", USERNAME,v:name())]=QOS
         end
 
-        LogUtil.d(TAG,".............................startmqtt username="..USERNAME.." PASSWORD="..PASSWORD)
+        LogUtil.d(TAG,".............................startmqtt username="..USERNAME.." ver=".._G.VERSION)
         if mqttc then
             mqttc:disconnect()
+            sys.wait(RETRY_TIME)
         end
         mqttc = mqtt.client(USERNAME,KEEPALIVE,USERNAME,PASSWORD,CLEANSESSION)
 
         MQTTManager.checkMQTTConnectivity()
+
+        -- 先处理下之前的累计的消息
+        MQTTManager.loopPreviousMessage(mMqttProtocolHandlerPool)
 
         --先取消之前的订阅
         unsubscribe = Config.getValue(Consts.UNSUBSCRIBE_KEY)
@@ -316,6 +320,51 @@ function MQTTManager.startmqtt()
         end
     end
 end
+
+function MQTTManager.loopPreviousMessage( mqttProtocolHandlerPool )
+    log.info(TAG, "loopPreviousMessage now")
+
+    while true do
+        if not mqttc.connected then
+            break
+        end
+
+        local r, data = mqttc:receive(CLIENT_COMMAND_TIMEOUT)
+
+        if not data then
+            break
+        end
+
+        mainLoopTime =os.time()
+
+        if r and data then
+            -- 去除重复的sn消息
+            if msgcache.addMsg2Cache(data) then
+                for k,v in pairs(mqttProtocolHandlerPool) do
+                    if v:handle(data) then
+                        log.info(TAG, "loopPreviousMessage reconnectCount="..reconnectCount.." ver=".._G.VERSION.." ostime="..os.time())
+                        mainLoopTime =os.time()
+                        break
+                    end
+                end
+            end
+        else
+            if data then
+                log.info(TAG, "loopPreviousMessage msg = "..data.." reconnectCount="..reconnectCount.." ver=".._G.VERSION.." ostime="..os.time())
+            end
+            -- 发送待发送的消息，设定条数，防止出现多条带发送时，出现消息堆积
+            MQTTManager.publishMessageQueue(MAX_MSG_CNT_PER_REQ)
+            MQTTManager.handleRequst()
+
+            if not MQTTManager.hasMessage() then
+                break
+            end
+        end
+    end
+
+    log.info(TAG, "loopPreviousMessage done")
+end
+
 
 function MQTTManager.loopMessage(mqttProtocolHandlerPool)
     while true do
