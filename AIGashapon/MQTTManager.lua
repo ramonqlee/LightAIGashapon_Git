@@ -34,9 +34,12 @@ local MAX_NET_FAIL_COUNT = 6*5--断网5分钟，会重启
 local RETRY_TIME=10000
 local DISCONNECT_WAIT_TIME=5000
 local KEEPALIVE,CLEANSESSION=60,0
+local CLEANSESSION_TRUE=1
+local MAX_RETRY_SESSION_COUNT=2--重试n次后，如果还事变，则清理服务端的消息
 local PROT,ADDR,PORT =Consts.PROTOCOL,Consts.MQTT_ADDR,Consts.MQTT_PORT
 local QOS,RETAIN=2,1
 local CLIENT_COMMAND_TIMEOUT = 5000
+local CLIENT_COMMAND_SHORT_TIMEOUT = 1000
 local MAX_MSG_CNT_PER_REQ = 1--每次最多发送的消息数
 local mqttc
 local toPublishMessages={}
@@ -251,6 +254,7 @@ function MQTTManager.checkMQTTConnectivity()
 end
 
 local startmqtted = false
+local unsubscribe = false
 
 function MQTTManager.startmqtt()
     --prevent re-entry
@@ -259,13 +263,12 @@ function MQTTManager.startmqtt()
     end
     startmqtt = true
 
-    LogUtil.d(TAG,"MQTTManager.startmqtt ver=".._G.VERSION)
+    LogUtil.d(TAG,"MQTTManager.startmqtt ver=".._G.VERSION.." reconnectCount = "..reconnectCount)
     if not Consts.DEVICE_ENV then
         return
     end
 
     mainLoopTime =os.time()
-    reconnectCount = 0
 
     -- 定时喂狗
     MQTTManager.loopFeedDog()
@@ -287,33 +290,44 @@ function MQTTManager.startmqtt()
             topics[string.format("%s/%s", USERNAME,v:name())]=QOS
         end
 
-        LogUtil.d(TAG,".............................startmqtt username="..USERNAME.." ver=".._G.VERSION)
+        LogUtil.d(TAG,".............................startmqtt username="..USERNAME.." ver=".._G.VERSION.." reconnectCount = "..reconnectCount)
         if mqttc then
             mqttc:disconnect()
-            sys.wait(RETRY_TIME)
         end
+
+        --清理服务端的消息
+        if reconnectCount>=MAX_RETRY_SESSION_COUNT then
+            mqttc = mqtt.client(USERNAME,KEEPALIVE,USERNAME,PASSWORD,CLEANSESSION_TRUE)
+            MQTTManager.checkMQTTConnectivity()
+            mqttc:disconnect()
+
+            MQTTManager.emptyMessageQueue()
+            MQTTManager.emptyExtraRequest()
+            reconnectCount = 0
+            LogUtil.d(TAG,".............................startmqtt CLEANSESSION all ".." reconnectCount = "..reconnectCount)
+        end
+
         mqttc = mqtt.client(USERNAME,KEEPALIVE,USERNAME,PASSWORD,CLEANSESSION)
 
         MQTTManager.checkMQTTConnectivity()
 
         -- 先处理下之前的累计的消息
-        -- MQTTManager.loopPreviousMessage(mMqttProtocolHandlerPool)
+        MQTTManager.loopPreviousMessage(mMqttProtocolHandlerPool)
 
         --先取消之前的订阅
-        unsubscribe = Config.getValue(Consts.UNSUBSCRIBE_KEY)
         if mqttc.connected and not unsubscribe then
             local unsubscribeTopic = string.format("%s/#",USERNAME)
             local r = mqttc:unsubscribe(unsubscribeTopic)
             if r then
-                Config.saveValue(Consts.UNSUBSCRIBE_KEY,"1")
+                unsubscribe = true
             end
             local result = r and "true" or "false"
             LogUtil.d(TAG,".............................unsubscribe topic = "..unsubscribeTopic.." result = "..result)
         end
         
         if mqttc.connected and mqttc:subscribe(topics) then
+            unsubscribe = false
             LogUtil.d(TAG,".............................subscribe topic ="..jsonex.encode(topics))
-            reconnectCount = reconnectCount + 1
 
             -- 迁移到新的文件中，单独保存用户名和密码
             NodeIdConfig.saveValue(CloudConsts.NODE_ID,USERNAME)
@@ -324,6 +338,8 @@ function MQTTManager.startmqtt()
 
             MQTTManager.loopMessage(mMqttProtocolHandlerPool)
         end
+
+        reconnectCount = reconnectCount + 1
     end
 end
 
@@ -353,21 +369,15 @@ function MQTTManager.loopPreviousMessage( mqttProtocolHandlerPool )
                         break
                     end
                 end
+            else
+                log.info(TAG, "loopPreviousMessage dup msg")
             end
         else
-            if data then
-                log.info(TAG, "loopPreviousMessage msg = "..data.." reconnectCount="..reconnectCount.." ver=".._G.VERSION.." ostime="..os.time())
-            end
-            -- 发送待发送的消息，设定条数，防止出现多条带发送时，出现消息堆积
-            MQTTManager.publishMessageQueue(MAX_MSG_CNT_PER_REQ)
-            MQTTManager.handleRequst()
-
-            if not MQTTManager.hasMessage() then
-                break
-            end
+            log.info(TAG, "loopPreviousMessage no more msg")
+            break
         end
     end
-
+    MQTTManager.emptyExtraRequest()--忽略请求
     log.info(TAG, "loopPreviousMessage done")
 end
 
@@ -380,7 +390,11 @@ function MQTTManager.loopMessage(mqttProtocolHandlerPool)
             break
         end
 
-        local r, data = mqttc:receive(CLIENT_COMMAND_TIMEOUT)
+        local timeout = CLIENT_COMMAND_TIMEOUT
+        if MQTTManager.hasMessage() then
+            timeout = CLIENT_COMMAND_SHORT_TIMEOUT
+        end
+        local r, data = mqttc:receive(timeout)
 
         if not data then
             mqttc:disconnect()
@@ -400,6 +414,8 @@ function MQTTManager.loopMessage(mqttProtocolHandlerPool)
                         break
                     end
                 end
+            else
+                log.info(TAG, "loopMessage dup msg")
             end
         else
             if data then
@@ -450,7 +466,7 @@ function MQTTManager.publishMessageQueue(maxMsgPerRequest)
     end
 
     if maxMsgPerRequest <= 0 then
-        maxMsgPerRequest = 1
+        maxMsgPerRequest = 0
     end
 
     local toRemove={}
@@ -460,7 +476,7 @@ function MQTTManager.publishMessageQueue(maxMsgPerRequest)
         payload = msg.payload
 
         if topic and payload  then
-            LogUtil.d(TAG,"publish topic="..topic.." payload="..payload)
+            LogUtil.d(TAG,"publish topic="..topic.." queue size = "..getTableLen(toPublishMessages))
             local r = mqttc:publish(topic,payload,QOS,RETAIN)
             
             -- 添加到待删除队列
@@ -469,7 +485,7 @@ function MQTTManager.publishMessageQueue(maxMsgPerRequest)
             end
 
             count = count+1
-            if count>=maxMsgPerRequest then
+            if maxMsgPerRequest>0 and count>=maxMsgPerRequest then
                 LogUtil.d(TAG,"publish count = "..maxMsgPerRequest)
                 break
             end
@@ -554,7 +570,16 @@ function MQTTManager.restart()
     end
 
     toHandleRequests[#toHandleRequests+1] = RESTART_REQUEST
- end 
+ end
+
+function MQTTManager.emptyExtraRequest()
+      toHandleRequests={}
+end 
+
+function MQTTManager.emptyMessageQueue()
+      toPublishMessages={}
+end 
+
 
 
 

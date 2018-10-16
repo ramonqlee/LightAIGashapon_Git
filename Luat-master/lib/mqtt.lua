@@ -253,6 +253,7 @@ function mqttc:waitfor(id, timeout)
     end
 
     while true do
+        
         local r, data = self:read(timeout)
         if r then
             if data.id == PUBLISH then
@@ -274,6 +275,7 @@ function mqttc:waitfor(id, timeout)
                 return true, data
             end
             table.insert(self.cache, data)
+            log.info("mqtt.client:waitfor", "self.cache size = "..#self.cache.." waitfor id ="..id.." data.id = "..data.id)
         else
             return false, data
         end
