@@ -483,7 +483,6 @@ function MQTTManager.publishMessageQueue(maxMsgPerRequest)
             if r then
                 toRemove[key]=1
 
-                LogUtil.d(TAG,"publish payload= "..payload)
                 payload = jsonex.decode(payload)
                 local content = payload[CloudConsts.CONTENT]
                 if content or "table" == type(content) then
