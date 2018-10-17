@@ -277,6 +277,7 @@ function MQTTManager.startmqtt()
 
     -- 定时喂狗
     MQTTManager.loopFeedDog()
+    msgcache.clear()--清理缓存的消息数据
 
     while true do
         --检查网络，网络不可用时，会重启机器
@@ -307,6 +308,7 @@ function MQTTManager.startmqtt()
             MQTTManager.checkMQTTConnectivity()
             mqttc:disconnect()
 
+            msgcache.clear()--清理缓存的消息数据
             MQTTManager.emptyMessageQueue()
             MQTTManager.emptyExtraRequest()
             reconnectCount = 0
@@ -480,6 +482,14 @@ function MQTTManager.publishMessageQueue(maxMsgPerRequest)
             -- 添加到待删除队列
             if r then
                 toRemove[key]=1
+
+                LogUtil.d(TAG,"publish payload= "..payload)
+                payload = jsonex.decode(payload)
+                local content = payload[CloudConsts.CONTENT]
+                if content or "table" == type(content) then
+                    local sn = content[CloudConsts.SN]
+                    msgcache.remove(sn)
+                end
             end
 
             count = count+1
