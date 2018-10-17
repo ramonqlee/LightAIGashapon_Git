@@ -29,7 +29,7 @@ require "SetConfigHandler"
 
 local jsonex = require "jsonex"
 
-local MAX_MQTT_FAIL_COUNT = 1--mqtt连接失败2次
+local MAX_MQTT_FAIL_COUNT = 2--mqtt连接失败2次
 local MAX_NET_FAIL_COUNT = 6*5--断网5分钟，会重启
 local RETRY_TIME=10000
 local DISCONNECT_WAIT_TIME=5000
@@ -185,8 +185,11 @@ function MQTTManager.checkMQTTUser()
          -- mywd.feed()--获取配置中，别忘了喂狗，否则会重启
         username,password = MQTTManager.getNodeIdAndPasswordFromServer()
          -- mywd.feed()--获取配置中，别忘了喂狗，否则会重启
-        if  username then
+        if  username and password then
             LogUtil.d(TAG,".............................startmqtt retry to username="..username.." and ver=".._G.VERSION)
+            -- 迁移到新的文件中，单独保存用户名和密码
+            Consts.saveUserName(username)
+            Consts.savePassword(password)
         end
         sys.wait(RETRY_TIME)
     end
@@ -237,6 +240,7 @@ end
 
 function MQTTManager.checkMQTTConnectivity()
     local mqttFailCount = 0
+    LogUtil.d(TAG,"checkMQTTConnectivity in ")
     while not mqttc:connect(ADDR,PORT) do
         -- mywd.feed()--获取配置中，别忘了喂狗，否则会重启
         LogUtil.d(TAG,"fail to connect mqtt,mqttc:disconnect,try after 10s")
@@ -246,11 +250,12 @@ function MQTTManager.checkMQTTConnectivity()
         mqttFailCount = mqttFailCount+1
 
         if mqttFailCount >= MAX_MQTT_FAIL_COUNT then
+            Consts.clearUserName()
+            Consts.clearPassword()--是否用户名，密码修改了
             break
         end
-
-        sys.wait(RETRY_TIME)
     end
+    LogUtil.d(TAG,"checkMQTTConnectivity out ")
 end
 
 local startmqtted = false
@@ -297,6 +302,7 @@ function MQTTManager.startmqtt()
 
         --清理服务端的消息
         if reconnectCount>=MAX_RETRY_SESSION_COUNT then
+            LogUtil.d(TAG,".............................startmqtt CLEANSESSION all ".." reconnectCount = "..reconnectCount)
             mqttc = mqtt.client(USERNAME,KEEPALIVE,USERNAME,PASSWORD,CLEANSESSION_TRUE)
             MQTTManager.checkMQTTConnectivity()
             mqttc:disconnect()
@@ -304,7 +310,6 @@ function MQTTManager.startmqtt()
             MQTTManager.emptyMessageQueue()
             MQTTManager.emptyExtraRequest()
             reconnectCount = 0
-            LogUtil.d(TAG,".............................startmqtt CLEANSESSION all ".." reconnectCount = "..reconnectCount)
         end
 
         mqttc = mqtt.client(USERNAME,KEEPALIVE,USERNAME,PASSWORD,CLEANSESSION)
@@ -328,13 +333,6 @@ function MQTTManager.startmqtt()
         if mqttc.connected and mqttc:subscribe(topics) then
             unsubscribe = false
             LogUtil.d(TAG,".............................subscribe topic ="..jsonex.encode(topics))
-
-            -- 迁移到新的文件中，单独保存用户名和密码
-            NodeIdConfig.saveValue(CloudConsts.NODE_ID,USERNAME)
-            NodeIdConfig.saveValue(CloudConsts.PASSWORD,PASSWORD)
-            
-            Config.saveValue(CloudConsts.NODE_ID,USERNAME)
-            Config.saveValue(CloudConsts.PASSWORD,PASSWORD)
 
             MQTTManager.loopMessage(mMqttProtocolHandlerPool)
         end
