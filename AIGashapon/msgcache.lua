@@ -68,7 +68,6 @@ function msgcache.addMsg2Cache(msg)
     if not mqttMsgSet then
         mqttMsgSet = {}
     end  
-    LogUtil.d(TAG,sn.." checking if new sn is in queue,queue size = "..#mqttMsgSet)
 
     local existed = false
     for _,value in pairs(mqttMsgSet) do
@@ -78,6 +77,7 @@ function msgcache.addMsg2Cache(msg)
          break
         end
     end
+    LogUtil.d(TAG,jsonex.encode(content).."added, queue size = "..#mqttMsgSet)
 
     local updated = false
     --不存在的话，则记录下
