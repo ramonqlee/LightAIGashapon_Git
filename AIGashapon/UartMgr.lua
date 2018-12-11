@@ -15,10 +15,11 @@ require "UARTAllInfoReport"
 require "UARTBoardInfo"
 require "UARTGetAllInfo"
 
+local msgQueue={}
+
 local TAG = "UartMgr"
 UartMgr={
-devicePath=nil,
-toWriteMessages={}
+devicePath=nil
 }
 
 
@@ -196,7 +197,11 @@ function UartMgr.init( devicePath, baudRate)
 end 
 
 function UartMgr.publishMessage( msg )
-	UartMgr.toWriteMessages[#UartMgr.toWriteMessages+1]=msg
+	if not msgQueue then
+		msgQueue = {}
+	end
+
+	table.insert(msgQueue,msg)
 end
 
 function UartMgr.close( devicePath )
@@ -249,11 +254,11 @@ end
 sys.taskInit(function()
 	while true do
 		UartMgr.init(Consts.UART_ID,Consts.baudRate)
-		-- 发送消息
-		for _,msg in pairs(UartMgr.toWriteMessages) do
+		-- send msg one by one
+		if MyUtils.getTableLen(msgQueue) >0 then
+			msg = table.remove(msgQueue,1)
 			uart_write(msg)
 		end
-		UartMgr.toWriteMessages = {}
 
 		sys.wait(Consts.WAIT_UART_INTERVAL)--两次写入消息之间停留一段时间
 	end
