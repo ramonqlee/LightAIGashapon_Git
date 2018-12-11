@@ -445,7 +445,7 @@ function TimerFunc(id)
                         LogUtil.d(TAG,TAG.." Deliver reopenLock, orderId = "..orderId)
                     end
 
-                    saleTable[CloudConsts.RETRY_OPEN_LOCK_KEY] = true
+                    saleTable[CloudConsts.RETRY_OPEN_LOCK_KEY] = "1"
                 end
             end
 
