@@ -38,7 +38,6 @@ function UploadSaleLogHandler:send( state )
  	for k,v in pairs(self.mPayload) do
  		myContent[k]=v
  	end
-
  	myContent[CloudConsts.STATE]=state
  	local myPayload = {}
  	myPayload[CloudConsts.TIMESTAMP]=os.time()

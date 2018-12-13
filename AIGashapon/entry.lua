@@ -39,7 +39,6 @@ local RETRY_BOARD_COUNT = 1--识别的数量小于这个，就重试
 local boardIdentified = 0
 local retryCount = 0
 
-local timedTaskId
 function startTimedTask()
     if timedTaskId and sys.timer_is_active(timedTaskId) then
         LogUtil.d(TAG," startTimedTask running,return")
@@ -168,7 +167,7 @@ function entry.run()
 			UartMgr.initSlaves(allInfoCallback,false)    
 		end)
 
-	end,60*1000)
+	end,10*1000)
 
 	
 	-- 启动一个延时定时器，防止没有回调时无法正常启动
@@ -186,7 +185,7 @@ function entry.run()
 		LogUtil.d(TAG,"start twinkle task")
 		entry.startTwinkleTask()
 
-	end,Consts.TEST_MODE and 5*1000 or 90*1000)  
+	end,Consts.TEST_MODE and 15*1000 or 180*1000)  
 
 end
 
