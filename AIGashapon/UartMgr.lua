@@ -14,6 +14,7 @@ require "UARTStatusReport"
 require "UARTAllInfoReport"
 require "UARTBoardInfo"
 require "UARTGetAllInfo"
+require "MyUtils"
 
 local msgQueue={}
 
