@@ -192,17 +192,11 @@ function UartMgr.init( devicePath, baudRate)
 	--配置并且打开串口
 	uart.setup(UartMgr.devicePath,baudRate,8,uart.PAR_NONE,uart.STOP_1)
 
+	UartMgr.loopMessage()
 	-- 发送获取从板id的指令，初始化系统的一部分
 	LogUtil.d(TAG,"UartMgr.init done")
 end 
 
-function UartMgr.publishMessage( msg )
-	if not msgQueue then
-		msgQueue = {}
-	end
-
-	table.insert(msgQueue,msg)
-end
 
 function UartMgr.close( devicePath )
 	if not Consts.DEVICE_ENV then
@@ -251,17 +245,36 @@ function UartMgr.initSlaves( callback ,retry)
 	UartMgr.publishMessage(r)
 end
 
-sys.taskInit(function()
-	while true do
-		UartMgr.init(Consts.UART_ID,Consts.baudRate)
-		-- send msg one by one
-		if MyUtils.getTableLen(msgQueue) >0 then
-			msg = table.remove(msgQueue,1)
-			uart_write(msg)
-		end
-
-		sys.wait(Consts.WAIT_UART_INTERVAL)--两次写入消息之间停留一段时间
+function UartMgr.publishMessage( msg )
+	if not msgQueue then
+		msgQueue = {}
 	end
-end)      
+
+	table.insert(msgQueue,msg)
+end
+
+local uartMsgQueueLooping = false
+
+function UartMgr.loopMessage()
+	if uartMsgQueueLooping then
+		return
+	end
+
+	-- start message queue loop
+	sys.taskInit(function()
+		uartMsgQueueLooping = true
+		
+		while true do
+			-- send msg one by one
+			if MyUtils.getTableLen(msgQueue) >0 then
+				msg = table.remove(msgQueue,1)
+				uart_write(msg)
+			end
+
+			sys.wait(Consts.WAIT_UART_INTERVAL)--两次写入消息之间停留一段时间
+		end
+		uartMsgQueueLooping = false
+	end)    
+end    
 
 
