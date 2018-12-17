@@ -8,6 +8,8 @@ require "LogUtil"
 require "CloudConsts"
 -- require "MQTTManager"
 require "Consts"
+require "MyUtils"
+
 local jsonex = require "jsonex"
 
 CloudReplyBaseHandler = {
@@ -33,7 +35,7 @@ function CloudReplyBaseHandler:new (o)
 end
 
 function CloudReplyBaseHandler:getTopic(  )
-	local nodeId = Consts.getUserName()
+	local nodeId = MyUtils.getUserName()
 	if not nodeId or  0 == #nodeId then
 		return ""
 	end

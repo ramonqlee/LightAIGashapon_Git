@@ -8,6 +8,8 @@
 require "Consts"
 require "LogUtil"
 require "UartMgr"
+require "MyUtils"
+require "ConstsPrivate"
 require "UARTBroadcastSlave"
 
 if Consts.DEVICE_ENV then
@@ -35,8 +37,8 @@ function Task.getTask()
 
 	sys.taskInit(function()
 		-- 去服务器端请求任务
-		local nodeId = Consts.getUserName(false)
-		local password = Consts.getPassword(false)
+		local nodeId = MyUtils.getUserName(false)
+		local password = MyUtils.getPassword(false)
 		local timeInSec = os.time()
 	    local timestamp = ""..timeInSec
 		local nonce   = crypto.sha1(timestamp,#timestamp)
@@ -50,7 +52,7 @@ function Task.getTask()
 	    sign = crypto.sha1(tmp,#tmp)
 	    sign = string.lower(sign)
 
-		url = string.format(Consts.MQTT_TASK_URL_FORMATTER,nodeId, nonce, timestamp, sign)
+		url = string.format(ConstsPrivate.MQTT_TASK_URL_FORMATTER,nodeId, nonce, timestamp, sign)
 	    LogUtil.d(TAG,"url = "..url)
 	    local code, header, body = http.request("GET", url, 15000)
 	    isRunning = false

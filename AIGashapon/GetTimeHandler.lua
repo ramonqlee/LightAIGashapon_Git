@@ -9,6 +9,7 @@ require "CloudBaseHandler"
 require "CloudConsts"
 require "LogUtil"
 require "Consts"
+require "MyUtils"
 
 local TAG = "GetTimeHandler"
 
@@ -40,7 +41,7 @@ function GetTimeHandler:handle( object )
 end
 
 function GetTimeHandler:sendGetTime(lastReboot)
-    local topic = string.format("%s/%s",Consts.getUserName(),self:name())
+    local topic = string.format("%s/%s",MyUtils.getUserName(),self:name())
 
     local msg = {}
     msg[CloudConsts.TIMESTAMP] = os.time()

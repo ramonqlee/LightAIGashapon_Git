@@ -15,10 +15,12 @@ require "net"
 require "mywd"
 require "msgcache"
 require "Config"
+require "MyUtils"
 require "Consts"
 require "LogUtil"
 require "UartMgr"
 require "Lightup"
+require "ConstsPrivate"
 require "CloudConsts"
 require "GetMachineVars"
 require "DeliverHandler"
@@ -33,7 +35,7 @@ local MAX_NET_FAIL_COUNT = 6*5--断网5分钟，会重启
 local RETRY_TIME=10000
 local DISCONNECT_WAIT_TIME=5000
 local KEEPALIVE,CLEANSESSION=60,0
-local PROT,ADDR,PORT =Consts.MQTT_PROTOCOL,Consts.MQTT_ADDR,Consts.MQTT_PORT
+local PROT,ADDR,PORT =ConstsPrivate.MQTT_PROTOCOL,ConstsPrivate.MQTT_ADDR,ConstsPrivate.MQTT_PORT
 local QOS,RETAIN=2,1
 local CLIENT_COMMAND_TIMEOUT = 5000
 local MAX_MSG_CNT_PER_REQ = 1--每次最多发送的消息数
@@ -106,7 +108,7 @@ function MQTTManager.getNodeIdAndPasswordFromServer()
     imei = misc.getimei()
     sn = crypto.md5(imei,#imei)
 
-    url = string.format(Consts.MQTT_CONFIG_NODEID_URL_FORMATTER,imei,sn)
+    url = string.format(ConstsPrivate.MQTT_CONFIG_NODEID_URL_FORMATTER,imei,sn)
     --LogUtil.d(TAG,"url = "..url)
     local code, header, body = http.request("GET", url, 15000)
     -- local code, header, body = http.request(url, "POST")
@@ -169,8 +171,8 @@ function MQTTManager.loopFeedDog()
 end
 
 function MQTTManager.checkMQTTUser()
-    username = Consts.getUserName(false)
-    password = Consts.getPassword(false)
+    username = MyUtils.getUserName(false)
+    password = MyUtils.getPassword(false)
     while not username or 0==#username or not password or 0==#password do
         mainLoopTime =os.time()
          -- mywd.feed()--获取配置中，别忘了喂狗，否则会重启
@@ -234,8 +236,8 @@ function MQTTManager.checkMQTTConnectivity()
 
         if mqttFailCount >= MAX_MQTT_FAIL_COUNT then
             LogUtil.d(TAG,"fail incheckMQTTConnectivity,clear nodeId and password")
-            Consts.clearUserName()
-            Consts.clearPassword()
+            MyUtils.clearUserName()
+            MyUtils.clearPassword()
             break
         end
 
@@ -296,6 +298,9 @@ function MQTTManager.startmqtt()
         if mqttc.connected and mqttc:subscribe(topics) then
             LogUtil.d(TAG,".............................subscribe topic ="..jsonex.encode(topics))
             reconnectCount = reconnectCount + 1
+            MyUtils.saveUserName(USERNAME)
+            MyUtils.savePassword(PASSWORD)
+
 
             MQTTManager.loopMessage(mMqttProtocolHandlerPool)
         end

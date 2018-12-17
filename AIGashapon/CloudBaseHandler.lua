@@ -8,6 +8,7 @@ local jsonex = require "jsonex"
 require "LogUtil"
 require "CloudConsts"
 require "Consts"
+require "MyUtils"
 
 CloudBaseHandler = {
 mTimestampInSec=0
@@ -49,7 +50,7 @@ function CloudBaseHandler:handle( obj )
     return r
   end
   
-  payloadJson = self:match(string.format("%s/%s",Consts.getUserName(),self:name()),tableObj)
+  payloadJson = self:match(string.format("%s/%s",MyUtils.getUserName(),self:name()),tableObj)
 
   if not payloadJson then
     --LogUtil.d(TAG,TAG.." handle empty payload,return")
