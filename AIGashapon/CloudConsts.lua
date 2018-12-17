@@ -3,7 +3,7 @@
 -- @copyright idreems.com
 -- @release 2017.12.21
 -- tested 2017.12.27
-module(...package.seeall)
+module(...,package.seeall)
 
 NODE_ID = "node_id"
 PASSWORD = "password"

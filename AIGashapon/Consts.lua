@@ -2,7 +2,7 @@
 -- @author ramonqlee
 -- @copyright idreems.com
 -- @release 2017.12.24
-module(...package.seeall)
+module(...,package.seeall)
 
 
 DEVICE_ENV=true -- 是否设备环境
@@ -27,10 +27,9 @@ LAST_UPDATE_TIME="lastUpdateTime"
 LAST_TASK_TIME="lastTaskTime"
 TWINKLE_INTERVAL = 4*1000--切换闪灯的周期:比闪灯时间多2秒
 TWINKLE_TIME = 2--待机闪灯的次数(每次闪灯共耗时1s)
--- LOCK_AUDIO = "/ldata/xiaoxin.mp3"
 LOCK_AUDIO = "/ldata/xiaowanzi.mp3"
-gTimerId
-timeSynced
+gTimerId=nil
+timeSynced=nil
 timeSyncCount=0
 RETRY_OPEN_LOCK=false--是否开启重新开锁功能
 EANBLE_MERGE_BOARD_ID = false--是否合并所有获得的小板子id
