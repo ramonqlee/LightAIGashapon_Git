@@ -20,7 +20,6 @@ require "LogUtil"
 require "UartMgr"
 require "Lightup"
 require "CloudConsts"
-require "NodeIdConfig"
 require "GetMachineVars"
 require "DeliverHandler"
 require "GetTimeHandler"
@@ -234,6 +233,9 @@ function MQTTManager.checkMQTTConnectivity()
         mainLoopTime =os.time()
 
         if mqttFailCount >= MAX_MQTT_FAIL_COUNT then
+            LogUtil.d(TAG,"fail incheckMQTTConnectivity,clear nodeId and password")
+            Consts.clearUserName()
+            Consts.clearPassword()
             break
         end
 
@@ -294,13 +296,6 @@ function MQTTManager.startmqtt()
         if mqttc.connected and mqttc:subscribe(topics) then
             LogUtil.d(TAG,".............................subscribe topic ="..jsonex.encode(topics))
             reconnectCount = reconnectCount + 1
-
-            -- 迁移到新的文件中，单独保存用户名和密码
-            NodeIdConfig.saveValue(CloudConsts.NODE_ID,USERNAME)
-            NodeIdConfig.saveValue(CloudConsts.PASSWORD,PASSWORD)
-            
-            Config.saveValue(CloudConsts.NODE_ID,USERNAME)
-            Config.saveValue(CloudConsts.PASSWORD,PASSWORD)
 
             MQTTManager.loopMessage(mMqttProtocolHandlerPool)
         end
