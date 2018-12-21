@@ -394,7 +394,7 @@ function MQTTManager.publishMessageQueue(maxMsgPerRequest)
         topic = msg.topic
         payload = msg.payload
 
-        if topic and payload  then
+        if topic and payload and #topic>0 and #payload>0 then
             LogUtil.d(TAG,"publish topic="..topic.." payload="..payload)
             local r = mqttc:publish(topic,payload,QOS,RETAIN)
             
@@ -405,9 +405,11 @@ function MQTTManager.publishMessageQueue(maxMsgPerRequest)
 
             count = count+1
             if count>=maxMsgPerRequest then
-                LogUtil.d(TAG,"publish count = "..maxMsgPerRequest)
+                -- LogUtil.d(TAG,"publish count = "..maxMsgPerRequest)
                 break
             end
+        else
+            toRemove[key]=1
         end 
     end
 
@@ -424,11 +426,8 @@ end
 function MQTTManager.handleRequst()
     timeSync()
 
-    if not toHandleRequests or 0 == #toHandleRequests then
-        return
-    end
-
-    if not mqttc then
+    if not toHandleRequests or 0 == getTableLen(toHandleRequests) then
+        LogUtil.d(TAG,"empty handleRequst")
         return
     end
 
@@ -440,7 +439,9 @@ function MQTTManager.handleRequst()
         if MQTT_DISCONNECT_REQUEST == req and not MQTTManager.hasMessage() then
             sys.wait(DISCONNECT_WAIT_TIME)
             LogUtil.d(TAG,"mqtt MQTT_DISCONNECT_REQUEST")
-            mqttc:disconnect()
+            if mqttc and mqttc.connected then
+                mqttc:disconnect()
+            end
 
             toRemove[key]=1
         end
@@ -463,14 +464,16 @@ end
 function MQTTManager.publish(topic, payload)
     toPublishMessages=toPublishMessages or{}
     
-    msg={}
-    msg.topic=topic
-    msg.payload=payload
-    toPublishMessages[crypto.md5(payload,#payload)]=msg
-    
-    -- TODO 修改为持久化方式，发送消息
+    if topic and payload and #topic>0 and #payload>0 then
+        msg={}
+        msg.topic=topic
+        msg.payload=payload
+        toPublishMessages[crypto.md5(payload,#payload)]=msg
+        
+        -- TODO 修改为持久化方式，发送消息
 
-    LogUtil.d(TAG,"add to publish queue,topic="..topic.." toPublishMessages len="..getTableLen(toPublishMessages))
+        LogUtil.d(TAG,"add to publish queue,topic="..topic.." toPublishMessages len="..getTableLen(toPublishMessages))
+    end
 end
 
 

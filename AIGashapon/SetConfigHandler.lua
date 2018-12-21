@@ -15,6 +15,7 @@ require "ReplyConfigHandler"
 local TAG = "SetConfigHandler"
 
 local STATE_INIT = "INIT"
+local previousInitSn
 
 SetConfigHandler = CloudBaseHandler:new{
     MY_TOPIC = "set_config",
@@ -87,12 +88,14 @@ function SetConfigHandler:handleContent( content )
 
  	-- 恢复初始状态
  	if STATE_INIT==state then
-    	LogUtil.d(TAG,"state ="..state.." clear nodeId and password")
-        MyUtils.clearUserName()
-        MyUtils.clearPassword()
-        
-    	MQTTManager.disconnect()
-    	return
+        if previousInitSn ~= sn then
+            previousInitSn = sn
+        	LogUtil.d(TAG,"state ="..state.." clear nodeId and password")
+            MyUtils.clearUserName()
+            MyUtils.clearPassword()
+            
+        	MQTTManager.disconnect()
+        end
     end
 end   
 
