@@ -420,6 +420,7 @@ function MQTTManager.publishMessageQueue(maxMsgPerRequest)
 
 end
 
+
 function MQTTManager.handleRequst()
     timeSync()
 
@@ -431,16 +432,28 @@ function MQTTManager.handleRequst()
         return
     end
 
+    local toRemove={}
     LogUtil.d(TAG,"mqtt handleRequst")
-    for _,req in pairs(toHandleRequests) do
-        if MQTT_DISCONNECT_REQUEST == req then
+    for key,req in pairs(toHandleRequests) do
+
+        -- 对于断开mqtt的请求，需要先清空消息队列
+        if MQTT_DISCONNECT_REQUEST == req and not MQTTManager.hasMessage() then
             sys.wait(DISCONNECT_WAIT_TIME)
             LogUtil.d(TAG,"mqtt MQTT_DISCONNECT_REQUEST")
             mqttc:disconnect()
+
+            toRemove[key]=1
+        end
+
+    end
+
+    -- 清除已经成功的消息
+    for key,_ in pairs(toRemove) do
+        if key then
+            toHandleRequests[key]=nil
         end
     end
 
-    toHandleRequests={}
 end
 
 -- 检查后台配置的任务和升级,防止和mqtt的联网出现冲突
